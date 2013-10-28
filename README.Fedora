@@ -1,0 +1,66 @@
+Big Picture Mode
+================
+
+To make "Big Picture" work in Fedora or Redhat, enable this SELinux boolean:
+
+ # setsebool -P allow_execheap 1
+
+and start Steam with the following commands if you are on Fedora 18:
+
+ $ unset XMODIFIERS
+ $ steam
+
+Videos (Game trailers, etc.)
+============================
+
+To have flash videos playing in the steam client, you have to make the 32 bit
+flash player plugin available in your user directory. The 32 bit flash plugin
+needs to be used also if you're running it in a 64 bit Fedora, as the Steam
+client and its embedded browser is still 32 bit only.
+
+Install the repository here:
+
+ http://negativo17.org/adobe-flash-plugin/
+
+32 bit browser:
+
+ # yum install flash-plugin
+
+64 bit browser:
+
+ # yum install flash-plugin flash-plugin.i686
+
+Manual steps; if you don't want to use the packages:
+
+1) Open your browser to:
+
+http://get.adobe.com/flashplayer/otherversions/
+
+Select "Linux (32-bit)" and then "Flash Player 11.2 for other Linux (.tar.gz) 32-bit".
+
+2) Put the plugin in your installation folder:
+
+ $ mkdir ~/.local/share/Steam/ubuntu12_32/plugins/
+ $ tar -xzf install_flash_player_11_linux.i386.tar.gz libflashplayer.so
+ $ cp libflashplayer.so ~/.local/share/Steam/ubuntu12_32/plugins/
+
+3) Start again steam and enjoy the videos.
+
+Running Steam with Ubuntu libraries
+===================================
+
+Normally the package uses Fedora libraries and packages from the repositories.
+To use instead the Steam provided Ubuntu 32 bit runtime; launch steam with the
+following parameters:
+
+ $ STEAM_RUNTIME=1 steam
+
+To disable permanently the use of the installed libraries and always use the
+Ubuntu runtime edit the profile environment at:
+
+ # /etc/profile.d/steam.*sh
+
+If Steam is launched with the Fedora libraries; you can remove the Ubuntu
+runtime folder which is nearly 200 mb:
+
+ $ rm -fr /.local/share/Steam/ubuntu12_32/steam-runtime*
