@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.43
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement   
@@ -51,6 +51,7 @@ Requires:       libusbx%{_isa}
 Requires:       libXau%{_isa}
 Requires:       libXdmcp%{_isa}
 Requires:       libXScrnSaver%{_isa}
+Requires:       mesa-dri-drivers%{_isa}
 Requires:       mesa-libEGL%{_isa}
 Requires:       mesa-libgbm%{_isa}
 Requires:       mesa-libGL%{_isa}
@@ -123,6 +124,9 @@ fi
 %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %changelog
+* Mon Nov 04 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.43-8
+- Add missing mesa-dri-drivers requirement.
+
 * Mon Oct 28 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.43-7
 - Added libXScrnSaver to requirements.
 
