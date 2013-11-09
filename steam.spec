@@ -3,14 +3,12 @@
 
 Name:           steam
 Version:        1.0.0.43
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement   
 URL:            http://www.steampowered.com/
 Source0:        http://repo.steampowered.com/steam/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
-Source1:        %{name}.sh
-Source2:        %{name}.csh
 Source10:       README.Fedora
 ExclusiveArch:  i686
 
@@ -22,53 +20,15 @@ Requires:       tar
 Requires:       zenity
 # Required for S3 compressed textures on free drivers
 Requires:       libtxc_dxtn%{_isa}
-# Required for enabling Steam system tray icon
-Requires:       libappindicator%{_isa}
-
-# After the Steam client has been downloaded run the following command and then
-# adjust the list of requirements to remove dependencies pulled in by other
-# packages.
-
-# cd ~/.local/share/Steam/ubuntu12_32/
-# for i in `ldd *.so | egrep -v "linux-gate.so|ld-linux.so" | awk '{print $1}'`; do
-#   repoquery --disablerepo=* --enablerepo=fedora,updates -q --qf="Requires:       %%{name}" --whatprovides "$i"
-# done | sort | uniq | sed 's/$/%%{_isa}/g'
-
-Requires:       alsa-lib%{_isa}
-Requires:       alsa-plugins-pulseaudio%{_isa}
-Requires:       avahi-libs%{_isa}
-Requires:       expat%{_isa}
-Requires:       gtk2%{_isa}
-Requires:       harfbuzz%{_isa}
-Requires:       json-c%{_isa}
-Requires:       keyutils-libs%{_isa}
-Requires:       libasyncns%{_isa}
-Requires:       libattr%{_isa}
-Requires:       libffi%{_isa}
-Requires:       libpng12%{_isa}
-Requires:       libsndfile%{_isa}
-Requires:       libusbx%{_isa}
-Requires:       libXau%{_isa}
-Requires:       libXdmcp%{_isa}
-Requires:       libXScrnSaver%{_isa}
+# Required for running the package on 32 bit systems with free drivers
 Requires:       mesa-dri-drivers%{_isa}
-Requires:       mesa-libEGL%{_isa}
-Requires:       mesa-libgbm%{_isa}
+# Minimum requirements for starting the steam client for the first time
+Requires:       alsa-lib%{_isa}
+Requires:       gtk2%{_isa}
+Requires:       libpng12%{_isa}
+Requires:       libXScrnSaver%{_isa}
 Requires:       mesa-libGL%{_isa}
-Requires:       NetworkManager-glib%{_isa}
 Requires:       nss%{_isa}
-Requires:       openal-soft%{_isa}
-Requires:       openssl-libs%{_isa}
-Requires:       pcre%{_isa}
-Requires:       pixman%{_isa}
-Requires:       pulseaudio-libs%{_isa}
-Requires:       tcp_wrappers-libs%{_isa}
-
-%if 0%{?fedora} >= 19
-# SDL2 it's already bundled in the Steam client but cannot be removed (it's not
-# in the runtime). Leave it here as this will probably not be shipped for long.
-Requires:       SDL2%{_isa}
-%endif
 
 %description
 Installer for the Steam software distribution service.
@@ -94,12 +54,8 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 install -D -m 644 -p lib/udev/rules.d/99-steam-controller-perms.rules \
     %{buildroot}%{_udevrulesdir}/99-steam-controller-perms.rules
 
-mkdir -p %{buildroot}%{_sysconfdir}/profile.d
-install -pm 644 %{SOURCE1} %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d
-
 %files
 %doc README COPYING steam_install_agreement.txt debian/changelog README.Fedora
-%config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 %{_bindir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
@@ -124,6 +80,10 @@ fi
 %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %changelog
+* Fri Nov 08 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.43-9
+- Disable STEAM_RUNTIME, drop all requirements and change README.Fedora. Please
+  see for details: https://github.com/ValveSoftware/steam-for-linux/issues/2976
+
 * Mon Nov 04 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.43-8
 - Add missing mesa-dri-drivers requirement.
 
