@@ -46,21 +46,37 @@ Select "Linux (32-bit)" and then "Flash Player 11.2 for other Linux (.tar.gz) 32
 
 3) Start again steam and enjoy the videos.
 
-Running Steam with Ubuntu libraries
-===================================
+Running Steam without the Ubuntu libraries (Steam runtime)
+==========================================================
 
-Normally the package uses Fedora libraries and packages from the repositories.
-To use instead the Steam provided Ubuntu 32 bit runtime; launch steam with the
-following parameters:
+Normally the package uses Ubuntu libraries. To use instead Fedora provided
+libraries, first of all figure out which libraries are needed:
 
- $ STEAM_RUNTIME=1 steam
+ $ cd ~/.local/share/Steam/ubuntu12_32/
+ $ for i in `ldd *.so | egrep -v "linux-gate.so|ld-linux.so" | awk '{print $1}'`; do
+ >   repoquery --disablerepo=* --enablerepo=fedora,updates -q --qf="%{name}" --whatprovides "$i"
+ > done | sort | uniq | sed 's/$/i686/g' > libraries.txt
 
-To disable permanently the use of the installed libraries and always use the
-Ubuntu runtime edit the profile environment at:
+This will generate a text file containing the required libraries. You can install
+them with the following command:
 
- # /etc/profile.d/steam.*sh
+ # yum -y install `cat libraries.txt`
+
+Then you can launch Steam with:
+
+ $ STEAM_RUNTIME=0 steam
+
+To disable permanently the use of the Ubuntu runtime and always use the
+installed libraries, you can create a profile environment like the following:
+
+ $ cat /etc/profile.d/steam.sh 
+ # Disable Ubuntu 32 bit runtime
+ [ -x /usr/bin/steam ] && export STEAM_RUNTIME=0
 
 If Steam is launched with the Fedora libraries; you can remove the Ubuntu
-runtime folder which is nearly 200 mb:
+runtime folder which is nearly 400 mb:
 
- $ rm -fr /.local/share/Steam/ubuntu12_32/steam-runtime*
+ $ rm -fr /.local/share/Steam/ubuntu12_32/steam-runtime
+ 
+
+
