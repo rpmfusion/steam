@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.43
-Release:        9%{?dist}
+Version:        1.0.0.44
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement   
@@ -80,9 +80,15 @@ fi
 %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %changelog
+* Thu Nov 14 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.44.1
+- Update to 1.0.0.44.
+
 * Fri Nov 08 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.43-9
 - Disable STEAM_RUNTIME, drop all requirements and change README.Fedora. Please
-  see for details: https://github.com/ValveSoftware/steam-for-linux/issues/2976
+  see for details:
+    https://github.com/ValveSoftware/steam-for-linux/issues/2972
+    https://github.com/ValveSoftware/steam-for-linux/issues/2976
+    https://github.com/ValveSoftware/steam-for-linux/issues/2978
 
 * Mon Nov 04 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.43-8
 - Add missing mesa-dri-drivers requirement.
