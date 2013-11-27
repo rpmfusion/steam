@@ -2,7 +2,7 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.44
+Version:        1.0.0.45
 Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
@@ -80,7 +80,10 @@ fi
 %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %changelog
-* Thu Nov 14 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.44.1
+* Wed Nov 27 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.45-1
+- Update to 1.0.0.45.
+
+* Thu Nov 14 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.44-1
 - Update to 1.0.0.44.
 
 * Fri Nov 08 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.43-9
