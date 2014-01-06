@@ -3,13 +3,16 @@
 
 Name:           steam
 Version:        1.0.0.45
-Release:        1%{?dist}
+Release:        5%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
-License:        Steam License Agreement   
+License:        Steam License Agreement
 URL:            http://www.steampowered.com/
 Source0:        http://repo.steampowered.com/steam/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
 Source10:       README.Fedora
+Patch0:         %{name}-disable-runtime.patch
+Source1:        %{name}.sh
+Source2:        %{name}.csh
 ExclusiveArch:  i686
 
 BuildRequires:  desktop-file-utils
@@ -36,16 +39,78 @@ Steam is a software distribution service with an online store, automated
 installation, automatic updates, achievements, SteamCloud synchronized
 savegame and screenshot functionality, and many social features.
 
+%package        noruntime
+Summary:        Use system libraries instead of the Steam Runtime
+Requires:       steam = %{version}-%{release}
+
+# After the Steam client has been downloaded run the following command and then
+# adjust the list of requirements to remove dependencies pulled in by other
+# packages.
+
+# cd ~/.local/share/Steam/ubuntu12_32/
+# for i in `ldd *.so | egrep -v "linux-gate.so|ld-linux.so" | awk '{print $1}'` `find steam-runtime/i386 -name "*.so*" -exec basename {} \;` do
+#   repoquery --disablerepo=* --enablerepo=fedora,updates -q --qf="Requires:       %{name}" --whatprovides "$i"
+# done | sort | uniq | sed 's/$/%{_isa}/g'
+
+# Required for enabling Steam system tray icon
+Requires:       libappindicator%{_isa}
+# Requirements for the main client
+Requires:       alsa-plugins-pulseaudio%{_isa}
+Requires:       avahi-libs%{_isa}
+Requires:       expat%{_isa}
+Requires:       harfbuzz%{_isa}
+Requires:       json-c%{_isa}
+Requires:       keyutils-libs%{_isa}
+Requires:       libasyncns%{_isa}
+Requires:       libattr%{_isa}
+Requires:       libffi%{_isa}
+Requires:       libsndfile%{_isa}
+Requires:       libusbx%{_isa}
+Requires:       libXau%{_isa}
+Requires:       libXdmcp%{_isa}
+Requires:       mesa-dri-drivers%{_isa}
+Requires:       mesa-libEGL%{_isa}
+Requires:       mesa-libgbm%{_isa}
+Requires:       NetworkManager-glib%{_isa}
+Requires:       openal-soft%{_isa}
+Requires:       openssl-libs%{_isa}
+Requires:       pcre%{_isa}
+Requires:       pixman%{_isa}
+Requires:       pulseaudio-libs%{_isa}
+Requires:       tcp_wrappers-libs%{_isa}
+# Additional requirements for games that use the Steam runtime libraries
+%if 0%{?fedora} >= 19
+Requires:       SDL2_image%{_isa}
+Requires:       SDL2_mixer%{_isa}
+%endif
+Requires:       SDL_image%{_isa}
+Requires:       SDL_mixer%{_isa}
+Requires:       SDL_ttf%{_isa}
+
+%description    noruntime
+The Steam client normally uses a set of libraries derived from Ubuntu (the Steam
+Runtime); and all titles on Steam are compiled against those libraries.
+
+This package takes care of installing all the requirements to use system
+libraries in place of the Steam Runtime and a profile environment file to enable
+it. Please note that this is not a supported Valve configuration and it may lead
+to unexpected results.
+
+
 %prep
 %setup -q -n %{name}
+%patch0 -p1
 sed -i 's/\r$//' %{name}.desktop
 sed -i 's/\r$//' steam_install_agreement.txt
 cp %{SOURCE10} .
 
+
 %build
 # Nothing to build
 
+
 %install
+# Steam package
 make install DESTDIR=%{buildroot}
 rm -fr %{buildroot}%{_docdir}/%{name}/ %{buildroot}%{_bindir}/%{name}deps
 
@@ -54,16 +119,10 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 install -D -m 644 -p lib/udev/rules.d/99-steam-controller-perms.rules \
     %{buildroot}%{_udevrulesdir}/99-steam-controller-perms.rules
 
-%files
-%doc README COPYING steam_install_agreement.txt debian/changelog README.Fedora
-%{_bindir}/%{name}
-%{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/hicolor/*/apps/%{name}.png
-%{_datadir}/pixmaps/%{name}.png
-%{_datadir}/pixmaps/%{name}_tray_mono.png
-%{_libdir}/%{name}/
-%{_mandir}/man6/%{name}.*
-%{_udevrulesdir}/99-steam-controller-perms.rules
+# Steam no-runtime package
+mkdir -p %{buildroot}%{_sysconfdir}/profile.d
+install -pm 644 %{SOURCE1} %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d
+
 
 %post
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
@@ -79,7 +138,39 @@ fi
 %posttrans
 %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
+
+%files
+%doc README COPYING steam_install_agreement.txt debian/changelog README.Fedora
+%{_bindir}/%{name}
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/icons/hicolor/*/apps/%{name}.png
+%{_datadir}/pixmaps/%{name}.png
+%{_datadir}/pixmaps/%{name}_tray_mono.png
+%{_libdir}/%{name}/
+%{_mandir}/man6/%{name}.*
+%{_udevrulesdir}/99-steam-controller-perms.rules
+
+%files noruntime
+%config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
+
 %changelog
+* Mon Jan 06 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.45-5
+- Update README.Fedora with new instructions.
+
+* Mon Jan 06 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.45-4
+- Create a no-runtime subpackage leaving the main package to behave as intended
+  by Valve. All the Steam Runtime dependencies are against the subpackage.
+
+* Mon Dec 23 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.45-3
+- Additional system libraries required by games.
+
+* Fri Dec 20 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.45-2
+- If STEAM_RUNTIME is not set, perform the following actions by default from the
+  main commmand:
+    Disable the Ubuntu runtime.
+    Delete the unpacked Ubuntu runtime.
+    Create the obsolete libudev.so.0.
+
 * Wed Nov 27 2013 Simone Caronni <negativo17@gmail.com> - 1.0.0.45-1
 - Update to 1.0.0.45.
 
