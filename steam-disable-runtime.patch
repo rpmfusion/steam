@@ -1,0 +1,22 @@
+diff -Naur steam.old/steam steam/steam
+--- steam.old/steam	2013-12-20 20:50:34.014610244 +0100
++++ steam/steam	2014-01-06 11:56:29.576011740 +0100
+@@ -186,6 +186,18 @@
+ # go to the install directory and run the client
+ cp "$LAUNCHSTEAMBOOTSTRAPFILE" "$LAUNCHSTEAMDIR/bootstrap.tar.xz"
+ cd "$LAUNCHSTEAMDIR"
++
++if [ "$STEAM_RUNTIME" == "0" ]; then
++    if [ ! -h $LAUNCHSTEAMPLATFORM/libudev.so.0 ]; then
++        ln -sf /usr/lib/libudev.so.1 $LAUNCHSTEAMPLATFORM/libudev.so.0
++    fi
++    rm -fr $LAUNCHSTEAMPLATFORM/steam-runtime
++else
++    if [ -h $LAUNCHSTEAMPLATFORM/libudev.so.0 ]; then
++        rm -f $LAUNCHSTEAMPLATFORM/libudev.so.0
++    fi  
++fi
++
+ if [ "`command -v tee`" != "" ]; then
+ 	mkdir -p --mode=777 /tmp/dumps
+ 	exec "$LAUNCHSTEAMDIR/$STEAMBOOTSTRAP" "$@" 2>&1 | tee "/tmp/dumps/${USER}_stdout.txt"
