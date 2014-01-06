@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.45
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -42,6 +42,7 @@ savegame and screenshot functionality, and many social features.
 %package        noruntime
 Summary:        Use system libraries instead of the Steam Runtime
 Requires:       steam = %{version}-%{release}
+Buildarch:      noarch
 
 # After the Steam client has been downloaded run the following command and then
 # adjust the list of requirements to remove dependencies pulled in by other
@@ -154,6 +155,9 @@ fi
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 
 %changelog
+* Mon Jan 06 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.45-6
+- Make noruntime subpackage noarch.
+
 * Mon Jan 06 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.45-5
 - Update README.Fedora with new instructions.
 
