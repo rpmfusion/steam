@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.47
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -49,7 +49,7 @@ Buildarch:      noarch
 # packages.
 
 # cd ~/.local/share/Steam/ubuntu12_32/
-# for i in `ldd *.so | egrep -v "linux-gate.so|ld-linux.so" | awk '{print $1}'` `find steam-runtime/i386 -name "*.so*" -exec basename {} \;` do
+# for i in `ldd *.so | egrep -v "linux-gate.so|ld-linux.so" | awk '{print $1}'` `find steam-runtime/i386 -name "*.so*" -exec basename {} \;`; do
 #   repoquery --disablerepo=* --enablerepo=fedora,updates -q --qf="Requires:       %{name}" --whatprovides "$i"
 # done | sort | uniq | sed 's/$/%{_isa}/g'
 
@@ -155,6 +155,9 @@ fi
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 
 %changelog
+* Tue Apr 01 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.47-2
+- Close window when clicking the x button (#3210).
+
 * Wed Feb 12 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.47-1
 - Update to 1.0.0.47.
 
