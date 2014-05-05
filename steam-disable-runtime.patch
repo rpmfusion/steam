@@ -1,6 +1,6 @@
 diff -Naur steam.old/steam steam/steam
 --- steam.old/steam	2014-04-01 10:56:49.706673689 +0200
-+++ steam/steam	2014-04-01 10:58:57.854618755 +0200
++++ steam/steam	2014-05-05 09:07:23.566190894 +0200
 @@ -17,6 +17,9 @@
  # Set up domain for script localization
  export TEXTDOMAIN=steam
@@ -11,14 +11,15 @@ diff -Naur steam.old/steam steam/steam
  function show_message()
  {
  	style=$1
-@@ -186,6 +189,18 @@
+@@ -186,6 +189,19 @@
  # go to the install directory and run the client
  cp "$LAUNCHSTEAMBOOTSTRAPFILE" "$LAUNCHSTEAMDIR/bootstrap.tar.xz"
  cd "$LAUNCHSTEAMDIR"
 +
 +if [ "$STEAM_RUNTIME" == "0" ]; then
-+    if [ ! -h $LAUNCHSTEAMPLATFORM/libudev.so.0 ]; then
++    if [ ! -h $LAUNCHSTEAMPLATFORM/libudev.so.0 ] || [ ! -h $LAUNCHSTEAMPLATFORM/libbz2.so.1.0 ]; then
 +        ln -sf /usr/lib/libudev.so.1 $LAUNCHSTEAMPLATFORM/libudev.so.0
++        ln -sf /usr/lib/libbz2.so.1 $LAUNCHSTEAMPLATFORM/libbz2.so.1.0
 +    fi
 +    rm -fr $LAUNCHSTEAMPLATFORM/steam-runtime
 +else

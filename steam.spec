@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.47
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -58,6 +58,7 @@ Requires:       libappindicator%{_isa}
 # Requirements for the main client
 Requires:       alsa-plugins-pulseaudio%{_isa}
 Requires:       avahi-libs%{_isa}
+Requires:       bzip2-libs%{_isa}
 Requires:       expat%{_isa}
 Requires:       harfbuzz%{_isa}
 Requires:       json-c%{_isa}
@@ -155,6 +156,9 @@ fi
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 
 %changelog
+* Mon May 05 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.47-3
+- Add new libbz2.so requirement.
+
 * Tue Apr 01 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.47-2
 - Close window when clicking the x button (#3210).
 
