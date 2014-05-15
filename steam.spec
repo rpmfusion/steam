@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.47
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -66,28 +66,24 @@ Requires:       keyutils-libs%{_isa}
 Requires:       libasyncns%{_isa}
 Requires:       libattr%{_isa}
 Requires:       libffi%{_isa}
+Requires:       libgcrypt%{_isa}
 Requires:       libsndfile%{_isa}
 Requires:       libusbx%{_isa}
 Requires:       libXau%{_isa}
 Requires:       libXdmcp%{_isa}
 Requires:       mesa-dri-drivers%{_isa}
 Requires:       mesa-libEGL%{_isa}
-Requires:       mesa-libgbm%{_isa}
 Requires:       NetworkManager-glib%{_isa}
 Requires:       openal-soft%{_isa}
-Requires:       openssl-libs%{_isa}
 Requires:       pcre%{_isa}
 Requires:       pixman%{_isa}
-Requires:       pulseaudio-libs%{_isa}
 Requires:       tcp_wrappers-libs%{_isa}
 # Additional requirements for games that use the Steam runtime libraries
-%if 0%{?fedora} >= 19
-Requires:       SDL2_image%{_isa}
-Requires:       SDL2_mixer%{_isa}
-%endif
 Requires:       SDL_image%{_isa}
 Requires:       SDL_mixer%{_isa}
 Requires:       SDL_ttf%{_isa}
+Requires:       SDL2_image%{_isa}
+Requires:       SDL2_mixer%{_isa}
 
 %description    noruntime
 The Steam client normally uses a set of libraries derived from Ubuntu (the Steam
@@ -98,7 +94,6 @@ libraries in place of the Steam Runtime and a profile environment file to enable
 it. Please note that this is not a supported Valve configuration and it may lead
 to unexpected results.
 
-
 %prep
 %setup -q -n %{name}
 %patch0 -p1
@@ -106,10 +101,8 @@ sed -i 's/\r$//' %{name}.desktop
 sed -i 's/\r$//' steam_install_agreement.txt
 cp %{SOURCE10} .
 
-
 %build
 # Nothing to build
-
 
 %install
 # Steam package
@@ -125,7 +118,6 @@ install -D -m 644 -p lib/udev/rules.d/99-steam-controller-perms.rules \
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -pm 644 %{SOURCE1} %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d
 
-
 %post
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/update-desktop-database &> /dev/null || :
@@ -139,7 +131,6 @@ fi
 
 %posttrans
 %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-
 
 %files
 %doc README COPYING steam_install_agreement.txt debian/changelog README.Fedora
@@ -156,6 +147,9 @@ fi
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 
 %changelog
+* Thu May 15 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.47-4
+- Update noruntime subpackage requirements.
+
 * Mon May 05 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.47-3
 - Add new libbz2.so requirement.
 
