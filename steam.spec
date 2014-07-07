@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.47
-Release:        4%{?dist}
+Version:        1.0.0.48
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -79,11 +79,14 @@ Requires:       pcre%{_isa}
 Requires:       pixman%{_isa}
 Requires:       tcp_wrappers-libs%{_isa}
 # Additional requirements for games that use the Steam runtime libraries
+Requires:       GConf2%{_isa}
 Requires:       SDL_image%{_isa}
 Requires:       SDL_mixer%{_isa}
 Requires:       SDL_ttf%{_isa}
 Requires:       SDL2_image%{_isa}
 Requires:       SDL2_mixer%{_isa}
+Requires:       libcurl%{_isa}
+Requires:       speex%{_isa}
 
 %description    noruntime
 The Steam client normally uses a set of libraries derived from Ubuntu (the Steam
@@ -147,6 +150,12 @@ fi
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 
 %changelog
+* Mon Jun 23 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.48-2
+- Add additional libraries required by games when skipping runtime.
+
+* Thu Jun 19 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.48-1
+- Update to 1.0.0.48.
+
 * Thu May 15 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.47-4
 - Update noruntime subpackage requirements.
 
