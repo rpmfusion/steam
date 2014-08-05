@@ -45,16 +45,3 @@ Select "Linux (32-bit)" and then "Flash Player 11.2 for other Linux (.tar.gz) 32
  $ cp libflashplayer.so ~/.local/share/Steam/ubuntu12_32/plugins/
 
 3) Start again steam and enjoy the videos.
-
-Running Steam without the Ubuntu libraries (Steam runtime)
-==========================================================
-
-Normally the package uses Ubuntu libraries. To use instead Fedora provided
-libraries, install the additional package "steam-noruntime".
-
-After installing, log out and log in back again so the environment file is
-sourced, setting STEAM_RUNTIME to 0.
-
-Running Steam this way is unsupported and may lead to unexpected results. Also
-videos in the client are not played, regardless of the installation of the Flash
-Plugin.
