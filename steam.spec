@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.48
-Release:        3%{?dist}
+Version:        1.0.0.49
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -83,6 +83,9 @@ fi
 %{_udevrulesdir}/99-steam-controller-perms.rules
 
 %changelog
+* Wed Aug 27 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.49-1
+- Update to 1.0.0.49.
+
 * Tue Jul 29 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.48-3
 - Obsolete noruntime subpackage.
 
