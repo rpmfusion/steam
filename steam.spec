@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.49
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -29,6 +29,11 @@ Requires:       libpng12%{_isa}
 Requires:       libXScrnSaver%{_isa}
 Requires:       mesa-libGL%{_isa}
 Requires:       nss%{_isa}
+# Required for sending out crash reports to Valve
+Requires:       libcurl%{_isa}
+# Workaround for mesa-libGL dependency bug:
+# https://bugzilla.redhat.com/show_bug.cgi?id=1168475
+Requires:       systemd-libs%{_isa}
 
 Obsoletes:      %{name}-noruntime < %{version}-%{release}
 Provides:       %{name}-noruntime = %{version}-%{release}
@@ -83,6 +88,9 @@ fi
 %{_udevrulesdir}/99-steam-controller-perms.rules
 
 %changelog
+* Tue Dec 02 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.49-2
+- Update requirements.
+
 * Wed Aug 27 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.49-1
 - Update to 1.0.0.49.
 
