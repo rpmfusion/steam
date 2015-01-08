@@ -1,0 +1,10 @@
+diff -Naur steam.old/steam steam/steam
+--- steam.old/steam	2014-08-26 03:13:55.000000000 +0200
++++ steam/steam	2015-01-08 09:53:18.017172389 +0100
+@@ -192,3 +192,6 @@
+ else
+ 	exec "$LAUNCHSTEAMDIR/$STEAMBOOTSTRAP" "$@"
+ fi
++
++# Workaround for bug 3570: https://github.com/ValveSoftware/steam-for-linux/issues/3570
++rm -f /tmp/steam_chrome_shmem
