@@ -3,14 +3,16 @@
 
 Name:           steam
 Version:        1.0.0.49
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
 URL:            http://www.steampowered.com/
+ExclusiveArch:  i686
+
 Source0:        http://repo.steampowered.com/steam/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
 Source10:       README.Fedora
-ExclusiveArch:  i686
+Patch0:         %{name}-3570.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
@@ -46,6 +48,7 @@ savegame and screenshot functionality, and many social features.
 
 %prep
 %setup -q -n %{name}
+%patch0 -p1
 sed -i 's/\r$//' %{name}.desktop
 sed -i 's/\r$//' steam_install_agreement.txt
 cp %{SOURCE10} .
@@ -88,6 +91,10 @@ fi
 %{_udevrulesdir}/99-steam-controller-perms.rules
 
 %changelog
+* Thu Jan 08 2015 Simone Caronni <negativo17@gmail.com> - 1.0.0.49-3
+- Workaround for bug 3570:
+  https://github.com/ValveSoftware/steam-for-linux/issues/3570
+
 * Tue Dec 02 2014 Simone Caronni <negativo17@gmail.com> - 1.0.0.49-2
 - Update requirements.
 
