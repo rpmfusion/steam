@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.49
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -91,6 +91,10 @@ fi
 %{_udevrulesdir}/99-steam-controller-perms.rules
 
 %changelog
+* Mon Jan 12 2015 Simone Caronni <negativo17@gmail.com> - 1.0.0.49-4
+- Flash plugin is no longer required for playing videos in the store, update
+  README.Fedora.
+
 * Thu Jan 08 2015 Simone Caronni <negativo17@gmail.com> - 1.0.0.49-3
 - Workaround for bug 3570:
   https://github.com/ValveSoftware/steam-for-linux/issues/3570
