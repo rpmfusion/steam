@@ -9,39 +9,3 @@ and start Steam with the following commands if you are on Fedora 18:
 
  $ unset XMODIFIERS
  $ steam
-
-Videos (Game trailers, etc.)
-============================
-
-To have flash videos playing in the steam client, you have to make the 32 bit
-flash player plugin available in your user directory. The 32 bit flash plugin
-needs to be used also if you're running it in a 64 bit Fedora, as the Steam
-client and its embedded browser is still 32 bit only.
-
-Install the repository here:
-
- http://negativo17.org/adobe-flash-plugin/
-
-32 bit browser:
-
- # yum install flash-plugin
-
-64 bit browser:
-
- # yum install flash-plugin flash-plugin.i686
-
-Manual steps; if you don't want to use the packages:
-
-1) Open your browser to:
-
-http://get.adobe.com/flashplayer/otherversions/
-
-Select "Linux (32-bit)" and then "Flash Player 11.2 for other Linux (.tar.gz) 32-bit".
-
-2) Put the plugin in your installation folder:
-
- $ mkdir ~/.local/share/Steam/ubuntu12_32/plugins/
- $ tar -xzf install_flash_player_11_linux.i386.tar.gz libflashplayer.so
- $ cp libflashplayer.so ~/.local/share/Steam/ubuntu12_32/plugins/
-
-3) Start again steam and enjoy the videos.
