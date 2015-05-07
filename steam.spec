@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.49
-Release:        4%{?dist}
+Version:        1.0.0.50
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -28,6 +28,8 @@ Requires:       mesa-dri-drivers%{_isa}
 Requires:       alsa-lib%{_isa}
 Requires:       gtk2%{_isa}
 Requires:       libpng12%{_isa}
+Requires:       libXext%{_isa}
+Requires:       libXinerama%{_isa}
 Requires:       libXScrnSaver%{_isa}
 Requires:       mesa-libGL%{_isa}
 Requires:       nss%{_isa}
@@ -91,6 +93,10 @@ fi
 %{_udevrulesdir}/99-steam-controller-perms.rules
 
 %changelog
+* Thu May 07 2015 Simone Caronni <negativo17@gmail.com> - 1.0.0.50-1
+- Update to 1.0.0.50.
+- Add new requirements; update README file.
+
 * Mon Jan 12 2015 Simone Caronni <negativo17@gmail.com> - 1.0.0.49-4
 - Flash plugin is no longer required for playing videos in the store, update
   README.Fedora.
