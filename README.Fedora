@@ -5,7 +5,3 @@ To make "Big Picture" work in Fedora or Redhat, enable this SELinux boolean:
 
  # setsebool -P allow_execheap 1
 
-and start Steam with the following commands if you are on Fedora 18:
-
- $ unset XMODIFIERS
- $ steam
