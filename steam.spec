@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.50
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -13,6 +13,7 @@ ExclusiveArch:  i686
 Source0:        http://repo.steampowered.com/steam/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
 Source10:       README.Fedora
 Patch0:         %{name}-3570.patch
+Patch1:         %{name}-3273.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
@@ -51,6 +52,7 @@ savegame and screenshot functionality, and many social features.
 %prep
 %setup -q -n %{name}
 %patch0 -p1
+%patch1 -p1
 sed -i 's/\r$//' %{name}.desktop
 sed -i 's/\r$//' steam_install_agreement.txt
 cp %{SOURCE10} .
@@ -59,7 +61,7 @@ cp %{SOURCE10} .
 # Nothing to build
 
 %install
-make install DESTDIR=%{buildroot}
+%make_install
 rm -fr %{buildroot}%{_docdir}/%{name}/ %{buildroot}%{_bindir}/%{name}deps
 
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
@@ -82,7 +84,9 @@ fi
 %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files
-%doc README COPYING steam_install_agreement.txt debian/changelog README.Fedora
+%{!?_licensedir:%global license %%doc}
+%license COPYING steam_install_agreement.txt
+%doc README debian/changelog README.Fedora
 %{_bindir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
@@ -93,6 +97,11 @@ fi
 %{_udevrulesdir}/99-steam-controller-perms.rules
 
 %changelog
+* Mon May 25 2015 Simone Caronni <negativo17@gmail.com> - 1.0.0.50-2
+- Add license macro.
+- Add workaround for bug 3273, required for running client/games with prime:
+  https://github.com/ValveSoftware/steam-for-linux/issues/3273
+
 * Thu May 07 2015 Simone Caronni <negativo17@gmail.com> - 1.0.0.50-1
 - Update to 1.0.0.50.
 - Add new requirements; update README file.
