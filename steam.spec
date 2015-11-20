@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.50
-Release:        2%{?dist}
+Version:        1.0.0.51
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -11,6 +11,7 @@ URL:            http://www.steampowered.com/
 ExclusiveArch:  i686
 
 Source0:        http://repo.steampowered.com/steam/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
+Source3:        %{name}.xml
 Source10:       README.Fedora
 Patch0:         %{name}-3570.patch
 Patch1:         %{name}-3273.patch
@@ -22,23 +23,29 @@ BuildRequires:  systemd
 Requires:       tar
 Requires:       zenity
 # Required for S3 compressed textures on free drivers
-Requires:       libtxc_dxtn%{_isa}
+Requires:       libtxc_dxtn%{?_isa}
 # Required for running the package on 32 bit systems with free drivers
-Requires:       mesa-dri-drivers%{_isa}
+Requires:       mesa-dri-drivers%{?_isa}
 # Minimum requirements for starting the steam client for the first time
-Requires:       alsa-lib%{_isa}
-Requires:       gtk2%{_isa}
-Requires:       libpng12%{_isa}
-Requires:       libXext%{_isa}
-Requires:       libXinerama%{_isa}
-Requires:       libXScrnSaver%{_isa}
-Requires:       mesa-libGL%{_isa}
-Requires:       nss%{_isa}
+Requires:       alsa-lib%{?_isa}
+Requires:       gtk2%{?_isa}
+Requires:       libpng12%{?_isa}
+Requires:       libXext%{?_isa}
+Requires:       libXinerama%{?_isa}
+Requires:       libXScrnSaver%{?_isa}
+Requires:       mesa-libGL%{?_isa}
+Requires:       nss%{?_isa}
 # Required for sending out crash reports to Valve
-Requires:       libcurl%{_isa}
+Requires:       libcurl%{?_isa}
 # Workaround for mesa-libGL dependency bug:
 # https://bugzilla.redhat.com/show_bug.cgi?id=1168475
-Requires:       systemd-libs%{_isa}
+Requires:       systemd-libs%{?_isa}
+
+# Required for hardware decoding during In-Home Streaming (intel)
+Requires:       libva-intel-driver%{?_isa}
+
+# Required for hardware decoding during In-Home Streaming (radeon/nouveau)
+Requires:       libvdpau%{?_isa}
 
 Obsoletes:      %{name}-noruntime < %{version}-%{release}
 Provides:       %{name}-noruntime = %{version}-%{release}
@@ -69,6 +76,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 install -D -m 644 -p lib/udev/rules.d/99-steam-controller-perms.rules \
     %{buildroot}%{_udevrulesdir}/99-steam-controller-perms.rules
 
+install -D -m 644 -p %{SOURCE3} \
+    %{buildroot}%{_prefix}/lib/firewalld/services/steam.xml
+
 %post
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/update-desktop-database &> /dev/null || :
@@ -94,9 +104,16 @@ fi
 %{_datadir}/pixmaps/%{name}_tray_mono.png
 %{_libdir}/%{name}/
 %{_mandir}/man6/%{name}.*
+%{_prefix}/lib/firewalld/services/%{name}.xml
 %{_udevrulesdir}/99-steam-controller-perms.rules
 
 %changelog
+* Fri Nov 20 2015 Simone Caronni <negativo17@gmail.com> - 1.0.0.51-1
+- Update to 1.0.0.51.
+- Add dependencies for In-Home Streaming decoding.
+- Updated udev rules for the Steam Controller and HTC Vive VR headset.
+- Update isa requirements.
+
 * Mon May 25 2015 Simone Caronni <negativo17@gmail.com> - 1.0.0.50-2
 - Add license macro.
 - Add workaround for bug 3273, required for running client/games with prime:
