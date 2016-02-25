@@ -1,9 +1,12 @@
 # Binary package, no debuginfo should be generated
 %global debug_package %{nil}
 
+# If firewalld macro is not defined, define it here:
+%{!?firewalld_reload:%global firewalld_reload test -f /usr/bin/firewall-cmd && firewall-cmd --reload --quiet || :}
+
 Name:           steam
 Version:        1.0.0.51
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -12,7 +15,20 @@ ExclusiveArch:  i686
 
 Source0:        http://repo.steampowered.com/steam/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
 Source3:        %{name}.xml
+
+# Workaround for input devices seen as joysticks (linux kernel bug) and
+# viceversa for the Steam controller:
+# https://github.com/ValveSoftware/steam-for-linux/issues/3384
+# https://bugzilla.kernel.org/show_bug.cgi?id=28912
+# https://github.com/denilsonsa/udev-joystick-blacklist
+Source8:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-blacklist/master/51-these-are-not-joysticks-rm.rules
+Source9:        https://raw.githubusercontent.com/cyndis/shield-controller-config/master/99-shield-controller.rules
+
 Source10:       README.Fedora
+
+# Workaround for multiple Valve bugs:
+# https://github.com/ValveSoftware/steam-for-linux/issues/3273
+# https://github.com/ValveSoftware/steam-for-linux/issues/3570
 Patch0:         %{name}-3570.patch
 Patch1:         %{name}-3273.patch
 
@@ -22,33 +38,47 @@ BuildRequires:  systemd
 # Required to run the initial setup
 Requires:       tar
 Requires:       zenity
-# Required for S3 compressed textures on free drivers
+
+# Required for S3 compressed textures on free drivers (intel/radeon/nouveau)
 Requires:       libtxc_dxtn%{?_isa}
+
 # Required for running the package on 32 bit systems with free drivers
 Requires:       mesa-dri-drivers%{?_isa}
+
 # Minimum requirements for starting the steam client for the first time
 Requires:       alsa-lib%{?_isa}
 Requires:       gtk2%{?_isa}
 Requires:       libpng12%{?_isa}
 Requires:       libXext%{?_isa}
 Requires:       libXinerama%{?_isa}
+Requires:       libXtst%{?_isa}
 Requires:       libXScrnSaver%{?_isa}
 Requires:       mesa-libGL%{?_isa}
 Requires:       nss%{?_isa}
+Requires:       pulseaudio-libs%{?_isa}
+
 # Required for sending out crash reports to Valve
 Requires:       libcurl%{?_isa}
+
 # Workaround for mesa-libGL dependency bug:
 # https://bugzilla.redhat.com/show_bug.cgi?id=1168475
 Requires:       systemd-libs%{?_isa}
+
+# Required for the firewall rules
+# http://fedoraproject.org/wiki/PackagingDrafts/ScriptletSnippets/Firewalld
+%if 0%{?rhel}
+Requires:       firewalld
+Requires(post): firewalld
+%else
+Requires:       firewalld-filesystem
+Requires(post): firewalld-filesystem
+%endif
 
 # Required for hardware decoding during In-Home Streaming (intel)
 Requires:       libva-intel-driver%{?_isa}
 
 # Required for hardware decoding during In-Home Streaming (radeon/nouveau)
 Requires:       libvdpau%{?_isa}
-
-Obsoletes:      %{name}-noruntime < %{version}-%{release}
-Provides:       %{name}-noruntime = %{version}-%{release}
 
 %description
 Installer for the Steam software distribution service.
@@ -69,12 +99,15 @@ cp %{SOURCE10} .
 
 %install
 %make_install
-rm -fr %{buildroot}%{_docdir}/%{name}/ %{buildroot}%{_bindir}/%{name}deps
+
+rm -fr %{buildroot}%{_docdir}/%{name}/ \
+    %{buildroot}%{_bindir}/%{name}deps
+
+mkdir -p %{buildroot}%{_udevrulesdir}/
+install -m 644 -p lib/udev/rules.d/99-steam-controller-perms.rules \
+    %{SOURCE8} %{SOURCE9} %{buildroot}%{_udevrulesdir}/
 
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
-
-install -D -m 644 -p lib/udev/rules.d/99-steam-controller-perms.rules \
-    %{buildroot}%{_udevrulesdir}/99-steam-controller-perms.rules
 
 install -D -m 644 -p %{SOURCE3} \
     %{buildroot}%{_prefix}/lib/firewalld/services/steam.xml
@@ -82,6 +115,7 @@ install -D -m 644 -p %{SOURCE3} \
 %post
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/update-desktop-database &> /dev/null || :
+%firewalld_reload
 
 %postun
 %{_bindir}/update-desktop-database &> /dev/null || :
@@ -105,9 +139,18 @@ fi
 %{_libdir}/%{name}/
 %{_mandir}/man6/%{name}.*
 %{_prefix}/lib/firewalld/services/%{name}.xml
-%{_udevrulesdir}/99-steam-controller-perms.rules
+%{_udevrulesdir}/*
 
 %changelog
+* Thu Feb 25 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.51-2
+- Integrate FirewallD rules (still not enabled by default).
+- Add support for Nvidia Shield Controller.
+- Add UDev rules for keyboards detected as joysticks:
+  https://github.com/ValveSoftware/steam-for-linux/issues/3384
+  https://bugzilla.kernel.org/show_bug.cgi?id=28912
+  https://github.com/denilsonsa/udev-joystick-blacklist
+- Update README.Fedora accordingly.
+
 * Fri Nov 20 2015 Simone Caronni <negativo17@gmail.com> - 1.0.0.51-1
 - Update to 1.0.0.51.
 - Add dependencies for In-Home Streaming decoding.
