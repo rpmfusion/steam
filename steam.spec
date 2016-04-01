@@ -5,8 +5,8 @@
 %{!?firewalld_reload:%global firewalld_reload test -f /usr/bin/firewall-cmd && firewall-cmd --reload --quiet || :}
 
 Name:           steam
-Version:        1.0.0.51
-Release:        2%{?dist}
+Version:        1.0.0.52
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -26,10 +26,13 @@ Source9:        https://raw.githubusercontent.com/cyndis/shield-controller-confi
 
 Source10:       README.Fedora
 
-# Workaround for multiple Valve bugs:
-# https://github.com/ValveSoftware/steam-for-linux/issues/3273
+# Remove temporary leftover files after run (fixes multiuser):
 # https://github.com/ValveSoftware/steam-for-linux/issues/3570
 Patch0:         %{name}-3570.patch
+
+# Remove libstdc++ from runtime on systems where mesa is compiled normally
+# (RHEL 7). Fixes crash:
+# https://github.com/ValveSoftware/steam-for-linux/issues/3273
 Patch1:         %{name}-3273.patch
 
 BuildRequires:  desktop-file-utils
@@ -92,6 +95,7 @@ savegame and screenshot functionality, and many social features.
 %patch1 -p1
 sed -i 's/\r$//' %{name}.desktop
 sed -i 's/\r$//' steam_install_agreement.txt
+
 cp %{SOURCE10} .
 
 %build
@@ -104,7 +108,7 @@ rm -fr %{buildroot}%{_docdir}/%{name}/ \
     %{buildroot}%{_bindir}/%{name}deps
 
 mkdir -p %{buildroot}%{_udevrulesdir}/
-install -m 644 -p lib/udev/rules.d/99-steam-controller-perms.rules \
+install -m 644 -p lib/udev/rules.d/* \
     %{SOURCE8} %{SOURCE9} %{buildroot}%{_udevrulesdir}/
 
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
@@ -142,6 +146,10 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Fri Apr 01 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.52-1
+- Update to 1.0.0.52, adds HTC Vive udev rules.
+- Update patches.
+
 * Thu Feb 25 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.51-2
 - Integrate FirewallD rules (still not enabled by default).
 - Add support for Nvidia Shield Controller.
