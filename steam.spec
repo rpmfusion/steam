@@ -6,7 +6,7 @@
 
 Name:           steam
 Version:        1.0.0.52
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -34,6 +34,10 @@ Patch0:         %{name}-3570.patch
 # (RHEL 7). Fixes crash:
 # https://github.com/ValveSoftware/steam-for-linux/issues/3273
 Patch1:         %{name}-3273.patch
+
+# Make Steam Controller usable as a GamePad:
+# https://steamcommunity.com/app/353370/discussions/0/490123197956024380/
+Patch2:         %{name}-controller-gamepad-emulation.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
@@ -93,6 +97,7 @@ savegame and screenshot functionality, and many social features.
 %setup -q -n %{name}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 sed -i 's/\r$//' %{name}.desktop
 sed -i 's/\r$//' steam_install_agreement.txt
 
@@ -146,6 +151,12 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Sat Aug 13 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.52-2
+- Make Steam Controller usable as a gamepad (#4062).
+- Update UDev rule for keyboards detected as joysticks.
+- Update README.Fedora file with notes about the Steam Controller, its update
+  process and update the list of devices with UDev rules.
+
 * Fri Apr 01 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.52-1
 - Update to 1.0.0.52, adds HTC Vive udev rules.
 - Update patches.

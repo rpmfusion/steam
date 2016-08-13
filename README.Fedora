@@ -62,12 +62,12 @@ Steam clients.
 Joysticks, keyboards and game pads
 ==================================
 
-The package contains the following UDEV rules:
+The package contains the UDEV rules for the following devices:
 
 - Steam Controller with USB adapter
 - HTC Vive HID Sensor with USB adapter
 
-  Support for the devices, rules originall shipped with Steam.
+  Support for the devices, rules originally shipped with Steam.
 
 - Nvidia Shield Controller (workaround for Mouse detection)
 
@@ -95,20 +95,53 @@ The package contains the following UDEV rules:
 - Microsoft® Nano Transceiver v1.0
 - Microsoft Wireless Keyboard 800
 - Microsoft® Nano Transceiver v2.0
-- WACOM CTE-640-U V4.0-3
-- Wacom Co., Ltd Graphire 4 6x8
+- Wacom ET-0405 Graphire
+- Wacom ET-0405A Graphire2 (4x5)
+- Wacom ET-0507A Graphire2 (5x7)
+- Wacom CTE-430 Graphire3 (4x5)
+- Wacom CTE-630 Graphire3 (6x8)
+- Wacom CTE-440 Graphire4 (4x5)
+- Wacom CTE-640 Graphire4 (6x8)
+- Wacom CTE-450 Bamboo Fun (4x5)
+- Wacom CTE-640 Graphire 4 6x8
+- Wacom CTE-450 Bamboo Fun 4x5
+- Wacom CTE-650 Bamboo Fun 6x8
+- Wacom CTE-631 Bamboo One
 - Wacom Bamboo Pen and Touch CTH-460
 - A4 Tech Co., G7 750 mouse
 - A4 Tech Co., Ltd Bloody TL80 Terminator Laser Gaming Mouse
 - A4 Tech Co., Ltd Bloody RT7 Terminator Wireless
+- A4 Tech Co., Ltd Bloody V8 mouse
 - Modecom MC-5006 Keyboard
 - A4 Tech Co., Ltd Terminator TL9 Laser Gaming Mouse
 - A4 Tech Co., Ltd Bloody V5
 - A4 Tech Co., Ltd Bloody R3 mouse
 - A4 Tech Co., Ltd X-718BK Oscar Optical Gaming Mouse
-- A4 Tech Co., Ltd XL-750BK Laser Mouse
 - A4 Tech Co., Sharkoon Fireglider Optical
+- A4 Tech Co., Ltd XL-730K / XL-750BK / XL-755BK Laser Mouse
+- A4 Tech Co., Ltd X7 G800V keyboard
+- A4 Tech Co., Ltd Bloody B540 keyboard
+- A4 Tech Co., Ltd Bloody V2 mouse
 - Cooler Master Storm Mizar Mouse
 
   Workaround to have them properly detected as mouse/keyboards and not
   joysticks. This prevents the "ghost" keypresses in Steam Big Picture mode.
+
+Steam Controller
+================
+
+To use the Steam Controller as a normal gamepad you require the Steam client to
+be running and the user requiring Gamepad emulation needs to be in the 'input'
+group.
+
+Regular firmware updates will go through regular USB hid reports and can be
+performed wired or wirelessly. Valve will also sometimes be releasing infrequent
+bootloader firmware updates; these updates are different and can only work when
+wired.
+
+When Steam asks you to plug in the controller to start the update, the
+controller will change from a HID device to a mass storage device with an
+identifier of 'CRP DISABLED'. Steam will then wait for that device to become
+mounted somewhere so that it can copy the firmware file into the controller.
+If you don't auto-mount mass storage devices by default, you need to mount it
+manually when the Steam client is waiting for the volume to get mounted.
