@@ -1,7 +1,147 @@
-Big Picture Mode
+Moving the Steam client installation
+====================================
+
+I often poke around with the client, check folder sizes in my home folder, etc.
+Running a du -hs * in my home folder to check how much space my Pictures or
+Music folder take it’s very fast. But since the Steam client is installed in a
+hidden subdirectory it’s not really clear how much space it does take,
+especially when it reached nearly 70% of my whole drive.
+
+To move the Steam installation (for example in your home folder), simply issue
+the following command:
+
+ $ mv ~/.local/share/Steam ~/Steam
+
+And launch the client again, it will adjust all the symlinks for folders, saves,
+etc. by itself. Even the desktop / system shortcuts for the games work because
+they launch Steam (which is in the path) with the appropriate Steam game ID.
+
+In-Home Streaming (hardware decoding)
+=====================================
+
+In-Home Streaming hardware decoding is exposed through different backends,
+depending on the hardware you are running. These are detected at runtime, and
+are all 32 bit libraries also on 64 bit systems, as the client is 32 bit only.
+
+- Intel (intel): VA-API
+- AMD Radeon (radeon): VDPAU
+- Nvidia (nouveau/nvidia): VDPAU
+
+In-Home streaming configuration
+===============================
+
+Valve has supported In-Home streaming (both as a server and as a client) in
+Linux for quite some time. According to the documentation, streaming uses UDP
+ports 27031 and 27036 and TCP ports 27036 and 27037.
+
+The package includes the required service definitions for FirewallD. If you have
+installed a default desktop, FirewallD should be your firewall solution. To make
+sure that Steam can listen on the required ports through your firewall software,
+execute the following commands as root.
+
+You should then be able to see the word “steam” by running:
+
+ # firewall-cmd --get-services | grep steam
+
+Then get the firewall zone you are in, and enable the service for it. For
+example, on my system, to get the firewall zone I’m using:
+
+ # firewall-cmd --get-active-zones 
+ public
+   interfaces: em1
+
+Then enable it permanently (i.e. at reboot) and immediately with these commands:
+
+ # firewall-cmd --zone=public --add-service=steam --permanent
+ # firewall-cmd --zone=public --add-service=steam
+
+Now start up two Steam clients with your user on the same network, and you
+should see games installed on both systems as available for playing in both
+Steam clients.
+
+Joysticks, keyboards and game pads
+==================================
+
+The package contains the UDEV rules for the following devices:
+
+- Steam Controller with USB adapter
+- HTC Vive HID Sensor with USB adapter
+
+  Support for the devices, rules originally shipped with Steam.
+
+- Nvidia Shield Controller (workaround for Mouse detection)
+
+  Workaround to have it properly detected as a game pad and not a mouse.
+
+- Microsoft Microsoft Wireless Optical Desktop® 2.10
+- Microsoft Wireless Desktop - Comfort Edition
+- Microsoft Microsoft® Digital Media Pro Keyboard
+- Microsoft Corp. Digital Media Pro Keyboard
+- Microsoft Microsoft® Digital Media Keyboard
+- Microsoft Corp. Digital Media Keyboard 1.0A
+- Microsoft Microsoft® Digital Media Keyboard 3000
+- Microsoft Microsoft® 2.4GHz Transceiver v6.0
+- Microsoft Microsoft® 2.4GHz Transceiver v8.0
+- Microsoft Corp. Nano Transceiver v1.0 for Bluetooth
+- Microsoft Wireless Mobile Mouse 1000
+- Microsoft Wireless Desktop 3000
+- Microsoft® SideWinder(TM) 2.4GHz Transceiver
+- Microsoft Corp. Wired Keyboard 600
+- Microsoft Corp. Sidewinder X4 keyboard
+- Microsoft Corp. Arc Touch Mouse Transceiver
+- Microsoft® 2.4GHz Transceiver v9.0
+- Microsoft® Nano Transceiver v2.1
+- Microsoft Sculpt Ergonomic Keyboard (5KV-00001)
+- Microsoft® Nano Transceiver v1.0
+- Microsoft Wireless Keyboard 800
+- Microsoft® Nano Transceiver v2.0
+- Wacom ET-0405 Graphire
+- Wacom ET-0405A Graphire2 (4x5)
+- Wacom ET-0507A Graphire2 (5x7)
+- Wacom CTE-430 Graphire3 (4x5)
+- Wacom CTE-630 Graphire3 (6x8)
+- Wacom CTE-440 Graphire4 (4x5)
+- Wacom CTE-640 Graphire4 (6x8)
+- Wacom CTE-450 Bamboo Fun (4x5)
+- Wacom CTE-640 Graphire 4 6x8
+- Wacom CTE-450 Bamboo Fun 4x5
+- Wacom CTE-650 Bamboo Fun 6x8
+- Wacom CTE-631 Bamboo One
+- Wacom Bamboo Pen and Touch CTH-460
+- A4 Tech Co., G7 750 mouse
+- A4 Tech Co., Ltd Bloody TL80 Terminator Laser Gaming Mouse
+- A4 Tech Co., Ltd Bloody RT7 Terminator Wireless
+- A4 Tech Co., Ltd Bloody V8 mouse
+- Modecom MC-5006 Keyboard
+- A4 Tech Co., Ltd Terminator TL9 Laser Gaming Mouse
+- A4 Tech Co., Ltd Bloody V5
+- A4 Tech Co., Ltd Bloody R3 mouse
+- A4 Tech Co., Ltd X-718BK Oscar Optical Gaming Mouse
+- A4 Tech Co., Sharkoon Fireglider Optical
+- A4 Tech Co., Ltd XL-730K / XL-750BK / XL-755BK Laser Mouse
+- A4 Tech Co., Ltd X7 G800V keyboard
+- A4 Tech Co., Ltd Bloody B540 keyboard
+- A4 Tech Co., Ltd Bloody V2 mouse
+- Cooler Master Storm Mizar Mouse
+
+  Workaround to have them properly detected as mouse/keyboards and not
+  joysticks. This prevents the "ghost" keypresses in Steam Big Picture mode.
+
+Steam Controller
 ================
 
-To make "Big Picture" work in Fedora or Redhat, enable this SELinux boolean:
+To use the Steam Controller as a normal gamepad you require the Steam client to
+be running and the user requiring Gamepad emulation needs to be in the 'input'
+group.
 
- # setsebool -P allow_execheap 1
+Regular firmware updates will go through regular USB hid reports and can be
+performed wired or wirelessly. Valve will also sometimes be releasing infrequent
+bootloader firmware updates; these updates are different and can only work when
+wired.
 
+When Steam asks you to plug in the controller to start the update, the
+controller will change from a HID device to a mass storage device with an
+identifier of 'CRP DISABLED'. Steam will then wait for that device to become
+mounted somewhere so that it can copy the firmware file into the controller.
+If you don't auto-mount mass storage devices by default, you need to mount it
+manually when the Steam client is waiting for the volume to get mounted.

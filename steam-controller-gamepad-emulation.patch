@@ -1,0 +1,12 @@
+diff -Naur steam.old/lib/udev/rules.d/99-steam-controller-perms.rules steam/lib/udev/rules.d/99-steam-controller-perms.rules
+--- steam.old/lib/udev/rules.d/99-steam-controller-perms.rules	2016-08-13 14:13:05.108219818 +0200
++++ steam/lib/udev/rules.d/99-steam-controller-perms.rules	2016-08-13 14:24:42.230701531 +0200
+@@ -2,5 +2,6 @@
+ SUBSYSTEM=="usb", ATTRS{idVendor}=="28de", MODE="0666"
+ # Steam Controller udev write access
+ KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess"
+-# HTC Vive HID Sensor naming and permissioning
+-
++# This rule is necessary for gamepad emulation; make sure each user requiring
++# it is part of the input group.
++KERNEL=="uinput", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"
