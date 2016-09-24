@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>steam.desktop</id>
+  <name>Steam</name>
+  <summary>Installer for the Steam client</summary>
+  <description>
+    <p>
+      Steam is a digital distribution platform developed by Valve Corporation offering digital rights management (DRM), multiplayer gaming and social networking services. Steam provides the user with installation and automatic updating of games on multiple computers, and community features such as friends lists and groups, cloud saving, and in-game voice and chat functionality.
+    </p>
+    <p>The software provides a freely available application programming interface (API) called Steamworks, which developers can use to integrate many of Steam's functions into their products, including networking, matchmaking, in-game achievements, micro-transactions, and support for user-created content through Steam Workshop.
+    </p>
+  </description>
+  <translation/>
+  <url type="homepage">http://http://store.steampowered.com/</url>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary:Steam</project_license>
+  <developer_name>Valve Corporation</developer_name>
+  <keywords>
+    <keyword>Gaming</keyword>
+    <keyword>Valve</keyword>
+    <keyword>Streaming</keyword>
+  </keywords>
+  <update_contact>negativo17@gmail.com</update_contact>
+  <screenshots>
+    <screenshot type="default">
+      <caption>The main Steam library window</caption>
+      <image type="source" width="1280" height="720">http://negativo17.org/appstream/steam-0.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Steam Store interface</caption>
+      <image type="source" width="1280" height="720">http://negativo17.org/appstream/steam-1.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Steam community</caption>
+      <image type="source" width="1280" height="720">http://negativo17.org/appstream/steam-2.png</image>
+    </screenshot>
+  </screenshots>
+</component>

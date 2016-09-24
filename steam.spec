@@ -6,7 +6,7 @@
 
 Name:           steam
 Version:        1.0.0.52
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -15,6 +15,7 @@ ExclusiveArch:  i686
 
 Source0:        http://repo.steampowered.com/steam/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
 Source3:        %{name}.xml
+Source4:        %{name}.appdata.xml
 
 # Workaround for input devices seen as joysticks (linux kernel bug) and
 # viceversa for the Steam controller:
@@ -121,13 +122,23 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 install -D -m 644 -p %{SOURCE3} \
     %{buildroot}%{_prefix}/lib/firewalld/services/steam.xml
 
+%if 0%{?fedora} >= 25
+# Install AppData
+mkdir -p %{buildroot}%{_datadir}/appdata
+install -p -m 0644 %{SOURCE4} %{buildroot}%{_datadir}/appdata/
+%endif
+
 %post
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-%{_bindir}/update-desktop-database &> /dev/null || :
+%if 0%{?fedora} == 24 || 0%{?fedora} == 23 || 0%{?rhel} == 7
+/usr/bin/update-desktop-database &> /dev/null || :
+%endif
 %firewalld_reload
 
 %postun
-%{_bindir}/update-desktop-database &> /dev/null || :
+%if 0%{?fedora} == 24 || 0%{?fedora} == 23 || 0%{?rhel} == 7
+/usr/bin/update-desktop-database &> /dev/null || :
+%endif
 if [ $1 -eq 0 ] ; then
     /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
@@ -141,6 +152,9 @@ fi
 %license COPYING steam_install_agreement.txt
 %doc README debian/changelog README.Fedora
 %{_bindir}/%{name}
+%if 0%{?fedora} >= 25
+%{_datadir}/appdata/%{name}.appdata.xml
+%endif
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 %{_datadir}/pixmaps/%{name}.png
@@ -151,6 +165,10 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Sat Sep 24 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.52-3
+- Do not run update-desktop-database on Fedora 25+.
+- Add AppStream metadata.
+
 * Sat Aug 13 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.52-2
 - Make Steam Controller usable as a gamepad (#4062).
 - Update UDev rule for keyboards detected as joysticks.
