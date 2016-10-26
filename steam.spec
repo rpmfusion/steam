@@ -5,8 +5,8 @@
 %{!?firewalld_reload:%global firewalld_reload test -f /usr/bin/firewall-cmd && firewall-cmd --reload --quiet || :}
 
 Name:           steam
-Version:        1.0.0.52
-Release:        3%{?dist}
+Version:        1.0.0.53
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -22,6 +22,9 @@ Source4:        %{name}.appdata.xml
 # https://github.com/ValveSoftware/steam-for-linux/issues/3384
 # https://bugzilla.kernel.org/show_bug.cgi?id=28912
 # https://github.com/denilsonsa/udev-joystick-blacklist
+#
+# Microsoft patch accepted upstream, remove Microsoft entries when kernel
+# is at 4.9: https://bugzilla.redhat.com/show_bug.cgi?id=1325354#c14
 Source8:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-blacklist/master/51-these-are-not-joysticks-rm.rules
 Source9:        https://raw.githubusercontent.com/cyndis/shield-controller-config/master/99-shield-controller.rules
 
@@ -165,6 +168,10 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Wed Oct 26 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.53-1
+- Update to 1.0.0.53.
+- Update udev rules.
+
 * Sat Sep 24 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.52-3
 - Do not run update-desktop-database on Fedora 25+.
 - Add AppStream metadata.
