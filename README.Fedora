@@ -123,6 +123,7 @@ The package contains the UDEV rules for the following devices:
 - A4 Tech Co., Ltd Bloody B540 keyboard
 - A4 Tech Co., Ltd Bloody V2 mouse
 - Cooler Master Storm Mizar Mouse
+- Cooler Master Storm Alcor Mouse
 
   Workaround to have them properly detected as mouse/keyboards and not
   joysticks. This prevents the "ghost" keypresses in Steam Big Picture mode.
