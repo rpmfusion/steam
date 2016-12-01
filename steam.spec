@@ -5,7 +5,7 @@
 %{!?firewalld_reload:%global firewalld_reload test -f /usr/bin/firewall-cmd && firewall-cmd --reload --quiet || :}
 
 Name:           steam
-Version:        1.0.0.53
+Version:        1.0.0.54
 Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
@@ -168,6 +168,10 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Thu Dec 01 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-1
+- Update to 1.0.0.54.
+- Update udev patch.
+
 * Wed Oct 26 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.53-1
 - Update to 1.0.0.53.
 - Update udev rules.
