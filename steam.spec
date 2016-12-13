@@ -6,7 +6,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -42,6 +42,9 @@ Patch1:         %{name}-3273.patch
 # Make Steam Controller usable as a GamePad:
 # https://steamcommunity.com/app/353370/discussions/0/490123197956024380/
 Patch2:         %{name}-controller-gamepad-emulation.patch
+
+# Make "X" window button close the program instead of minimizing like "_"
+Patch3:         %{name}-3210.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
@@ -102,6 +105,8 @@ savegame and screenshot functionality, and many social features.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
+
 sed -i 's/\r$//' %{name}.desktop
 sed -i 's/\r$//' steam_install_agreement.txt
 
@@ -168,6 +173,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Tue Dec 13 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-2
+- Re-add close functionality to X window button (#3210).
+
 * Thu Dec 01 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-1
 - Update to 1.0.0.54.
 - Update udev patch.
