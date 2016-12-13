@@ -1,0 +1,13 @@
+diff -Naur steam.old/steam steam/steam
+--- steam.old/steam	2016-12-13 12:17:21.901160561 +0100
++++ steam/steam	2016-12-13 12:18:17.278250620 +0100
+@@ -17,6 +17,9 @@
+ # Set up domain for script localization
+ export TEXTDOMAIN=steam
+ 
++# Make "X" window button close the program instead of minimizing like "_"
++export STEAM_FRAME_FORCE_CLOSE=1
++
+ function show_message()
+ {
+ 	style=$1
