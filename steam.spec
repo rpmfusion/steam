@@ -6,7 +6,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -173,6 +173,10 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Sun Jan 08 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-3
+- Microsoft keyboards have been fixed in kernel 4.9 and backported to other
+  kernels.
+
 * Tue Dec 13 2016 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-2
 - Re-add close functionality to X window button (#3210).
 

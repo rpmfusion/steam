@@ -73,28 +73,6 @@ The package contains the UDEV rules for the following devices:
 
   Workaround to have it properly detected as a game pad and not a mouse.
 
-- Microsoft Microsoft Wireless Optical Desktop® 2.10
-- Microsoft Wireless Desktop - Comfort Edition
-- Microsoft Microsoft® Digital Media Pro Keyboard
-- Microsoft Corp. Digital Media Pro Keyboard
-- Microsoft Microsoft® Digital Media Keyboard
-- Microsoft Corp. Digital Media Keyboard 1.0A
-- Microsoft Microsoft® Digital Media Keyboard 3000
-- Microsoft Microsoft® 2.4GHz Transceiver v6.0
-- Microsoft Microsoft® 2.4GHz Transceiver v8.0
-- Microsoft Corp. Nano Transceiver v1.0 for Bluetooth
-- Microsoft Wireless Mobile Mouse 1000
-- Microsoft Wireless Desktop 3000
-- Microsoft® SideWinder(TM) 2.4GHz Transceiver
-- Microsoft Corp. Wired Keyboard 600
-- Microsoft Corp. Sidewinder X4 keyboard
-- Microsoft Corp. Arc Touch Mouse Transceiver
-- Microsoft® 2.4GHz Transceiver v9.0
-- Microsoft® Nano Transceiver v2.1
-- Microsoft Sculpt Ergonomic Keyboard (5KV-00001)
-- Microsoft® Nano Transceiver v1.0
-- Microsoft Wireless Keyboard 800
-- Microsoft® Nano Transceiver v2.0
 - Wacom ET-0405 Graphire
 - Wacom ET-0405A Graphire2 (4x5)
 - Wacom ET-0507A Graphire2 (5x7)
@@ -122,8 +100,11 @@ The package contains the UDEV rules for the following devices:
 - A4 Tech Co., Ltd X7 G800V keyboard
 - A4 Tech Co., Ltd Bloody B540 keyboard
 - A4 Tech Co., Ltd Bloody V2 mouse
+- A4 Tech Co., Ltd Bloody B120 Keyboard
+- Roccat Tyon Mouse
 - Cooler Master Storm Mizar Mouse
 - Cooler Master Storm Alcor Mouse
+- Winkeyless.kr Keyboards
 
   Workaround to have them properly detected as mouse/keyboards and not
   joysticks. This prevents the "ghost" keypresses in Steam Big Picture mode.
