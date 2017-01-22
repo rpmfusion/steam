@@ -1,0 +1,45 @@
+diff -Naur steam.old/steam steam/steam
+--- steam.old/steam	2016-12-13 12:22:54.116699983 +0100
++++ steam/steam	2016-12-13 12:23:02.042856003 +0100
+@@ -189,6 +189,33 @@
+ # go to the install directory and run the client
+ cp "$LAUNCHSTEAMBOOTSTRAPFILE" "$LAUNCHSTEAMDIR/bootstrap.tar.xz"
+ cd "$LAUNCHSTEAMDIR"
++
++if [ "$STEAM_RUNTIME" == "0" ]; then
++
++    if [ ! -h $LAUNCHSTEAMPLATFORM/libudev.so.0 ] || [ ! -h $LAUNCHSTEAMPLATFORM/libbz2.so.1.0 ]; then
++        ln -sf /usr/lib/libudev.so.1 $LAUNCHSTEAMPLATFORM/libudev.so.0
++        ln -sf /usr/lib/libbz2.so.1 $LAUNCHSTEAMPLATFORM/libbz2.so.1.0
++    fi
++
++    rm -fr $LAUNCHSTEAMPLATFORM/steam-runtime
++
++    # Workaround for bug 3697: https://github.com/ValveSoftware/steam-for-linux/issues/3697
++    LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}"
++
++else
++
++    if [ -h $LAUNCHSTEAMPLATFORM/libudev.so.0 ] || [ ! -h $LAUNCHSTEAMPLATFORM/libbz2.so.1.0 ]; then
++        rm -f $LAUNCHSTEAMPLATFORM/libudev.so.0
++        rm -f $LAUNCHSTEAMPLATFORM/libbz2.so.1.0
++    fi  
++
++    # Workaround for bug 3273: https://github.com/ValveSoftware/steam-for-linux/issues/3273
++    rm -f $LAUNCHSTEAMPLATFORM/steam-runtime/i386/usr/lib/i386-linux-gnu/libstdc++.so.6*
++    rm -f $LAUNCHSTEAMPLATFORM/steam-runtime/amd64/usr/lib/x86_64-linux-gnu/libstdc++.so.6*
++
++fi
++
++
+ if [ "`command -v tee`" != "" ]; then
+ 	mkdir -p --mode=777 /tmp/dumps
+     if [[ -f "/tmp/dumps/${USER}_stdout.txt" ]]; then
+@@ -201,7 +228,3 @@
+ 
+ # Workaround for bug 3570: https://github.com/ValveSoftware/steam-for-linux/issues/3570
+ rm -f /tmp/steam_chrome_shmem
+-
+-# Workaround for bug 3273: https://github.com/ValveSoftware/steam-for-linux/issues/3273
+-rm -f $LAUNCHSTEAMPLATFORM/steam-runtime/i386/usr/lib/i386-linux-gnu/libstdc++.so.6*
+-rm -f $LAUNCHSTEAMPLATFORM/steam-runtime/amd64/usr/lib/x86_64-linux-gnu/libstdc++.so.6*
