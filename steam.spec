@@ -6,7 +6,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -14,6 +14,8 @@ URL:            http://www.steampowered.com/
 ExclusiveArch:  i686
 
 Source0:        http://repo.steampowered.com/steam/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
+Source1:        %{name}.sh
+Source2:        %{name}.csh
 Source3:        %{name}.xml
 Source4:        %{name}.appdata.xml
 
@@ -25,7 +27,7 @@ Source4:        %{name}.appdata.xml
 #
 # Microsoft patch accepted upstream, remove Microsoft entries when kernel
 # is at 4.9: https://bugzilla.redhat.com/show_bug.cgi?id=1325354#c14
-Source8:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-blacklist/master/51-these-are-not-joysticks-rm.rules
+Source8:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-blacklist/master/after_kernel_4_9/51-these-are-not-joysticks-rm.rules
 Source9:        https://raw.githubusercontent.com/cyndis/shield-controller-config/master/99-shield-controller.rules
 
 Source10:       README.Fedora
@@ -45,6 +47,12 @@ Patch2:         %{name}-controller-gamepad-emulation.patch
 
 # Make "X" window button close the program instead of minimizing like "_"
 Patch3:         %{name}-3210.patch
+
+# Do not remove libstdc++ from runtime on systems where mesa is compiled with
+# a statically linked libstdc++ (Fedora 22+) and enable option to run without
+# Ubuntu runtime:
+# https://github.com/ValveSoftware/steam-for-linux/issues/3697
+Patch4:         %{name}-disable-runtime.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
@@ -100,12 +108,211 @@ Steam is a software distribution service with an online store, automated
 installation, automatic updates, achievements, SteamCloud synchronized
 savegame and screenshot functionality, and many social features.
 
+%if !0%{?rhel}
+%package        noruntime
+Summary:        Use system libraries instead of the Steam Runtime
+Requires:       steam = %{version}-%{release}
+Buildarch:      noarch
+
+# After the Steam client has been downloaded once, run the following command and
+# then adjust the list of requirements to remove dependencies pulled in by other
+# packages.
+
+# cd ~/.local/share/Steam/ubuntu12_32/
+# for i in `ldd *.so | egrep -v "linux-gate.so|ld-linux.so" | awk '{print $1}'` `find steam-runtime/i386 -name "*.so*" -exec basename {} \;`; do
+#   dnf repoquery -q --qf="Requires:       %{name}" --whatprovides "$i"
+# done | sort | uniq | sed 's/$/%{?_isa}/g'
+
+# Then remove compiz and emerald.
+
+Requires:       alsa-lib%{?_isa}
+Requires:       alsa-plugins-arcamav%{?_isa}
+Requires:       alsa-plugins-jack%{?_isa}
+Requires:       alsa-plugins-oss%{?_isa}
+Requires:       alsa-plugins-pulseaudio%{?_isa}
+Requires:       alsa-plugins-samplerate%{?_isa}
+Requires:       alsa-plugins-speex%{?_isa}
+Requires:       alsa-plugins-upmix%{?_isa}
+Requires:       alsa-plugins-usbstream%{?_isa}
+Requires:       alsa-plugins-vdownmix%{?_isa}
+Requires:       atk%{?_isa}
+Requires:       avahi-libs%{?_isa}
+Requires:       bzip2-libs%{?_isa}
+Requires:       cairo%{?_isa}
+Requires:       compat-libgcrypt%{?_isa}
+Requires:       cups-libs%{?_isa}
+Requires:       dbus-glib%{?_isa}
+Requires:       dbus-libs%{?_isa}
+Requires:       dconf%{?_isa}
+Requires:       elfutils-libelf%{?_isa}
+Requires:       elfutils-libs%{?_isa}
+Requires:       expat%{?_isa}
+Requires:       ffmpeg-libs%{?_isa}
+Requires:       flac-libs%{?_isa}
+Requires:       fontconfig%{?_isa}
+Requires:       freeglut%{?_isa}
+Requires:       freetype%{?_isa}
+Requires:       GConf2%{?_isa}
+Requires:       gdk-pixbuf2%{?_isa}
+Requires:       glib2%{?_isa}
+Requires:       glibc%{?_isa}
+Requires:       gmp%{?_isa}
+Requires:       gnutls%{?_isa}
+Requires:       graphite2%{?_isa}
+Requires:       gsm%{?_isa}
+Requires:       gstreamer%{?_isa}
+Requires:       gstreamer1%{?_isa}
+Requires:       gstreamer-devel%{?_isa}
+Requires:       gstreamer-plugins-base%{?_isa}
+Requires:       gtk2%{?_isa}
+Requires:       gtk2-engines%{?_isa}
+Requires:       gtk3%{?_isa}
+Requires:       gtk-murrine-engine%{?_isa}
+Requires:       harfbuzz%{?_isa}
+Requires:       heimdal-libs%{?_isa}
+Requires:       jack-audio-connection-kit%{?_isa}
+Requires:       json-c%{?_isa}
+Requires:       keyutils-libs%{?_isa}
+Requires:       krb5-libs%{?_isa}
+Requires:       lcms2%{?_isa}
+Requires:       libacl%{?_isa}
+Requires:       libappindicator%{?_isa}
+Requires:       libasyncns%{?_isa}
+Requires:       libattr%{?_isa}
+Requires:       libcanberra%{?_isa}
+Requires:       libcanberra-gtk2%{?_isa}
+Requires:       libcap%{?_isa}
+Requires:       libcom_err%{?_isa}
+Requires:       libcurl%{?_isa}
+Requires:       libdbusmenu%{?_isa}
+Requires:       libdbusmenu-gtk2%{?_isa}
+Requires:       libdrm%{?_isa}
+Requires:       libexif%{?_isa}
+Requires:       libffi%{?_isa}
+Requires:       libgcc%{?_isa}
+Requires:       libgcrypt%{?_isa}
+Requires:       libGLEW%{?_isa}
+Requires:       libgomp%{?_isa}
+Requires:       libgpg-error%{?_isa}
+Requires:       libICE%{?_isa}
+Requires:       libidn%{?_isa}
+Requires:       libindicator%{?_isa}
+Requires:       libjpeg-turbo%{?_isa}
+Requires:       libnotify%{?_isa}
+Requires:       libogg%{?_isa}
+Requires:       libpng%{?_isa}
+Requires:       libpng12%{?_isa}
+Requires:       libsamplerate%{?_isa}
+Requires:       libselinux%{?_isa}
+Requires:       libSM%{?_isa}
+Requires:       libsndfile%{?_isa}
+Requires:       libstdc++%{?_isa}
+Requires:       libtasn1%{?_isa}
+Requires:       libtdb%{?_isa}
+Requires:       libtheora%{?_isa}
+Requires:       libtool-ltdl%{?_isa}
+Requires:       libusbx%{?_isa}
+Requires:       libuuid%{?_isa}
+Requires:       libva%{?_isa}
+Requires:       libvdpau%{?_isa}
+Requires:       libvorbis%{?_isa}
+Requires:       libvpx%{?_isa}
+Requires:       libwayland-client%{?_isa}
+Requires:       libwayland-server%{?_isa}
+Requires:       libX11%{?_isa}
+Requires:       libXau%{?_isa}
+Requires:       libXaw%{?_isa}
+Requires:       libxcb%{?_isa}
+Requires:       libXcomposite%{?_isa}
+Requires:       libXcursor%{?_isa}
+Requires:       libXdamage%{?_isa}
+Requires:       libXdmcp%{?_isa}
+Requires:       libXext%{?_isa}
+Requires:       libXfixes%{?_isa}
+Requires:       libXft%{?_isa}
+Requires:       libXi%{?_isa}
+Requires:       libXinerama%{?_isa}
+Requires:       libxml2%{?_isa}
+Requires:       libXmu%{?_isa}
+Requires:       libXpm%{?_isa}
+Requires:       libXrandr%{?_isa}
+Requires:       libXrender%{?_isa}
+Requires:       libXScrnSaver%{?_isa}
+Requires:       libxshmfence%{?_isa}
+Requires:       libXt%{?_isa}
+Requires:       libXtst%{?_isa}
+Requires:       libXxf86vm%{?_isa}
+Requires:       mesa-libEGL%{?_isa}
+Requires:       mesa-libgbm%{?_isa}
+Requires:       mesa-libGL%{?_isa}
+Requires:       mesa-libglapi%{?_isa}
+Requires:       mesa-libGLU%{?_isa}
+Requires:       ncurses-libs%{?_isa}
+Requires:       nettle%{?_isa}
+Requires:       NetworkManager-glib%{?_isa}
+Requires:       nspr%{?_isa}
+Requires:       nss%{?_isa}
+Requires:       nss-softokn%{?_isa}
+Requires:       nss-softokn-freebl%{?_isa}
+Requires:       nss-util%{?_isa}
+Requires:       openal-soft%{?_isa}
+Requires:       openldap%{?_isa}
+Requires:       openssl-libs%{?_isa}
+Requires:       orc%{?_isa}
+Requires:       p11-kit%{?_isa}
+Requires:       pango%{?_isa}
+Requires:       pangox-compat%{?_isa}
+Requires:       pciutils-libs%{?_isa}
+Requires:       pcre%{?_isa}
+Requires:       pixman%{?_isa}
+Requires:       pulseaudio-libs%{?_isa}
+Requires:       SDL%{?_isa}
+Requires:       SDL2%{?_isa}
+Requires:       SDL2_image%{?_isa}
+Requires:       SDL2_mixer%{?_isa}
+Requires:       SDL2_net%{?_isa}
+Requires:       SDL2_ttf%{?_isa}
+Requires:       SDL_image%{?_isa}
+Requires:       SDL_mixer%{?_isa}
+Requires:       SDL_ttf%{?_isa}
+Requires:       speex%{?_isa}
+Requires:       speexdsp%{?_isa}
+Requires:       sqlite%{?_isa}
+Requires:       systemd-libs%{?_isa}
+Requires:       tbb%{?_isa}
+Requires:       tcp_wrappers-libs%{?_isa}
+Requires:       xz-libs%{?_isa}
+Requires:       zlib%{?_isa}
+
+%if 0%{?fedora} >= 23
+Requires:       libgudev%{?_isa}
+Requires:       trousers-lib%{?_isa}
+%else
+Requires:       libgudev1%{?_isa}
+Requires:       trousers%{?_isa}
+%endif
+
+%description    noruntime
+The Steam client normally uses a set of libraries derived from Ubuntu (the Steam
+Runtime); and all titles on Steam are compiled against those libraries.
+
+This package takes care of installing all the requirements to use system
+libraries in place of the Steam Runtime and a profile environment file to enable
+it. Please note that this is not a supported Valve configuration and it may lead
+to unexpected results.
+%endif
+
 %prep
 %setup -q -n %{name}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+
+%if !0%{?rhel}
+# Steam no-runtime package
+%patch4 -p1
+%endif
 
 sed -i 's/\r$//' %{name}.desktop
 sed -i 's/\r$//' steam_install_agreement.txt
@@ -129,6 +336,12 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
 install -D -m 644 -p %{SOURCE3} \
     %{buildroot}%{_prefix}/lib/firewalld/services/steam.xml
+
+%if !0%{?rhel}
+# Steam no-runtime package
+mkdir -p %{buildroot}%{_sysconfdir}/profile.d
+install -pm 644 %{SOURCE1} %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d
+%endif
 
 %if 0%{?fedora} >= 25
 # Install AppData
@@ -172,7 +385,17 @@ fi
 %{_prefix}/lib/firewalld/services/%{name}.xml
 %{_udevrulesdir}/*
 
+%if !0%{?rhel}
+%files noruntime
+%config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
+%endif
+
 %changelog
+* Sun Jan 22 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-4
+- Fix Source URL for post kernel 4.9 udev rules.
+- Reintroduce optional and not endorsed by Valve noruntime subpackage for using
+  all system libraries in place of all the Ubuntu runtime ones.
+
 * Sun Jan 08 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-3
 - Microsoft keyboards have been fixed in kernel 4.9 and backported to other
   kernels.
