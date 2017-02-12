@@ -6,28 +6,27 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
 URL:            http://www.steampowered.com/
 ExclusiveArch:  i686
 
-Source0:        http://repo.steampowered.com/steam/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
+Source0:        http://repo.steampowered.com/%{name}/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
 Source1:        %{name}.sh
 Source2:        %{name}.csh
 Source3:        %{name}.xml
 Source4:        %{name}.appdata.xml
 
-# Workaround for input devices seen as joysticks (linux kernel bug) and
-# viceversa for the Steam controller:
+# Ghost touches in Big Picture mode:
 # https://github.com/ValveSoftware/steam-for-linux/issues/3384
 # https://bugzilla.kernel.org/show_bug.cgi?id=28912
 # https://github.com/denilsonsa/udev-joystick-blacklist
-#
-# Microsoft patch accepted upstream, remove Microsoft entries when kernel
-# is at 4.9: https://bugzilla.redhat.com/show_bug.cgi?id=1325354#c14
+
+# Input devices seen as joysticks:
 Source8:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-blacklist/master/after_kernel_4_9/51-these-are-not-joysticks-rm.rules
+# First generation Nvidia Shield controller seen as mouse:
 Source9:        https://raw.githubusercontent.com/cyndis/shield-controller-config/master/99-shield-controller.rules
 
 Source10:       README.Fedora
@@ -36,14 +35,9 @@ Source10:       README.Fedora
 # https://github.com/ValveSoftware/steam-for-linux/issues/3570
 Patch0:         %{name}-3570.patch
 
-# Remove libstdc++ from runtime on systems where mesa is compiled normally
-# (RHEL 7). Fixes crash:
-# https://github.com/ValveSoftware/steam-for-linux/issues/3273
-Patch1:         %{name}-3273.patch
-
 # Make Steam Controller usable as a GamePad:
 # https://steamcommunity.com/app/353370/discussions/0/490123197956024380/
-Patch2:         %{name}-controller-gamepad-emulation.patch
+Patch1:         %{name}-controller-gamepad-emulation.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
@@ -112,7 +106,6 @@ and screenshot functionality, and many social features.
 %setup -q -n %{name}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 sed -i 's/\r$//' %{name}.desktop
 sed -i 's/\r$//' steam_install_agreement.txt
@@ -185,6 +178,11 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Sun Feb 12 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-6
+- Remove libstdc++ patch.
+- Update udev rules.
+- Update docs for hardware encoding/decoding information.
+
 * Fri Feb 10 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-5
 - Remove noruntime subpackage, use default new mechanism that uses host
   libraries as per client update of 19th January (5th January for beta):
