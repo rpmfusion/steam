@@ -6,7 +6,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -178,6 +178,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Sun Mar 26 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 1.0.0.54-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
 * Sun Feb 12 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-6
 - Remove libstdc++ patch.
 - Update udev rules.
