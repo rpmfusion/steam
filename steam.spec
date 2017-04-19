@@ -6,7 +6,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -87,11 +87,8 @@ Requires:       libva-intel-driver%{?_isa}
 # Required for hardware decoding during In-Home Streaming (radeon/nouveau)
 Requires:       libvdpau%{?_isa}
 
-%if 0%{?fedora}
-# Required for having a functioning menu on the tray icon on Fedora
-# https://github.com/ValveSoftware/steam-for-linux/issues/4795
-Requires:       libdbusmenu-gtk3%{?_isa}
-%endif
+# Required for having a functioning menu on the tray icon
+Requires:       libdbusmenu-gtk2%{?_isa} >= 16.04.0
 
 Provides:       steam-noruntime = %{?epoch:%{epoch}:}%{version}-%{release}
 Obsoletes:      steam-noruntime < %{?epoch:%{epoch}:}%{version}-%{release}
@@ -178,6 +175,10 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Wed Apr 19 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-9
+- GTK 2 version of libdbusmenu at version 16.04.0 is required for a working tray
+  menu.
+
 * Mon Apr 10 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-8
 - Update udev rules.
 
