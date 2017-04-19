@@ -89,6 +89,7 @@ Requires:       libvdpau%{?_isa}
 
 # Required for having a functioning menu on the tray icon
 Requires:       libdbusmenu-gtk2%{?_isa} >= 16.04.0
+Requires:       libdbusmenu-gtk3%{?_isa} >= 16.04.0
 
 Provides:       steam-noruntime = %{?epoch:%{epoch}:}%{version}-%{release}
 Obsoletes:      steam-noruntime < %{?epoch:%{epoch}:}%{version}-%{release}
@@ -176,8 +177,8 @@ fi
 
 %changelog
 * Wed Apr 19 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-9
-- GTK 2 version of libdbusmenu at version 16.04.0 is required for a working tray
-  menu.
+- GTK 2/3 version of libdbusmenu at version 16.04.0 is required for a working
+  tray menu depending on the desktop.
 
 * Mon Apr 10 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-8
 - Update udev rules.
