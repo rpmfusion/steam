@@ -6,7 +6,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -90,6 +90,12 @@ Requires:       libvdpau%{?_isa}
 # Required for having a functioning menu on the tray icon
 Requires:       libdbusmenu-gtk2%{?_isa} >= 16.04.0
 Requires:       libdbusmenu-gtk3%{?_isa} >= 16.04.0
+
+# Required by Feral interactive games
+Requires:       libatomic%{?_isa}
+
+# Required by Shank
+Requires:       alsa-plugins-pulseaudio%{?_isa}
 
 Provides:       steam-noruntime = %{?epoch:%{epoch}:}%{version}-%{release}
 Obsoletes:      steam-noruntime < %{?epoch:%{epoch}:}%{version}-%{release}
@@ -176,6 +182,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Thu Jun 08 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-10
+- Require alsa-plugins-pulseaudio and libatomic.
+
 * Wed Apr 19 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-9
 - GTK 2/3 version of libdbusmenu at version 16.04.0 is required for a working
   tray menu depending on the desktop.
