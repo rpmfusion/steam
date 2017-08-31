@@ -6,7 +6,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -182,6 +182,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Thu Aug 31 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 1.0.0.54-11
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Thu Jun 08 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-10
 - Require alsa-plugins-pulseaudio and libatomic.
 
