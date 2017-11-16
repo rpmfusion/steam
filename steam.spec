@@ -6,7 +6,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -46,7 +46,7 @@ BuildRequires:  systemd
 Requires:       tar
 Requires:       zenity
 
-%if 0%{?fedora} == 25 || 0%{?fedora} == 26 || 0%{?fedora} == 27 || 0%{?rhel} == 7
+%if 0%{?fedora} == 25 || 0%{?rhel} == 7
 # Required for S3 compressed textures on free drivers (intel/radeon/nouveau)
 Requires:       libtxc_dxtn%{?_isa}
 %endif
@@ -180,6 +180,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Thu Nov 16 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-13
+- Do not require libtxc_dxtn on Fedora 26+.
+
 * Thu Nov 16 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-12
 - Do not require libtxc_dxtn on Fedora 28+ (Mesa 17.3.0+).
 - Update udev rules.
