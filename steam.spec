@@ -6,7 +6,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -46,8 +46,10 @@ BuildRequires:  systemd
 Requires:       tar
 Requires:       zenity
 
+%if 0%{?fedora} == 25 || 0%{?fedora} == 26 || 0%{?fedora} == 27 || 0%{?rhel} == 7
 # Required for S3 compressed textures on free drivers (intel/radeon/nouveau)
 Requires:       libtxc_dxtn%{?_isa}
+%endif
 
 # Required for running the package on 32 bit systems with free drivers
 Requires:       mesa-dri-drivers%{?_isa}
@@ -138,21 +140,19 @@ install -D -m 644 -p %{SOURCE3} \
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -pm 644 %{SOURCE1} %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d
 
-%if 0%{?fedora} >= 25
 # Install AppData
 mkdir -p %{buildroot}%{_datadir}/appdata
 install -p -m 0644 %{SOURCE4} %{buildroot}%{_datadir}/appdata/
-%endif
 
 %post
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-%if 0%{?fedora} == 24 || 0%{?rhel} == 7
+%if 0%{?rhel} == 7
 /usr/bin/update-desktop-database &> /dev/null || :
 %endif
 %firewalld_reload
 
 %postun
-%if 0%{?fedora} == 24 || 0%{?rhel} == 7
+%if 0%{?rhel} == 7
 /usr/bin/update-desktop-database &> /dev/null || :
 %endif
 if [ $1 -eq 0 ] ; then
@@ -168,9 +168,7 @@ fi
 %license COPYING steam_install_agreement.txt
 %doc README debian/changelog README.Fedora
 %{_bindir}/%{name}
-%if 0%{?fedora} >= 25
 %{_datadir}/appdata/%{name}.appdata.xml
-%endif
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 %{_datadir}/pixmaps/%{name}.png
@@ -182,6 +180,10 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Thu Nov 16 2017 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-12
+- Do not require libtxc_dxtn on Fedora 28+ (Mesa 17.3.0+).
+- Update udev rules.
+
 * Thu Aug 31 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 1.0.0.54-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
 

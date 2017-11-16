@@ -94,6 +94,7 @@ The package contains the UDEV rules for the following devices:
 - Wacom CTE-650 Bamboo Fun 6x8
 - Wacom CTE-631 Bamboo One
 - Wacom Bamboo Pen and Touch CTH-460
+- Wacom Intuos Pen (S) CTL-480
 - A4 Tech Co., G7 750 mouse
 - A4 Tech Co., Ltd Bloody R8A Gaming Mouse
 - A4 Tech Co., Ltd Bloody TL80 Terminator Laser Gaming Mouse
@@ -108,6 +109,7 @@ The package contains the UDEV rules for the following devices:
 - A4 Tech Co., Ltd XL-730K / XL-750BK / XL-755BK Laser Mouse
 - A4 Tech Co., Ltd X7 G800V keyboard
 - A4 Tech Co., Ltd Bloody V7 mouse
+- A4 Tech Co., Ltd Bloody AL9 mouse
 - A4 Tech Co., Ltd Bloody B540 keyboard
 - A4 Tech Co., Ltd Bloody V2 mouse
 - A4 Tech Co., Ltd Bloody B120 Keyboard
