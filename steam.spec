@@ -84,7 +84,12 @@ Requires(post): firewalld-filesystem
 %endif
 
 # Required for hardware decoding during In-Home Streaming (intel)
+# Since libva-intel-driver on f28+ there is hw detection with appstream
+%if (0%{?fedora} && 0%{?fedora} < 28) || 0%{?rhel} == 7
 Requires:       libva-intel-driver%{?_isa}
+%else
+Requires:       libva%{?_isa}
+%endif
 
 # Required for hardware decoding during In-Home Streaming (radeon/nouveau)
 Requires:       libvdpau%{?_isa}
