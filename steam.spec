@@ -1,12 +1,9 @@
 # Binary package, no debuginfo should be generated
 %global debug_package %{nil}
 
-# If firewalld macro is not defined, define it here:
-%{!?firewalld_reload:%global firewalld_reload test -f /usr/bin/firewall-cmd && firewall-cmd --reload --quiet || :}
-
 Name:           steam
 Version:        1.0.0.54
-Release:        16%{?dist}
+Release:        17%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -79,13 +76,8 @@ Requires:       systemd-libs%{?_isa}
 
 # Required for the firewall rules
 # http://fedoraproject.org/wiki/PackagingDrafts/ScriptletSnippets/Firewalld
-%if 0%{?rhel}
-Requires:       firewalld
-Requires(post): firewalld
-%else
 Requires:       firewalld-filesystem
 Requires(post): firewalld-filesystem
-%endif
 
 # Required for hardware decoding during In-Home Streaming (intel)
 # Since libva-intel-driver on f28+ there is hw detection with appstream
@@ -153,6 +145,7 @@ install -p -m 0644 %{SOURCE4} %{buildroot}%{_datadir}/appdata/
 
 %post
 %if 0%{?rhel} == 7
+/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 /usr/bin/update-desktop-database &> /dev/null || :
 %endif
 %firewalld_reload
@@ -160,6 +153,14 @@ install -p -m 0644 %{SOURCE4} %{buildroot}%{_datadir}/appdata/
 %postun
 %if 0%{?rhel} == 7
 /usr/bin/update-desktop-database &> /dev/null || :
+
+if [ $1 -eq 0 ] ; then
+    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+fi
+
+%posttrans
+%{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 %files
@@ -178,6 +179,10 @@ install -p -m 0644 %{SOURCE4} %{buildroot}%{_datadir}/appdata/
 %{_udevrulesdir}/*
 
 %changelog
+* Tue Mar 27 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-17
+- Re-add icon cache scriptlets for EPEL, as it's still required.
+- Remove firewalld differences for EPEL.
+
 * Tue Mar 27 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-16
 - Restore libstdc++ patch.
 - Update udev rules.
