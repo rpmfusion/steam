@@ -6,7 +6,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        15%{?dist}
+Release:        16%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -35,9 +35,13 @@ Source10:       README.Fedora
 # https://github.com/ValveSoftware/steam-for-linux/issues/3570
 Patch0:         %{name}-3570.patch
 
+# Remove libstdc++ from runtime:
+# https://github.com/ValveSoftware/steam-for-linux/issues/3273
+Patch1:         %{name}-3273.patch
+
 # Make Steam Controller usable as a GamePad:
 # https://steamcommunity.com/app/353370/discussions/0/490123197956024380/
-Patch1:         %{name}-controller-gamepad-emulation.patch
+Patch2:         %{name}-controller-gamepad-emulation.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
@@ -114,9 +118,7 @@ installation, automatic updates, achievements, SteamCloud synchronized savegame
 and screenshot functionality, and many social features.
 
 %prep
-%setup -q -n %{name}
-%patch0 -p1
-%patch1 -p1
+%autosetup -p1 -n %{name}
 
 sed -i 's/\r$//' %{name}.desktop
 sed -i 's/\r$//' steam_install_agreement.txt
@@ -150,7 +152,6 @@ mkdir -p %{buildroot}%{_datadir}/appdata
 install -p -m 0644 %{SOURCE4} %{buildroot}%{_datadir}/appdata/
 
 %post
-/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 %if 0%{?rhel} == 7
 /usr/bin/update-desktop-database &> /dev/null || :
 %endif
@@ -160,16 +161,8 @@ install -p -m 0644 %{SOURCE4} %{buildroot}%{_datadir}/appdata/
 %if 0%{?rhel} == 7
 /usr/bin/update-desktop-database &> /dev/null || :
 %endif
-if [ $1 -eq 0 ] ; then
-    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-%posttrans
-%{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files
-%{!?_licensedir:%global license %%doc}
 %license COPYING steam_install_agreement.txt
 %doc README debian/changelog README.Fedora
 %{_bindir}/%{name}
@@ -185,6 +178,11 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Tue Mar 27 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-16
+- Restore libstdc++ patch.
+- Update udev rules.
+- Remove obsolete scriptlets.
+
 * Mon Mar 26 2018 Nicolas Chauvet <kwizart@gmail.com> - 1.0.0.54-15
 - Switch to libva with f28+
 
