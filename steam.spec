@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        17%{?dist}
+Release:        18%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -41,6 +41,7 @@ Patch1:         %{name}-3273.patch
 Patch2:         %{name}-controller-gamepad-emulation.patch
 
 BuildRequires:  desktop-file-utils
+BuildRequires:  firewalld-filesystem
 BuildRequires:  systemd
 
 # Required to run the initial setup
@@ -179,6 +180,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Tue Jul 24 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-18
+- Add firewalld-filesystem to BuildRequires to expand firewalld_reload macro.
+
 * Tue Mar 27 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-17
 - Re-add icon cache scriptlets for EPEL, as it's still required.
 - Remove firewalld differences for EPEL.
