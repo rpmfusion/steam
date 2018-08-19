@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        18%{?dist}
+Release:        19%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -180,6 +180,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Sun Aug 19 2018 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.0.0.54-19
+- Rebuilt for Fedora 29 Mass Rebuild binutils issue
+
 * Tue Jul 24 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.54-18
 - Add firewalld-filesystem to BuildRequires to expand firewalld_reload macro.
 
