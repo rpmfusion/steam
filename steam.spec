@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.54
-Release:        19%{?dist}
+Release:        20%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -53,8 +53,24 @@ Requires:       zenity
 Requires:       libtxc_dxtn%{?_isa}
 %endif
 
-# Required for running the package on 32 bit systems with free drivers
+# Most games use OpenGL. i686 version of this package is necessary even on
+# x86_64 systems for running 32bit games.
 Requires:       mesa-dri-drivers%{?_isa}
+
+# Some games already use Vulkan. Also required for Steam Play allowing to run
+# Windows games through emulation. Again, i686 version is necessary even on
+# x86_64 systems.
+Requires:       mesa-vulkan-drivers%{?_isa}
+Requires:       vulkan-loader%{?_isa}
+
+# Pull in native arch drivers as well. By not specifying _isa macro, DNF
+# prefers native arch package (x86_64 on x86_64, i686 on i686). This will
+# make sure people have all necessary drivers for both i686 and x86_64 games.
+# This "trick" might stop working in future DNF versions, but shouldn't break
+# anything.
+Requires:       mesa-dri-drivers
+Requires:       mesa-vulkan-drivers
+Requires:       vulkan-loader
 
 # Minimum requirements for starting the steam client for the first time
 Requires:       alsa-lib%{?_isa}
@@ -180,6 +196,10 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Wed Oct 10 2018 Kamil Páral <kamil.paral@gmail.com> - 1.0.0.54-20
+- require vulkan drivers
+- require x86_64 graphics drivers when installed on x86_64 systems
+
 * Sun Aug 19 2018 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.0.0.54-19
 - Rebuilt for Fedora 29 Mass Rebuild binutils issue
 
