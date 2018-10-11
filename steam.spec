@@ -167,8 +167,9 @@ install -p -m 0644 %{SOURCE4} %{buildroot}%{_datadir}/appdata/
 %endif
 %firewalld_reload
 
-%postun
 %if 0%{?rhel} == 7
+
+%postun
 /usr/bin/update-desktop-database &> /dev/null || :
 
 if [ $1 -eq 0 ] ; then
@@ -178,6 +179,7 @@ fi
 
 %posttrans
 %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+
 %endif
 
 %files
