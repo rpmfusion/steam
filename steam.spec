@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.54
-Release:        20%{?dist}
+Version:        1.0.0.56
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -130,7 +130,7 @@ and screenshot functionality, and many social features.
 %autosetup -p1 -n %{name}
 
 sed -i 's/\r$//' %{name}.desktop
-sed -i 's/\r$//' steam_install_agreement.txt
+sed -i 's/\r$//' steam_subscriber_agreement.txt
 
 cp %{SOURCE10} .
 
@@ -181,7 +181,7 @@ fi
 %endif
 
 %files
-%license COPYING steam_install_agreement.txt
+%license COPYING steam_subscriber_agreement.txt
 %doc README debian/changelog README.Fedora
 %{_bindir}/%{name}
 %{_datadir}/appdata/%{name}.appdata.xml
@@ -196,6 +196,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Thu Oct 11 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.56-1
+- Update to 1.0.0.56.
+
 * Wed Oct 10 2018 Kamil Páral <kamil.paral@gmail.com> - 1.0.0.54-20
 - require vulkan drivers
 - require x86_64 graphics drivers when installed on x86_64 systems
