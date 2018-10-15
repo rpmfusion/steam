@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.56
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -48,29 +48,23 @@ BuildRequires:  systemd
 Requires:       tar
 Requires:       zenity
 
-%if 0%{?fedora} == 25 || 0%{?rhel} == 7
-# Required for S3 compressed textures on free drivers (intel/radeon/nouveau)
-Requires:       libtxc_dxtn%{?_isa}
-%endif
-
-# Most games use OpenGL. i686 version of this package is necessary even on
-# x86_64 systems for running 32bit games.
+# Most games use OpenGL, some games already use Vulkan. Vulkan is also required
+# for Steam Play to run Windows games through emulation. i686 version of these
+# packages are necessary even on x86_64 systems for running 32bit games. Pull in
+# native arch drivers as well, by not specifying _isa macro, native arch
+# packages are preferred. This will make sure people have all necessary drivers
+# for both i686 and x86_64 games.
 Requires:       mesa-dri-drivers%{?_isa}
-
-# Some games already use Vulkan. Also required for Steam Play allowing to run
-# Windows games through emulation. Again, i686 version is necessary even on
-# x86_64 systems.
-Requires:       mesa-vulkan-drivers%{?_isa}
-Requires:       vulkan-loader%{?_isa}
-
-# Pull in native arch drivers as well. By not specifying _isa macro, DNF
-# prefers native arch package (x86_64 on x86_64, i686 on i686). This will
-# make sure people have all necessary drivers for both i686 and x86_64 games.
-# This "trick" might stop working in future DNF versions, but shouldn't break
-# anything.
 Requires:       mesa-dri-drivers
+Requires:       mesa-vulkan-drivers%{?_isa}
 Requires:       mesa-vulkan-drivers
+%if 0%{?rhel} == 7
+Requires:       vulkan%{?_isa}
+Requires:       vulkan
+%else
+Requires:       vulkan-loader%{?_isa}
 Requires:       vulkan-loader
+%endif
 
 # Minimum requirements for starting the steam client for the first time
 Requires:       alsa-lib%{?_isa}
@@ -198,6 +192,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Mon Oct 15 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.56-2
+- Update Vulkan requirements for CentOS/RHEL 7.
+
 * Thu Oct 11 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.56-1
 - Update to 1.0.0.56.
 
