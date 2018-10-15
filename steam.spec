@@ -194,6 +194,7 @@ fi
 %changelog
 * Mon Oct 15 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.56-2
 - Update Vulkan requirements for CentOS/RHEL 7.
+- Update ports list for 11th October 2018 client.
 
 * Thu Oct 11 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.56-1
 - Update to 1.0.0.56.
