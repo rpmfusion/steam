@@ -1,10 +1,10 @@
-diff -Naur steam.old/lib/udev/rules.d/99-steam-controller-perms.rules steam/lib/udev/rules.d/99-steam-controller-perms.rules
---- steam.old/lib/udev/rules.d/99-steam-controller-perms.rules	2016-11-28 14:49:17.909244287 +0100
-+++ steam/lib/udev/rules.d/99-steam-controller-perms.rules	2016-11-28 14:50:15.374202514 +0100
-@@ -23,3 +23,7 @@
+diff -Naur steam.old/lib/udev/rules.d/60-steam-input.rules steam/lib/udev/rules.d/60-steam-input.rules
+--- steam.old/lib/udev/rules.d/60-steam-input.rules	2018-10-11 09:43:36.771531454 +0200
++++ steam/lib/udev/rules.d/60-steam-input.rules	2018-10-11 09:46:09.264176676 +0200
+@@ -62,3 +62,7 @@
  
- # DualShock 4 Slim over bluetooth hidraw
- KERNEL=="hidraw*", KERNELS=="*054C:09CC*", MODE="0666"
+ # STRIKEPAD PS4 Grip Add-on
+ KERNEL=="hidraw*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="05c5", MODE="0666"
 +
 +# This rule is necessary for gamepad emulation; make sure each user requiring
 +# it is part of the input group.

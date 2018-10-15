@@ -40,7 +40,7 @@ In-Home streaming configuration
 
 Valve has supported In-Home streaming (both as a server and as a client) in
 Linux for quite some time. According to the documentation, streaming uses UDP
-ports 27031 and 27036 and TCP ports 27036 and 27037.
+ports 27031 to 27036 and TCP ports 27036 and 27037.
 
 The package includes the required service definitions for FirewallD. If you have
 installed a default desktop, FirewallD should be your firewall solution. To make
