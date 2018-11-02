@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.56
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -25,8 +25,10 @@ Source4:        %{name}.appdata.xml
 Source8:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-blacklist/master/after_kernel_4_9/51-these-are-not-joysticks-rm.rules
 # First generation Nvidia Shield controller seen as mouse:
 Source9:        https://raw.githubusercontent.com/cyndis/shield-controller-config/master/99-shield-controller.rules
-
 Source10:       README.Fedora
+# Configure limits in systemd
+# This should be only needed with systemd < 240
+Source11:       01-steam.conf
 
 # Remove temporary leftover files after run (fixes multiuser):
 # https://github.com/ValveSoftware/steam-for-linux/issues/3570
@@ -154,6 +156,12 @@ install -pm 644 %{SOURCE1} %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d
 mkdir -p %{buildroot}%{_datadir}/appdata
 install -p -m 0644 %{SOURCE4} %{buildroot}%{_datadir}/appdata/
 
+# Systemd configuration
+mkdir -p %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
+mkdir -p %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
+install -m 644 -p %{SOURCE11} %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
+install -m 644 -p %{SOURCE11} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
+
 %post
 %if 0%{?rhel} == 7
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
@@ -190,8 +198,15 @@ fi
 %{_prefix}/lib/firewalld/services/%{name}.xml
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 %{_udevrulesdir}/*
+%{_prefix}/lib/systemd/system.conf.d/
+%{_prefix}/lib/systemd/system.conf.d/01-steam.conf
+%{_prefix}/lib/systemd/user.conf.d/
+%{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Fri Nov 02 2018 Kamil Páral <kamil.paral@gmail.com> - 1.0.0.56-3
+- add systemd configuration for increasing file descriptor limit (for esync)
+
 * Mon Oct 15 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.56-2
 - Update Vulkan requirements for CentOS/RHEL 7.
 - Update ports list for 11th October 2018 client.
