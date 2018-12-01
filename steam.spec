@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.56
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -71,6 +71,7 @@ Requires:       vulkan-loader
 # Minimum requirements for starting the steam client for the first time
 Requires:       alsa-lib%{?_isa}
 Requires:       gtk2%{?_isa}
+Requires:       libnsl%{?_isa}
 Requires:       libpng12%{?_isa}
 Requires:       libXext%{?_isa}
 Requires:       libXinerama%{?_isa}
@@ -204,6 +205,9 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Sat Dec 01 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.56-4
+- Add libnsl dependency (#5091).
+
 * Fri Nov 02 2018 Kamil Páral <kamil.paral@gmail.com> - 1.0.0.56-3
 - add systemd configuration for increasing file descriptor limit (for esync)
 
