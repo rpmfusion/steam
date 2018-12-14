@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.56
-Release:        5%{?dist}
+Version:        1.0.0.59
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -207,6 +207,9 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Fri Dec 14 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.59-1
+- Update to 1.0.0.59.
+
 * Sun Dec 09 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.56-5
 - Glibc in RHEL/CentOS 7 still provides libnsl.
 
