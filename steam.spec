@@ -58,12 +58,12 @@ Requires:       zenity
 # for both i686 and x86_64 games.
 Requires:       mesa-dri-drivers%{?_isa}
 Requires:       mesa-dri-drivers
+%if 0%{?fedora} && 0%{?rhel} > 7
+# vulkan-drivers is only provided as x86_64 on EL7
+# So CentOS altarch i386 will have none
+# Just drop vulkan dependency there for now
 Requires:       mesa-vulkan-drivers%{?_isa}
 Requires:       mesa-vulkan-drivers
-%if 0%{?rhel} == 7
-Requires:       vulkan%{?_isa}
-Requires:       vulkan
-%else
 Requires:       vulkan-loader%{?_isa}
 Requires:       vulkan-loader
 %endif
