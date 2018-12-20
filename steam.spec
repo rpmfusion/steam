@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.59
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -207,6 +207,9 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Thu Dec 20 2018 Nicolas Chauvet <kwizart@gmail.com> - 1.0.0.59-2
+- Drop vulkan on el7 for now
+
 * Fri Dec 14 2018 Simone Caronni <negativo17@gmail.com> - 1.0.0.59-1
 - Update to 1.0.0.59.
 
