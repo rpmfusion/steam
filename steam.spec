@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.59
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -58,7 +58,7 @@ Requires:       zenity
 # for both i686 and x86_64 games.
 Requires:       mesa-dri-drivers%{?_isa}
 Requires:       mesa-dri-drivers
-%if 0%{?fedora} && 0%{?rhel} > 7
+%if 0%{?fedora} || 0%{?rhel} > 7
 # vulkan-drivers is only provided as x86_64 on EL7
 # So CentOS altarch i386 will have none
 # Just drop vulkan dependency there for now
@@ -207,6 +207,9 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Wed Jan 02 2019 Kamil Páral <kamil.paral@gmail.com> - 1.0.0.59-3
+- fix macro condition check for vulkan libs
+
 * Thu Dec 20 2018 Nicolas Chauvet <kwizart@gmail.com> - 1.0.0.59-2
 - Drop vulkan on el7 for now
 
