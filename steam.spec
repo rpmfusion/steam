@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.59
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -160,10 +160,13 @@ mkdir -p %{buildroot}%{_datadir}/appdata
 install -p -m 0644 %{SOURCE4} %{buildroot}%{_datadir}/appdata/
 
 # Systemd configuration
+# Since F30 (systemd 240) we don't need to raise NOFILE limit
+%if 0%{?fedora} && 0%{?fedora} < 30
 mkdir -p %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 mkdir -p %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 install -m 644 -p %{SOURCE11} %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 install -m 644 -p %{SOURCE11} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
+%endif
 
 %post
 %if 0%{?rhel} == 7
@@ -201,12 +204,19 @@ fi
 %{_prefix}/lib/firewalld/services/%{name}.xml
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 %{_udevrulesdir}/*
+
+# Since F30 (systemd 240) we don't need to raise NOFILE limit
+%if 0%{?fedora} && 0%{?fedora} < 30
 %{_prefix}/lib/systemd/system.conf.d/
 %{_prefix}/lib/systemd/system.conf.d/01-steam.conf
 %{_prefix}/lib/systemd/user.conf.d/
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
+%endif
 
 %changelog
+* Wed Jan 02 2019 Kamil Páral <kamil.paral@gmail.com> - 1.0.0.59-3
+- NOFILE limit doesn't need to be raised since F30 (systemd 240)
+
 * Thu Dec 20 2018 Nicolas Chauvet <kwizart@gmail.com> - 1.0.0.59-2
 - Drop vulkan on el7 for now
 
