@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.59
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -23,7 +23,7 @@ Source4:        %{name}.appdata.xml
 
 # Input devices seen as joysticks:
 Source8:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-blacklist/master/after_kernel_4_9/51-these-are-not-joysticks-rm.rules
-# First generation Nvidia Shield controller seen as mouse:
+# Nvidia Shield controllers seen as mouse devices:
 Source9:        https://raw.githubusercontent.com/cyndis/shield-controller-config/master/99-shield-controller.rules
 Source10:       README.Fedora
 # Configure limits in systemd
@@ -214,6 +214,9 @@ fi
 %endif
 
 %changelog
+* Wed Jan 16 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.59-4
+- Fix Nvidia Shield Portable streaming with SteamLink.
+
 * Wed Jan 02 2019 Kamil Páral <kamil.paral@gmail.com> - 1.0.0.59-3
 - NOFILE limit doesn't need to be raised since F30 (systemd 240)
 - fix macro condition check for vulkan libs
