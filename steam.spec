@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.59
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -13,7 +13,7 @@ ExclusiveArch:  i686
 Source0:        http://repo.steampowered.com/%{name}/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
 Source1:        %{name}.sh
 Source2:        %{name}.csh
-Source3:        %{name}.xml
+Source3:        %{name}-streaming.xml
 Source4:        %{name}.appdata.xml
 
 # Ghost touches in Big Picture mode:
@@ -97,7 +97,7 @@ Requires(post): firewalld-filesystem
 
 # Required for hardware decoding during In-Home Streaming (intel)
 # Since libva-intel-driver on f28+ there is hw detection with appstream
-%if (0%{?fedora} && 0%{?fedora} < 28) || 0%{?rhel} == 7
+%if 0%{?rhel} == 7
 Requires:       libva-intel-driver%{?_isa}
 %else
 Requires:       libva%{?_isa}
@@ -148,8 +148,10 @@ install -m 644 -p lib/udev/rules.d/* \
 
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
+%if 0%{?fedora} && 0%{?fedora} < 29 || 0%{?rhel} == 7
 install -D -m 644 -p %{SOURCE3} \
-    %{buildroot}%{_prefix}/lib/firewalld/services/steam.xml
+    %{buildroot}%{_prefix}/lib/firewalld/services/%{name}-streaming.xml
+%endif
 
 # Environment files
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
@@ -173,7 +175,9 @@ install -m 644 -p %{SOURCE11} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 /usr/bin/update-desktop-database &> /dev/null || :
 %endif
+%if 0%{?fedora} && 0%{?fedora} < 29 || 0%{?rhel} == 7
 %firewalld_reload
+%endif
 
 %if 0%{?rhel} == 7
 
@@ -201,9 +205,12 @@ fi
 %{_datadir}/pixmaps/%{name}_tray_mono.png
 %{_libdir}/%{name}/
 %{_mandir}/man6/%{name}.*
-%{_prefix}/lib/firewalld/services/%{name}.xml
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 %{_udevrulesdir}/*
+
+%if 0%{?fedora} && 0%{?fedora} < 29 || 0%{?rhel} == 7
+%{_prefix}/lib/firewalld/services/%{name}-streaming.xml
+%endif
 
 # Since F30 (systemd 240) we don't need to raise NOFILE limit
 %if 0%{?fedora} && 0%{?fedora} < 30
@@ -214,6 +221,10 @@ fi
 %endif
 
 %changelog
+* Fri Jan 18 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.59-5
+- Firewall definitions already bundled in firewalld 0.6.2 on Fedora 29+.
+- Update firewall definitions to align with Fedora 29+.
+
 * Wed Jan 16 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.59-4
 - Fix Nvidia Shield Portable streaming with SteamLink.
 
