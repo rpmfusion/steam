@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.59
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -29,6 +29,8 @@ Source10:       README.Fedora
 # Configure limits in systemd
 # This should be only needed with systemd < 240
 Source11:       01-steam.conf
+# Load necessary kernel modules
+Source12:       modules-steam.conf
 
 # Remove temporary leftover files after run (fixes multiuser):
 # https://github.com/ValveSoftware/steam-for-linux/issues/3570
@@ -168,6 +170,9 @@ install -m 644 -p %{SOURCE11} %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 install -m 644 -p %{SOURCE11} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 %endif
 
+# Kernel modules configuration
+install -D -pm 644 %{SOURCE12} %{buildroot}%{_prefix}/lib/modules-load.d/steam.conf
+
 %post
 %if 0%{?rhel} == 7
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
@@ -204,6 +209,7 @@ fi
 %{_prefix}/lib/firewalld/services/%{name}.xml
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 %{_udevrulesdir}/*
+%{_prefix}/lib/modules-load.d/steam.conf
 
 # Since F30 (systemd 240) we don't need to raise NOFILE limit
 %if 0%{?fedora} && 0%{?fedora} < 30
@@ -214,6 +220,9 @@ fi
 %endif
 
 %changelog
+* Fri Jan 18 2019 Kamil Páral <kamil.paral@gmail.com> - 1.0.0.59-5
+- load uinput kernel module as required by Steam Controller/Steam Input
+
 * Wed Jan 16 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.59-4
 - Fix Nvidia Shield Portable streaming with SteamLink.
 
