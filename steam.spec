@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.59
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -38,9 +38,9 @@ Patch0:         %{name}-3570.patch
 # https://github.com/ValveSoftware/steam-for-linux/issues/3273
 Patch1:         %{name}-3273.patch
 
-# Make Steam Controller usable as a GamePad:
-# https://steamcommunity.com/app/353370/discussions/0/490123197956024380/
-Patch2:         %{name}-controller-gamepad-emulation.patch
+# Use uaccess on device files so only the local console users have access to
+# the files instead of using 666 permissions.
+Patch2:         %{name}-udev-relax-console-user.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firewalld-filesystem
@@ -221,6 +221,9 @@ fi
 %endif
 
 %changelog
+* Fri Jan 18 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.59-6
+- Update udev controller rules to use uacces.
+
 * Fri Jan 18 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.59-5
 - Firewall definitions already bundled in firewalld 0.6.2 on Fedora 29+.
 - Update firewall definitions to align with Fedora 29+.
