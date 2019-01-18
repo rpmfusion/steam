@@ -60,8 +60,8 @@ example, on my system, to get the firewall zone I’m using:
 
 Then enable it permanently (i.e. at reboot) and immediately with these commands:
 
- # firewall-cmd --zone=public --add-service=steam --permanent
- # firewall-cmd --zone=public --add-service=steam
+ # firewall-cmd --zone=public --add-service=steam-streaming --permanent
+ # firewall-cmd --zone=public --add-service=steam-streaming
 
 Now start up two Steam clients with your user on the same network, and you
 should see games installed on both systems as available for playing in both
