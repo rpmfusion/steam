@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.59
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -15,6 +15,7 @@ Source1:        %{name}.sh
 Source2:        %{name}.csh
 Source3:        %{name}-streaming.xml
 Source4:        %{name}.appdata.xml
+Source5:        README.Fedora
 
 # Ghost touches in Big Picture mode:
 # https://github.com/ValveSoftware/steam-for-linux/issues/3384
@@ -22,13 +23,10 @@ Source4:        %{name}.appdata.xml
 # https://github.com/denilsonsa/udev-joystick-blacklist
 
 # Input devices seen as joysticks:
-Source8:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-blacklist/master/after_kernel_4_9/51-these-are-not-joysticks-rm.rules
-# Nvidia Shield controllers seen as mouse devices:
-Source9:        https://raw.githubusercontent.com/cyndis/shield-controller-config/master/99-shield-controller.rules
-Source10:       README.Fedora
-# Configure limits in systemd
-# This should be only needed with systemd < 240
-Source11:       01-steam.conf
+Source6:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-blacklist/master/after_kernel_4_9/51-these-are-not-joysticks-rm.rules
+
+# Configure limits in systemd < 240
+Source7:       01-steam.conf
 
 # Remove temporary leftover files after run (fixes multiuser):
 # https://github.com/ValveSoftware/steam-for-linux/issues/3570
@@ -39,8 +37,9 @@ Patch0:         %{name}-3570.patch
 Patch1:         %{name}-3273.patch
 
 # Use uaccess on device files so only the local console users have access to
-# the files instead of using 666 permissions.
-Patch2:         %{name}-udev-relax-console-user.patch
+# the files instead of using 666 permissions. Also add additional controller
+# rules.
+Patch2:         %{name}-udev-rules.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firewalld-filesystem
@@ -131,7 +130,7 @@ and screenshot functionality, and many social features.
 sed -i 's/\r$//' %{name}.desktop
 sed -i 's/\r$//' steam_subscriber_agreement.txt
 
-cp %{SOURCE10} .
+cp %{SOURCE5} .
 
 %build
 # Nothing to build
@@ -144,7 +143,7 @@ rm -fr %{buildroot}%{_docdir}/%{name}/ \
 
 mkdir -p %{buildroot}%{_udevrulesdir}/
 install -m 644 -p lib/udev/rules.d/* \
-    %{SOURCE8} %{SOURCE9} %{buildroot}%{_udevrulesdir}/
+    %{SOURCE6} %{buildroot}%{_udevrulesdir}/
 
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
@@ -158,28 +157,24 @@ mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -pm 644 %{SOURCE1} %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d
 
 # Install AppData
-mkdir -p %{buildroot}%{_datadir}/appdata
-install -p -m 0644 %{SOURCE4} %{buildroot}%{_datadir}/appdata/
+mkdir -p %{buildroot}%{_metainfodir}
+install -p -m 0644 %{SOURCE4} %{buildroot}%{_metainfodir}/
 
-# Systemd configuration
-# Since F30 (systemd 240) we don't need to raise NOFILE limit
+# Systemd configuration for systemd < 240
 %if 0%{?fedora} && 0%{?fedora} < 30
 mkdir -p %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 mkdir -p %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
-install -m 644 -p %{SOURCE11} %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
-install -m 644 -p %{SOURCE11} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
+install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
+install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 %endif
 
 %post
-%if 0%{?rhel} == 7
-/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-/usr/bin/update-desktop-database &> /dev/null || :
-%endif
 %if 0%{?fedora} && 0%{?fedora} < 29 || 0%{?rhel} == 7
 %firewalld_reload
 %endif
-
 %if 0%{?rhel} == 7
+/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
+/usr/bin/update-desktop-database &> /dev/null || :
 
 %postun
 /usr/bin/update-desktop-database &> /dev/null || :
@@ -198,13 +193,13 @@ fi
 %license COPYING steam_subscriber_agreement.txt
 %doc README debian/changelog README.Fedora
 %{_bindir}/%{name}
-%{_datadir}/appdata/%{name}.appdata.xml
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 %{_datadir}/pixmaps/%{name}.png
 %{_datadir}/pixmaps/%{name}_tray_mono.png
 %{_libdir}/%{name}/
 %{_mandir}/man6/%{name}.*
+%{_metainfodir}/%{name}.appdata.xml
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 %{_udevrulesdir}/*
 
@@ -221,6 +216,10 @@ fi
 %endif
 
 %changelog
+* Sat Jan 26 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.59-7
+- Clean up SPEC file a bit.
+- Update udev controller rules for Nvidia Shield Controller devices.
+
 * Fri Jan 18 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.59-6
 - Update udev controller rules to use uacces.
 
