@@ -1,4 +1,0 @@
-# NVIDIA Shield Portable (2013)
-SUBSYSTEM=="input", ENV{ID_MODEL}=="NVIDIA_Controller_v01.01", MODE="0660", TAG+="uaccess", ENV{ID_INPUT_JOYSTICK}="1", ENV{ID_INPUT_MOUSE}=""
-# NVIDIA Shield Controller (2015)
-SUBSYSTEM=="input", ENV{ID_MODEL}=="NVIDIA_Controller_v01.03", MODE="0660", TAG+="uaccess", ENV{ID_INPUT_JOYSTICK}="1", ENV{ID_INPUT_MOUSE}=""
