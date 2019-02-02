@@ -72,14 +72,37 @@ Joysticks, keyboards and game pads
 
 The package contains the UDEV rules for the following devices:
 
-- Steam Controller with USB adapter
-- HTC Vive HID Sensor with USB adapter
+- Valve USB devices
+- Steam Controller udev write access
+- Valve HID devices over USB hidraw
+- Valve HID devices over bluetooth hidraw
+- DualShock 4 over USB hidraw
+- DualShock 4 wireless adapter over USB hidraw
+- DualShock 4 Slim over USB hidraw
+- DualShock 4 over bluetooth hidraw
+- DualShock 4 Slim over bluetooth hidraw
+- Nintendo Switch Pro Controller over USB hidraw
+- Nintendo Switch Pro Controller over bluetooth hidraw
+- Nacon PS4 Revolution Pro Controller
+- Razer Raiju PS4 Controller
+- Razer Panthera Arcade Stick
+- Mad Catz - Street Fighter V Arcade FightPad PRO
+- Mad Catz - Street Fighter V Arcade FightStick TE S+
+- EMiO Elite Controller for PS4
+- HORI RAP4
+- HORIPAD 4 FPS
+- HORIPAD 4 FPS Plus
+- Armor Armor 3 Pad PS4
+- STRIKEPAD PS4 Grip Add-on
 
-  Support for the devices, rules originally shipped with Steam.
+Additional support for Nvidia devices (including mouse workaround for early
+devices):
 
-- Nvidia Shield Controller (workaround for Mouse detection)
+- Nvidia Shield Portable (2013) for In-Home Streaming only
+- Nvidia Shield Controller (2015) over USB hidraw
+- Nvidia Shield Controller (2017) over bluetooth hidraw
 
-  Workaround to have it properly detected as a game pad and not a mouse.
+Workaround to have it properly detected as a game pad and not a mouse:
 
 - Wacom ET-0405 Graphire
 - Wacom ET-0405A Graphire2 (4x5)
@@ -118,9 +141,6 @@ The package contains the UDEV rules for the following devices:
 - Winkeyless.kr Keyboards
 - Cooler Master Storm Mizar Mouse
 - Cooler Master Storm Alcor Mouse
-
-  Workaround to have them properly detected as mouse/keyboards and not
-  joysticks. This prevents the "ghost" keypresses in Steam Big Picture mode.
 
 Steam Controller
 ================
