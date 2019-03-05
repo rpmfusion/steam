@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.59
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -216,6 +216,9 @@ fi
 %endif
 
 %changelog
+* Tue Mar 05 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.0.0.59-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Sat Jan 26 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.59-7
 - Clean up SPEC file a bit.
 - Update udev controller rules for Nvidia Shield Controller devices.
