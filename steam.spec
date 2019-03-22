@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.59
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -115,6 +115,10 @@ Requires:       libatomic%{?_isa}
 # Required by Shank
 Requires:       alsa-plugins-pulseaudio%{?_isa}
 
+# Game performance is increased with gamemode (for games that support it)
+Recommends:     gamemode
+Recommends:     gamemode%{?_isa}
+
 Provides:       steam-noruntime = %{?epoch:%{epoch}:}%{version}-%{release}
 Obsoletes:      steam-noruntime < %{?epoch:%{epoch}:}%{version}-%{release}
 
@@ -216,6 +220,9 @@ fi
 %endif
 
 %changelog
+* Fri Mar 22 2019 Kamil Páral <kamil.paral@gmail.com> - 1.0.0.59-9
+- add Recommends: gamemode
+
 * Tue Mar 05 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.0.0.59-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
