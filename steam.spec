@@ -116,8 +116,10 @@ Requires:       libatomic%{?_isa}
 Requires:       alsa-plugins-pulseaudio%{?_isa}
 
 # Game performance is increased with gamemode (for games that support it)
+%if 0%{?fedora} || 0%{?rhel} >= 8
 Recommends:     gamemode
 Recommends:     gamemode%{?_isa}
+%endif
 
 Provides:       steam-noruntime = %{?epoch:%{epoch}:}%{version}-%{release}
 Obsoletes:      steam-noruntime < %{?epoch:%{epoch}:}%{version}-%{release}
