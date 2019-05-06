@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.59
-Release:        9%{?dist}
+Version:        1.0.0.61
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -35,11 +35,6 @@ Patch0:         %{name}-3570.patch
 # Remove libstdc++ from runtime:
 # https://github.com/ValveSoftware/steam-for-linux/issues/3273
 Patch1:         %{name}-3273.patch
-
-# Use uaccess on device files so only the local console users have access to
-# the files instead of using 666 permissions. Also add additional controller
-# rules.
-Patch2:         %{name}-udev-rules.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  firewalld-filesystem
@@ -222,6 +217,9 @@ fi
 %endif
 
 %changelog
+* Mon May 06 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.61-1
+- Update to 1.0.0.61.
+
 * Fri Mar 22 2019 Kamil Páral <kamil.paral@gmail.com> - 1.0.0.59-9
 - add Recommends: gamemode
 
