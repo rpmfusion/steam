@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.61
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -101,7 +101,6 @@ Requires:       libva%{?_isa}
 Requires:       libvdpau%{?_isa}
 
 # Required for having a functioning menu on the tray icon
-Requires:       libdbusmenu-gtk2%{?_isa} >= 16.04.0
 Requires:       libdbusmenu-gtk3%{?_isa} >= 16.04.0
 
 # Required by Feral interactive games
@@ -217,6 +216,9 @@ fi
 %endif
 
 %changelog
+* Wed Jul 31 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.61-2
+- Remove libdbusmenu-gtk2 requirement (#5322).
+
 * Mon May 06 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.61-1
 - Update to 1.0.0.61.
 
