@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.61
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -216,6 +216,9 @@ fi
 %endif
 
 %changelog
+* Sat Aug 10 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.0.0.61-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Wed Jul 31 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.61-2
 - Remove libdbusmenu-gtk2 requirement (#5322).
 
