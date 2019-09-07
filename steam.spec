@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.61
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -13,7 +13,6 @@ ExclusiveArch:  i686
 Source0:        http://repo.steampowered.com/%{name}/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
 Source1:        %{name}.sh
 Source2:        %{name}.csh
-Source3:        %{name}-streaming.xml
 Source4:        %{name}.appdata.xml
 Source5:        README.Fedora
 
@@ -37,7 +36,6 @@ Patch0:         %{name}-3570.patch
 Patch1:         %{name}-3273.patch
 
 BuildRequires:  desktop-file-utils
-BuildRequires:  firewalld-filesystem
 BuildRequires:  systemd
 
 # Required to run the initial setup
@@ -147,11 +145,6 @@ install -m 644 -p lib/udev/rules.d/* \
 
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
-%if 0%{?fedora} && 0%{?fedora} < 29 || 0%{?rhel} == 7
-install -D -m 644 -p %{SOURCE3} \
-    %{buildroot}%{_prefix}/lib/firewalld/services/%{name}-streaming.xml
-%endif
-
 # Environment files
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -pm 644 %{SOURCE1} %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d
@@ -170,7 +163,6 @@ install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 
 %post
 %if 0%{?fedora} && 0%{?fedora} < 29 || 0%{?rhel} == 7
-%firewalld_reload
 %endif
 %if 0%{?rhel} == 7
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
@@ -203,10 +195,6 @@ fi
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 %{_udevrulesdir}/*
 
-%if 0%{?fedora} && 0%{?fedora} < 29 || 0%{?rhel} == 7
-%{_prefix}/lib/firewalld/services/%{name}-streaming.xml
-%endif
-
 # Since F30 (systemd 240) we don't need to raise NOFILE limit
 %if 0%{?fedora} && 0%{?fedora} < 30
 %{_prefix}/lib/systemd/system.conf.d/
@@ -216,6 +204,9 @@ fi
 %endif
 
 %changelog
+* Sat Sep 07 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.61-4
+- Firewall rules are now included in base firewalld also on RHEL/CentOS 7.
+
 * Sat Aug 10 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.0.0.61-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
