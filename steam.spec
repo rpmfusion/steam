@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.61
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -30,10 +30,6 @@ Source7:       01-steam.conf
 # Remove temporary leftover files after run (fixes multiuser):
 # https://github.com/ValveSoftware/steam-for-linux/issues/3570
 Patch0:         %{name}-3570.patch
-
-# Remove libstdc++ from runtime:
-# https://github.com/ValveSoftware/steam-for-linux/issues/3273
-Patch1:         %{name}-3273.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
@@ -204,6 +200,9 @@ fi
 %endif
 
 %changelog
+* Sat Nov 02 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.61-5
+- Do not remove bundled libstdc++ (#5421).
+
 * Sat Sep 07 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.61-4
 - Firewall rules are now included in base firewalld also on RHEL/CentOS 7.
 
