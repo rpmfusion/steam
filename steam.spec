@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.61
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -200,7 +200,7 @@ fi
 %endif
 
 %changelog
-* Mon Dec 16 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.0.0.61-6
+* Mon Dec 16 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.0.0.61-7
 - Revert last commit
 
 * Mon Dec 16 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.0.0.61-6
