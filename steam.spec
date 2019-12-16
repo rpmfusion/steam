@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.61
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -200,6 +200,12 @@ fi
 %endif
 
 %changelog
+* Mon Dec 16 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.0.0.61-6
+- Revert last commit
+
+* Mon Dec 16 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.0.0.61-6
+- Add boolean requires for nvidia i686 libs
+
 * Sat Nov 02 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.61-5
 - Do not remove bundled libstdc++ (#5421).
 
