@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.61
-Release:        5%{?dist}
+Release:        9%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -25,11 +25,10 @@ Source5:        README.Fedora
 Source6:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-blacklist/master/after_kernel_4_9/51-these-are-not-joysticks-rm.rules
 
 # Configure limits in systemd < 240
-Source7:       01-steam.conf
+Source7:        01-steam.conf
 
-# Remove temporary leftover files after run (fixes multiuser):
-# https://github.com/ValveSoftware/steam-for-linux/issues/3570
-Patch0:         %{name}-3570.patch
+# Updated UDEV rules
+Patch0:         https://github.com/ValveSoftware/steam-devices/commit/00aa8483cd243cbea9cff17fc113501aadc390b4.patch#/%{name}-udev-rules-update.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
@@ -105,8 +104,9 @@ Requires:       alsa-plugins-pulseaudio%{?_isa}
 
 # Game performance is increased with gamemode (for games that support it)
 %if 0%{?fedora} || 0%{?rhel} >= 8
-Recommends:     gamemode
-Recommends:     gamemode%{?_isa}
+Requires:       gamemode
+Requires:       gamemode%{?_isa}
+# Recommends:     gnome-shell-extension-gamemode
 %endif
 
 Provides:       steam-noruntime = %{?epoch:%{epoch}:}%{version}-%{release}
@@ -149,8 +149,8 @@ install -pm 644 %{SOURCE1} %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d
 mkdir -p %{buildroot}%{_metainfodir}
 install -p -m 0644 %{SOURCE4} %{buildroot}%{_metainfodir}/
 
-# Systemd configuration for systemd < 240
-%if 0%{?fedora} && 0%{?fedora} < 30
+# Since systemd 240 we don't need to raise NOFILE limit
+%if 0%{?rhel} >= 7
 mkdir -p %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 mkdir -p %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
@@ -158,8 +158,6 @@ install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 %endif
 
 %post
-%if 0%{?fedora} && 0%{?fedora} < 29 || 0%{?rhel} == 7
-%endif
 %if 0%{?rhel} == 7
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 /usr/bin/update-desktop-database &> /dev/null || :
@@ -191,8 +189,8 @@ fi
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 %{_udevrulesdir}/*
 
-# Since F30 (systemd 240) we don't need to raise NOFILE limit
-%if 0%{?fedora} && 0%{?fedora} < 30
+# Since systemd 240 we don't need to raise NOFILE limit
+%if 0%{?rhel} >= 7
 %{_prefix}/lib/systemd/system.conf.d/
 %{_prefix}/lib/systemd/system.conf.d/01-steam.conf
 %{_prefix}/lib/systemd/user.conf.d/
@@ -200,6 +198,14 @@ fi
 %endif
 
 %changelog
+* Sun Feb 09 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.61-9
+- Update README.Fedora
+- Require gamemode on Fedora & CentOS/RHEL 8.
+- Adjust distribution conditionals.
+- Make sure you are not left with the desktop when streaming with no option
+  to get back to the Steam client.
+- Update udev rules.
+
 * Sat Nov 02 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.61-5
 - Do not remove bundled libstdc++ (#5421).
 

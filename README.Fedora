@@ -16,38 +16,37 @@ And launch the client again, it will adjust all the symlinks for folders, saves,
 etc. by itself. Even the desktop / system shortcuts for the games work because
 they launch Steam (which is in the path) with the appropriate Steam game ID.
 
-In-Home Streaming (hardware decoding/encoding)
+Steam Remote Play (hardware decoding/encoding)
 ==============================================
 
-In-Home Streaming hardware decoding and encoding are exposed through different
+Steam Remote Play hardware decoding and encoding are exposed through different
 backends, depending on the hardware you are running. These are detected at
 runtime, and are all 32 bit libraries also on 64 bit systems, as the client is
 32 bit only.
 
-+------------------+------------------+-----------------------+
-|   Video Driver   |   Hardware API   |        Library        |
-+------------------+------------------+-----------------------+
-| Intel (intel)    | Decoding: VA-API | libva.so.1            |
-| Nvidia (nvidia)  | Decoding: VDPAU  | libvdpau.so.1         |
-| AMD (radeon)     | Decoding: VDPAU  | libvdpau.so.1         |
-| Nvidia (nouveau) | Decoding: VDPAU  | libvdpau.so.1         |
-| Nvidia (nvidia)  | Encoding: NVENC  | libnvidia-encode.so.1 |
-| Intel (intel)    | Encoding: VA-API | libva.so.1            |
-+------------------+------------------+-----------------------+
++------------------+------------------+-------------------------+
+|   Video Driver   |   Hardware API   |        Library          |
++------------------+------------------+-------------------------+
+| Intel (intel)    | Decoding: VA-API | libva.so.1 / libva.so.2 |
+| Nvidia (nvidia)  | Decoding: VDPAU  | libvdpau.so.1           |
+| AMD (radeon)     | Decoding: VDPAU  | libvdpau.so.1           |
+| Nvidia (nouveau) | Decoding: VDPAU  | libvdpau.so.1           |
+| Nvidia (nvidia)  | Encoding: NVENC  | libnvidia-encode.so.1   |
+| Intel (intel)    | Encoding: VA-API | libva.so.1 / libva.so.2 |
++------------------+------------------+-------------------------+
 
-In-Home streaming configuration
+Steam Remote Play configuration
 ===============================
 
-Valve has supported In-Home streaming (both as a server and as a client) in
-Linux for quite some time. According to the documentation, streaming uses UDP
-ports 27031 to 27036 and TCP ports 27036 and 27037.
+Valve has supported Steam Remote Play (both as a server and as a client) in
+Linux for quite some time. According to the documentation, streaming in the same
+network segment uses UDP ports 27031 to 27036 and TCP ports 27036 and 27037.
 
-The package includes the required service definitions for FirewallD. If you have
-installed a default desktop, FirewallD should be your firewall solution. To make
-sure that Steam can listen on the required ports through your firewall software,
-execute the following commands as root.
+If you have installed a default desktop, FirewallD should be your firewall
+solution. To make sure that Steam can listen on the required ports through your
+firewall software, execute the following commands as root.
 
-You should then be able to see the word “steam” by running:
+You should be able to see the word “steam” by running:
 
  # firewall-cmd --get-services | grep steam
 
@@ -67,38 +66,42 @@ Now start up two Steam clients with your user on the same network, and you
 should see games installed on both systems as available for playing in both
 Steam clients.
 
+For Steam Remote Play outside of your network, there is no need to open any
+additional inbound ports.
+
 Joysticks, keyboards and game pads
 ==================================
 
 The package contains the UDEV rules for the following devices:
 
-- Valve USB devices
-- Steam Controller udev write access
-- Valve HID devices over USB hidraw
-- Valve HID devices over bluetooth hidraw
-- DualShock 4 over USB hidraw
-- DualShock 4 wireless adapter over USB hidraw
-- DualShock 4 Slim over USB hidraw
+- Armor Armor 3 Pad PS4
 - DualShock 4 over bluetooth hidraw
+- DualShock 4 over USB hidraw
 - DualShock 4 Slim over bluetooth hidraw
-- Nintendo Switch Pro Controller over USB hidraw
-- Nintendo Switch Pro Controller over bluetooth hidraw
-- Nacon PS4 Revolution Pro Controller
-- Razer Raiju PS4 Controller
-- Razer Panthera Arcade Stick
-- Mad Catz - Street Fighter V Arcade FightPad PRO
-- Mad Catz - Street Fighter V Arcade FightStick TE S+
+- DualShock 4 Slim over USB hidraw
+- DualShock 4 wireless adapter over USB hidraw
 - EMiO Elite Controller for PS4
-- HORI RAP4
 - HORIPAD 4 FPS
 - HORIPAD 4 FPS Plus
-- Armor Armor 3 Pad PS4
+- HORI RAP4
+- Mad Catz - Street Fighter V Arcade FightPad PRO
+- Mad Catz - Street Fighter V Arcade FightStick TE S+
+- Nacon PS4 Revolution Pro Controller
+- Nintendo Switch Pro Controller over bluetooth hidraw
+- Nintendo Switch Pro Controller over USB hidraw
+- Razer Panthera Arcade Stick
+- Razer Raiju PS4 Controller
+- Steam Controller udev write access
 - STRIKEPAD PS4 Grip Add-on
+- Valve HID devices over bluetooth hidraw
+- Valve HID devices over USB hidraw
+- Valve USB devices
+- ZeroPlus P4 (hitbox)
 
 Additional support for Nvidia devices (including mouse workaround for early
 devices):
 
-- Nvidia Shield Portable (2013) for In-Home Streaming only
+- Nvidia Shield Portable (2013) for Steam Remote Play only
 - Nvidia Shield Controller (2015) over USB hidraw
 - Nvidia Shield Controller (2017) over bluetooth hidraw
 
