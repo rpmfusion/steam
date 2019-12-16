@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.61
-Release:        6%{?dist}
+Release:        5%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -54,9 +54,6 @@ Requires:       mesa-vulkan-drivers%{?_isa}
 Requires:       mesa-vulkan-drivers
 Requires:       vulkan-loader%{?_isa}
 Requires:       vulkan-loader
-Requires:       (xorg-x11-drv-nvidia-libs(x86-32) if xorg-x11-drv-nvidia-libs(x86-64))
-Requires:       (xorg-x11-drv-nvidia-390xx-libs(x86-32) if xorg-x11-drv-nvidia-390xx-libs(x86-64))
-Requires:       (xorg-x11-drv-nvidia-340xx-libs(x86-32) if xorg-x11-drv-nvidia-340xx-libs(x86-64))
 %endif
 
 # Minimum requirements for starting the steam client for the first time
@@ -203,9 +200,6 @@ fi
 %endif
 
 %changelog
-* Mon Dec 16 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.0.0.61-6
-- Add boolean requires for nvidia i686 libs
-
 * Sat Nov 02 2019 Simone Caronni <negativo17@gmail.com> - 1.0.0.61-5
 - Do not remove bundled libstdc++ (#5421).
 
