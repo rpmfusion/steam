@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.61
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -200,6 +200,9 @@ fi
 %endif
 
 %changelog
+* Wed Feb 05 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.0.0.61-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Mon Dec 16 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.0.0.61-7
 - Revert last commit
 
