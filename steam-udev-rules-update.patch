@@ -1,17 +1,7 @@
-From 00aa8483cd243cbea9cff17fc113501aadc390b4 Mon Sep 17 00:00:00 2001
-From: "Pierre-Loup A. Griffais" <pgriffais@valvesoftware.com>
-Date: Sat, 2 Nov 2019 14:48:05 -0700
-Subject: [PATCH] Update 60-steam-input.rules
-
----
- 60-steam-input.rules | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/60-steam-input.rules b/60-steam-input.rules
-index ed800d6..9718689 100644
---- a/60-steam-input.rules
-+++ b/60-steam-input.rules
-@@ -49,6 +49,9 @@ KERNEL=="hidraw*", ATTRS{idVendor}=="0738", ATTRS{idProduct}=="8384", MODE="0660
+diff -Naur steam.old/lib/udev/rules.d/60-steam-input.rules steam/lib/udev/rules.d/60-steam-input.rules
+--- steam.old/lib/udev/rules.d/60-steam-input.rules	2020-02-09 21:13:29.661326479 +0100
++++ steam/lib/udev/rules.d/60-steam-input.rules	2020-02-09 21:13:54.782774756 +0100
+@@ -49,6 +49,9 @@
  # EMiO Elite Controller for PS4
  KERNEL=="hidraw*", ATTRS{idVendor}=="0c12", ATTRS{idProduct}=="1cf6", MODE="0660", TAG+="uaccess"
  

@@ -28,7 +28,8 @@ Source6:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-black
 Source7:        01-steam.conf
 
 # Updated UDEV rules
-Patch0:         https://github.com/ValveSoftware/steam-devices/commit/00aa8483cd243cbea9cff17fc113501aadc390b4.patch#/%{name}-udev-rules-update.patch
+# https://github.com/ValveSoftware/steam-devices/commit/00aa8483cd243cbea9cff17fc113501aadc390b4
+Patch0:         %{name}-udev-rules-update.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
