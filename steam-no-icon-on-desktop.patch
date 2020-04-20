@@ -1,0 +1,33 @@
+diff -Naur steam-launcher.old/bin_steam.sh steam-launcher/bin_steam.sh
+--- steam-launcher.old/bin_steam.sh	2020-04-15 11:51:24.202660348 +0200
++++ steam-launcher/bin_steam.sh	2020-04-15 20:20:00.581536078 +0200
+@@ -110,29 +110,6 @@
+ 	ln -fns "$STEAMDIR" "$STEAMDATALINK"
+ 	setup_variables
+ 
+-	# put the Steam icon on the user's desktop
+-	# try to read ~/.config/user-dirs.dirs to get the current desktop configuration
+-	# http://www.freedesktop.org/wiki/Software/xdg-user-dirs
+-	# shellcheck source=/dev/null
+-	test -f "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs" && source "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs"
+-	DESKTOP_DIR="${XDG_DESKTOP_DIR:-$HOME/Desktop}"
+-
+-	if [ -d "$DESKTOP_DIR" ] && [ "x$bootstrapdir" = "x/usr/lib/$STEAMPACKAGE" ]; then
+-		cp "$bootstrapdir/$STEAMPACKAGE.desktop" "$DESKTOP_DIR"
+-		# Older .desktop implementations used the execute bits as
+-		# a marker for a .desktop being safe to treat as a shortcut
+-		chmod a+x "$DESKTOP_DIR/$STEAMPACKAGE.desktop"
+-		if command -v gio >/dev/null; then
+-			# Making it executable is not enough in recent
+-			# (Ubuntu 20.04) versions of
+-			# https://gitlab.gnome.org/World/ShellExtensions/desktop-icons
+-			gio set --type=string "$DESKTOP_DIR/$STEAMPACKAGE.desktop" metadata::trusted true || :
+-			# Generate an inotify event so the desktop
+-			# implementation reloads it
+-			touch "$DESKTOP_DIR/$STEAMPACKAGE.desktop"
+-		fi
+-	fi
+-
+ 	# Restore the umask
+ 	umask "$omask"
+ }
