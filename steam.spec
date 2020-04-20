@@ -2,11 +2,11 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.61
-Release:        9%{?dist}
+Version:        1.0.0.62
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
-# Redistribution and repackaging for Linux is allowed, see license file
-License:        Steam License Agreement
+# Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
+License:        Steam License Agreement and MIT
 URL:            http://www.steampowered.com/
 ExclusiveArch:  i686
 
@@ -27,9 +27,14 @@ Source6:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-black
 # Configure limits in systemd < 240
 Source7:        01-steam.conf
 
-# Updated UDEV rules
-# https://github.com/ValveSoftware/steam-devices/commit/00aa8483cd243cbea9cff17fc113501aadc390b4
-Patch0:         %{name}-udev-rules-update.patch
+# Newer UDEV rules
+Source10:       https://raw.githubusercontent.com/ValveSoftware/steam-devices/master/60-steam-input.rules
+Source11:       https://raw.githubusercontent.com/ValveSoftware/steam-devices/master/60-steam-vr.rules
+
+# Do not install desktop file in lib/steam, do not install apt sources
+Patch0:         %{name}-makefile.patch
+# Do not try to copy steam.desktop to the user's desktop from lib/steam
+Patch1:         %{name}-no-icon-on-desktop.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
@@ -120,10 +125,7 @@ installation, automatic updates, achievements, SteamCloud synchronized savegame
 and screenshot functionality, and many social features.
 
 %prep
-%autosetup -p1 -n %{name}
-
-sed -i 's/\r$//' %{name}.desktop
-sed -i 's/\r$//' steam_subscriber_agreement.txt
+%autosetup -p1 -n %{name}-launcher
 
 cp %{SOURCE5} .
 
@@ -137,10 +139,8 @@ rm -fr %{buildroot}%{_docdir}/%{name}/ \
     %{buildroot}%{_bindir}/%{name}deps
 
 mkdir -p %{buildroot}%{_udevrulesdir}/
-install -m 644 -p lib/udev/rules.d/* \
-    %{SOURCE6} %{buildroot}%{_udevrulesdir}/
-
-desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
+install -m 644 -p %{SOURCE10} %{SOURCE11} %{SOURCE6} \
+    %{buildroot}%{_udevrulesdir}/
 
 # Environment files
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
@@ -157,6 +157,9 @@ mkdir -p %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 %endif
+
+%check
+desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 %post
 %if 0%{?rhel} == 7
@@ -178,7 +181,7 @@ fi
 
 %files
 %license COPYING steam_subscriber_agreement.txt
-%doc README debian/changelog README.Fedora
+%doc debian/changelog README.Fedora
 %{_bindir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
@@ -199,6 +202,9 @@ fi
 %endif
 
 %changelog
+* Wed Apr 15 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.62-1
+- Update to 1.0.0.62.
+
 * Sun Feb 09 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.61-9
 - Update README.Fedora
 - Require gamemode on Fedora & CentOS/RHEL 8.
