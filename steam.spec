@@ -110,8 +110,8 @@ Requires:       alsa-plugins-pulseaudio%{?_isa}
 
 # Game performance is increased with gamemode (for games that support it)
 %if 0%{?fedora} || 0%{?rhel} >= 8
-Requires:       gamemode
-Requires:       gamemode%{?_isa}
+Recommends:       gamemode
+Recommends:       gamemode%{?_isa}
 # Recommends:     gnome-shell-extension-gamemode
 %endif
 
