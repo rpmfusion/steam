@@ -57,7 +57,15 @@ example, on my system, to get the firewall zone I’m using:
  public
    interfaces: em1
 
-Then enable it permanently (i.e. at reboot) and immediately with these commands:
+You may want to set up a home or other trusted zone in your firewall. This will
+help protect your system from unauthorized remote access over the internet.
+This is out of scope for this help text, but this tutorial will guide
+you through the process:
+
+  https://ctrl.blog/entry/how-to-firewalld-zone-by-ip
+
+Then enable the Steam service permanently (i.e. at reboot) on the public or
+your preferred zone immediately with these commands:
 
  # firewall-cmd --zone=public --add-service=steam-streaming --permanent
  # firewall-cmd --zone=public --add-service=steam-streaming
