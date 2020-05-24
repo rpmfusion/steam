@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.62
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -112,7 +112,7 @@ Requires:       alsa-plugins-pulseaudio%{?_isa}
 %if 0%{?fedora} || 0%{?rhel} >= 8
 Recommends:       gamemode
 Recommends:       gamemode%{?_isa}
-Recommends:       gnome-shell-extension-gamemode
+Recommends:       (gnome-shell-extension-gamemode if gnome-shell)
 %endif
 
 Provides:       steam-noruntime = %{?epoch:%{epoch}:}%{version}-%{release}
@@ -202,6 +202,9 @@ fi
 %endif
 
 %changelog
+* Sun May 24 2020 Leigh Scott <leigh123linux@gmail.com> - 1.0.0.62-3
+- Use boolean conditional for gnome-shell-extension-gamemode (rfbz#5659)
+
 * Tue May 19 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.62-2
 - Recommend gamemode components.
 - Update README with instructions on setting subnets to the home zone in
