@@ -1,7 +1,7 @@
 diff -Naur steam-launcher.old/bin_steam.sh steam-launcher/bin_steam.sh
---- steam-launcher.old/bin_steam.sh	2020-04-15 11:51:24.202660348 +0200
-+++ steam-launcher/bin_steam.sh	2020-04-15 20:20:00.581536078 +0200
-@@ -110,29 +110,6 @@
+--- steam-launcher.old/bin_steam.sh	2020-06-29 07:37:51.655884908 +0200
++++ steam-launcher/bin_steam.sh	2020-06-29 07:38:20.635411806 +0200
+@@ -110,32 +110,6 @@
  	ln -fns "$STEAMDIR" "$STEAMDATALINK"
  	setup_variables
  
@@ -13,18 +13,21 @@ diff -Naur steam-launcher.old/bin_steam.sh steam-launcher/bin_steam.sh
 -	DESKTOP_DIR="${XDG_DESKTOP_DIR:-$HOME/Desktop}"
 -
 -	if [ -d "$DESKTOP_DIR" ] && [ "x$bootstrapdir" = "x/usr/lib/$STEAMPACKAGE" ]; then
--		cp "$bootstrapdir/$STEAMPACKAGE.desktop" "$DESKTOP_DIR"
--		# Older .desktop implementations used the execute bits as
--		# a marker for a .desktop being safe to treat as a shortcut
--		chmod a+x "$DESKTOP_DIR/$STEAMPACKAGE.desktop"
--		if command -v gio >/dev/null; then
--			# Making it executable is not enough in recent
--			# (Ubuntu 20.04) versions of
--			# https://gitlab.gnome.org/World/ShellExtensions/desktop-icons
--			gio set --type=string "$DESKTOP_DIR/$STEAMPACKAGE.desktop" metadata::trusted true || :
--			# Generate an inotify event so the desktop
--			# implementation reloads it
--			touch "$DESKTOP_DIR/$STEAMPACKAGE.desktop"
+-		# There might be a symlink in place already, in such case we do nothing
+-		if [ ! -L "$DESKTOP_DIR/$STEAMPACKAGE.desktop" ]; then
+-			cp "$bootstrapdir/$STEAMPACKAGE.desktop" "$DESKTOP_DIR"
+-			# Older .desktop implementations used the execute bits as
+-			# a marker for a .desktop being safe to treat as a shortcut
+-			chmod a+x "$DESKTOP_DIR/$STEAMPACKAGE.desktop"
+-			if command -v gio >/dev/null; then
+-				# Making it executable is not enough in recent
+-				# (Ubuntu 20.04) versions of
+-				# https://gitlab.gnome.org/World/ShellExtensions/desktop-icons
+-				gio set --type=string "$DESKTOP_DIR/$STEAMPACKAGE.desktop" metadata::trusted true || :
+-				# Generate an inotify event so the desktop
+-				# implementation reloads it
+-				touch "$DESKTOP_DIR/$STEAMPACKAGE.desktop"
+-			fi
 -		fi
 -	fi
 -
