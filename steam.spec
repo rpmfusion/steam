@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.62
-Release:        3%{?dist}
+Version:        1.0.0.64
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -51,12 +51,12 @@ Requires:       zenity
 # for both i686 and x86_64 games.
 Requires:       mesa-dri-drivers%{?_isa}
 Requires:       mesa-dri-drivers
-%if 0%{?fedora} || 0%{?rhel} > 7
-# vulkan-drivers is only provided as x86_64 on EL7
-# So CentOS altarch i386 will have none
-# Just drop vulkan dependency there for now
 Requires:       mesa-vulkan-drivers%{?_isa}
 Requires:       mesa-vulkan-drivers
+%if 0%{?rhel} == 7
+Requires:       vulkan%{?_isa}
+Requires:       vulkan
+%else
 Requires:       vulkan-loader%{?_isa}
 Requires:       vulkan-loader
 %endif
@@ -202,6 +202,10 @@ fi
 %endif
 
 %changelog
+* Mon Jun 29 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.64-1
+- Update to 1.0.0.64.
+- RHEL / CentOS 7 x86_64 has 32/64 bit Mesa Vulkan drivers.
+
 * Sun May 24 2020 Leigh Scott <leigh123linux@gmail.com> - 1.0.0.62-3
 - Use boolean conditional for gnome-shell-extension-gamemode (rfbz#5659)
 
