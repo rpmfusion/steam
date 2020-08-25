@@ -2,7 +2,7 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.64
+Version:        1.0.0.66
 Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
@@ -202,6 +202,9 @@ fi
 %endif
 
 %changelog
+* Tue Aug 25 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.66-1
+- Update to 1.0.0.66.
+
 * Mon Jun 29 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.64-1
 - Update to 1.0.0.64.
 - RHEL / CentOS 7 x86_64 has 32/64 bit Mesa Vulkan drivers.
