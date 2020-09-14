@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.66
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -66,6 +66,7 @@ Requires:       alsa-lib%{?_isa}
 Requires:       gtk2%{?_isa}
 %if 0%{?fedora} || 0%{?rhel} >= 8
 Requires:       libnsl%{?_isa}
+Requires:       libxcrypt-compat%{?_isa}
 %endif
 Requires:       libpng12%{?_isa}
 Requires:       libXext%{?_isa}
@@ -202,6 +203,9 @@ fi
 %endif
 
 %changelog
+* Mon Sep 14 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.66-2
+- Add missing libxcrypt-compat dependency (#5752).
+
 * Tue Aug 25 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.66-1
 - Update to 1.0.0.66.
 
