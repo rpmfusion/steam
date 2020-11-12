@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.66
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -24,7 +24,7 @@ Source5:        README.Fedora
 # Input devices seen as joysticks:
 Source6:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-blacklist/master/after_kernel_4_9/51-these-are-not-joysticks-rm.rules
 
-# Configure limits in systemd < 240
+# Configure limits in systemd
 Source7:        01-steam.conf
 
 # Newer UDEV rules
@@ -151,13 +151,11 @@ install -pm 644 %{SOURCE1} %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d
 mkdir -p %{buildroot}%{_metainfodir}
 install -p -m 0644 %{SOURCE4} %{buildroot}%{_metainfodir}/
 
-# Since systemd 240 we don't need to raise NOFILE limit
-%if 0%{?rhel} >= 7
+# Raise file descriptor limit
 mkdir -p %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 mkdir -p %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
-%endif
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
@@ -193,16 +191,15 @@ fi
 %{_metainfodir}/%{name}.appdata.xml
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 %{_udevrulesdir}/*
-
-# Since systemd 240 we don't need to raise NOFILE limit
-%if 0%{?rhel} >= 7
-%{_prefix}/lib/systemd/system.conf.d/
+%dir %{_prefix}/lib/systemd/system.conf.d/
 %{_prefix}/lib/systemd/system.conf.d/01-steam.conf
-%{_prefix}/lib/systemd/user.conf.d/
+%dir %{_prefix}/lib/systemd/user.conf.d/
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
-%endif
 
 %changelog
+* Thu Nov 12 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.66-3
+- Raise file descriptor limit again for Proton (#5834).
+
 * Mon Sep 14 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.66-2
 - Add missing libxcrypt-compat dependency (#5752).
 
