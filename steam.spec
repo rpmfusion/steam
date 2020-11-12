@@ -64,7 +64,7 @@ Requires:       vulkan-loader
 # Minimum requirements for starting the steam client for the first time
 Requires:       alsa-lib%{?_isa}
 Requires:       gtk2%{?_isa}
-%if 0%{?fedora} || 0%{?rhel} >= 8
+%if 0%{?fedora} || 0%{?rhel} > 8
 Requires:       libnsl%{?_isa}
 Requires:       libxcrypt-compat%{?_isa}
 %endif
@@ -199,6 +199,7 @@ fi
 %changelog
 * Thu Nov 12 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.66-3
 - Raise file descriptor limit again for Proton (#5834).
+- Fix libxcrypt compatibility with CentOS/RHEL 7+ (5825).
 
 * Mon Sep 14 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.66-2
 - Add missing libxcrypt-compat dependency (#5752).
