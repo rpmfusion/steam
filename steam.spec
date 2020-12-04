@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.68
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -111,9 +111,16 @@ Requires:       alsa-plugins-pulseaudio%{?_isa}
 
 # Game performance is increased with gamemode (for games that support it)
 %if 0%{?fedora} || 0%{?rhel} >= 8
-Recommends:       gamemode
-Recommends:       gamemode%{?_isa}
-Recommends:       (gnome-shell-extension-gamemode if gnome-shell)
+Recommends:     gamemode
+Recommends:     gamemode%{?_isa}
+Recommends:     (gnome-shell-extension-gamemode if gnome-shell)
+%endif
+
+# Proton uses xdg-desktop-portal to open URLs from inside a container
+%if 0%{?fedora}
+Requires:       xdg-desktop-portal
+Recommends:     (xdg-desktop-portal-gtk if gnome-shell)
+Recommends:     (xdg-desktop-portal-kde if kwin)
 %endif
 
 Provides:       steam-noruntime = %{?epoch:%{epoch}:}%{version}-%{release}
@@ -197,6 +204,9 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Fri Dec 04 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.68-2
+- Require xdg-desktop-portal for Proton.
+
 * Fri Dec 04 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.68-1
 - Update to 1.0.0.68.
 - Update Steam udev input rules.
