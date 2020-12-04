@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.66
-Release:        3%{?dist}
+Version:        1.0.0.68
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -197,6 +197,10 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Fri Dec 04 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.68-1
+- Update to 1.0.0.68.
+- Update Steam udev input rules.
+
 * Thu Nov 12 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.66-3
 - Raise file descriptor limit again for Proton (#5834).
 - Fix libxcrypt compatibility with CentOS/RHEL 7+ (5825).
