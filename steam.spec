@@ -107,7 +107,11 @@ Requires:       libdbusmenu-gtk3%{?_isa} >= 16.04.0
 Requires:       libatomic%{?_isa}
 
 # Required by Shank
+%if 0%{?fedora} || 0%{?rhel} >= 8
+Requires:       (alsa-plugins-pulseaudio%{?_isa} or pipewire-alsa%{?_isa})
+%else
 Requires:       alsa-plugins-pulseaudio%{?_isa}
+%endif
 
 # Game performance is increased with gamemode (for games that support it)
 %if 0%{?fedora} || 0%{?rhel} >= 8
