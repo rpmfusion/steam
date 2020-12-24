@@ -208,7 +208,7 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
-* Thu Dec 24 10:30:40 CET 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.68-4
+* Thu Dec 24 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.68-4
 - Remove pipewire-alsa conditional for RHEL 8.
 
 * Wed Dec 16 2020 Nicolas Chauvet <kwizart@gmail.com> - 1.0.0.68-3
