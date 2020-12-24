@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.68
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -107,7 +107,7 @@ Requires:       libdbusmenu-gtk3%{?_isa} >= 16.04.0
 Requires:       libatomic%{?_isa}
 
 # Required by Shank
-%if 0%{?fedora} || 0%{?rhel} >= 8
+%if 0%{?fedora}
 Requires:       (alsa-plugins-pulseaudio%{?_isa} or pipewire-alsa%{?_isa})
 %else
 Requires:       alsa-plugins-pulseaudio%{?_isa}
@@ -208,6 +208,9 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Thu Dec 24 10:30:40 CET 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.68-4
+- Remove pipewire-alsa conditional for RHEL 8.
+
 * Wed Dec 16 2020 Nicolas Chauvet <kwizart@gmail.com> - 1.0.0.68-3
 - Switch to boolean deps for pipewire/pa alsa support
 
