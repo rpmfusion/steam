@@ -107,8 +107,12 @@ Requires:       libdbusmenu-gtk3%{?_isa} >= 16.04.0
 Requires:       libatomic%{?_isa}
 
 # Required by Shank
+%if 0%{?fedora}
 Requires:       (alsa-plugins-pulseaudio%{?_isa} if pulseaudio)
 Requires:       (pipewire-alsa%{?_isa} if pipewire)
+%else
+Requires:       alsa-plugins-pulseaudio%{?_isa}
+%endif
 
 # Game performance is increased with gamemode (for games that support it)
 %if 0%{?fedora} || 0%{?rhel} >= 8
@@ -205,7 +209,7 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
-* Sun Dec 27 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.68-5
+* Sun Dec 27 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.68-6
 - Update build conditionals for Pipewire/ALSA.
 
 * Thu Dec 24 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.68-4
