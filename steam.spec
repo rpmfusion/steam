@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.68
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -107,11 +107,8 @@ Requires:       libdbusmenu-gtk3%{?_isa} >= 16.04.0
 Requires:       libatomic%{?_isa}
 
 # Required by Shank
-%if 0%{?fedora}
-Requires:       (alsa-plugins-pulseaudio%{?_isa} or pipewire-alsa%{?_isa})
-%else
-Requires:       alsa-plugins-pulseaudio%{?_isa}
-%endif
+Requires:       (alsa-plugins-pulseaudio%{?_isa} if pulseaudio)
+Requires:       (pipewire-alsa%{?_isa} if pipewire)
 
 # Game performance is increased with gamemode (for games that support it)
 %if 0%{?fedora} || 0%{?rhel} >= 8
@@ -208,6 +205,9 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Sun Dec 27 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.68-5
+- Update build conditionals for Pipewire/ALSA.
+
 * Thu Dec 24 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.68-4
 - Remove pipewire-alsa conditional for RHEL 8.
 
