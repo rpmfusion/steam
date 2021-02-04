@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.68
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -209,6 +209,9 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Thu Feb 04 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.0.0.68-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
 * Sun Dec 27 2020 Simone Caronni <negativo17@gmail.com> - 1.0.0.68-6
 - Update build conditionals for Pipewire/ALSA.
 
