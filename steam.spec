@@ -148,7 +148,7 @@ rm -fr %{buildroot}%{_docdir}/%{name}/ \
     %{buildroot}%{_bindir}/%{name}deps
 
 mkdir -p %{buildroot}%{_udevrulesdir}/
-install -m 644 -p steam-launcher/subprojects/steam-devices/*.rules %{SOURCE6} \
+install -m 644 -p subprojects/steam-devices/*.rules %{SOURCE6} \
     %{buildroot}%{_udevrulesdir}/
 
 # Environment files
