@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.68
-Release:        7%{?dist}
+Version:        1.0.0.70
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -26,10 +26,6 @@ Source6:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-black
 
 # Configure limits in systemd
 Source7:        01-steam.conf
-
-# Newer UDEV rules
-Source10:       https://raw.githubusercontent.com/ValveSoftware/steam-devices/master/60-steam-input.rules
-Source11:       https://raw.githubusercontent.com/ValveSoftware/steam-devices/master/60-steam-vr.rules
 
 # Do not install desktop file in lib/steam, do not install apt sources
 Patch0:         %{name}-makefile.patch
@@ -152,7 +148,7 @@ rm -fr %{buildroot}%{_docdir}/%{name}/ \
     %{buildroot}%{_bindir}/%{name}deps
 
 mkdir -p %{buildroot}%{_udevrulesdir}/
-install -m 644 -p %{SOURCE10} %{SOURCE11} %{SOURCE6} \
+install -m 644 -p steam-launcher/subprojects/steam-devices/*.rules %{SOURCE6} \
     %{buildroot}%{_udevrulesdir}/
 
 # Environment files
@@ -209,6 +205,10 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Mon Apr 12 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.70-1
+- Update to 1.0.0.70.
+- Switch to tarball provided steam-devices udev rules.
+
 * Thu Feb 04 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.0.0.68-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
