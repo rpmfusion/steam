@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.70
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -138,6 +138,11 @@ and screenshot functionality, and many social features.
 
 cp %{SOURCE5} .
 
+# Remove too new desktop menu spec (Gnome >= 3.37.2)
+%if 0%{?fedora} == 32 || 0%{?rhel} == 8 || 0%{?rhel} == 7
+sed -i -e '/PrefersNonDefaultGPU/d' steam.desktop
+%endif
+
 %build
 # Nothing to build
 
@@ -205,6 +210,9 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Mon Apr 12 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.70-2
+- Remove new desktop entry specification for Fedora 32 and RHEL/CentOS 7/8.
+
 * Mon Apr 12 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.70-1
 - Update to 1.0.0.70.
 - Switch to tarball provided steam-devices udev rules.
