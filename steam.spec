@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.70
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -210,6 +210,9 @@ fi
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Tue May 04 2021 Leigh Scott <leigh123linux@gmail.com> - 1.0.0.70-3
+- Fix appdata screenshots (rfbz#5984)
+
 * Mon Apr 12 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.70-2
 - Remove new desktop entry specification for Fedora 32 and RHEL/CentOS 7/8.
 
