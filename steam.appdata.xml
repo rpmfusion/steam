@@ -24,15 +24,15 @@
   <screenshots>
     <screenshot type="default">
       <caption>The main Steam library window</caption>
-      <image type="source" width="1280" height="720">http://negativo17.org/appstream/steam-0.png</image>
+      <image type="source" height="720" width="1280">https://negativo17.org/appstream/steam-0.png</image>
     </screenshot>
     <screenshot>
       <caption>Steam Store interface</caption>
-      <image type="source" width="1280" height="720">http://negativo17.org/appstream/steam-1.png</image>
+      <image type="source" height="720" width="1280">https://negativo17.org/appstream/steam-1.png</image>
     </screenshot>
     <screenshot>
       <caption>Steam community</caption>
-      <image type="source" width="1280" height="720">http://negativo17.org/appstream/steam-2.png</image>
+      <image type="source" height="720" width="1280">https://negativo17.org/appstream/steam-2.png</image>
     </screenshot>
   </screenshots>
 </component>
