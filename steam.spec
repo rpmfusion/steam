@@ -124,14 +124,26 @@ Recommends:     (xdg-desktop-portal-gtk if gnome-shell)
 Recommends:     (xdg-desktop-portal-kde if kwin)
 %endif
 
+Requires:       steam-devices = %{?epoch:%{epoch}:}%{version}-%{release}
 Provides:       steam-noruntime = %{?epoch:%{epoch}:}%{version}-%{release}
 Obsoletes:      steam-noruntime < %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description
-Installer for the Steam software distribution service.
 Steam is a software distribution service with an online store, automated
 installation, automatic updates, achievements, SteamCloud synchronized savegame
 and screenshot functionality, and many social features.
+
+This package contains the installer for the Steam software distribution service.
+
+%package        devices
+Summary:        Permissions required by Steam for gaming devices
+
+%description    devices
+Steam is a software distribution service with an online store, automated
+installation, automatic updates, achievements, SteamCloud synchronized savegame
+and screenshot functionality, and many social features.
+
+This package contains the necessary permissions for gaming devices.
 
 %prep
 %autosetup -p1 -n %{name}-launcher
@@ -203,13 +215,19 @@ fi
 %{_mandir}/man6/%{name}.*
 %{_metainfodir}/%{name}.appdata.xml
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
-%{_udevrulesdir}/*
 %dir %{_prefix}/lib/systemd/system.conf.d/
 %{_prefix}/lib/systemd/system.conf.d/01-steam.conf
 %dir %{_prefix}/lib/systemd/user.conf.d/
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
+%files devices
+%{_udevrulesdir}/*
+
 %changelog
+* Wed Jun 30 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.70-4
+- Separate udev rules in separate subpackage to be used also by Valve's Flatpak
+  Steam client.
+
 * Tue May 04 2021 Leigh Scott <leigh123linux@gmail.com> - 1.0.0.70-3
 - Fix appdata screenshots (rfbz#5984)
 
