@@ -27,6 +27,10 @@ Source6:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-black
 # Configure limits in systemd
 Source7:        01-steam.conf
 
+# Newer udev rules than what is bundled in the tarball
+Source8:        https://raw.githubusercontent.com/ValveSoftware/steam-devices/master/60-steam-input.rules
+Source9:        https://raw.githubusercontent.com/ValveSoftware/steam-devices/master/60-steam-vr.rules
+
 # Do not install desktop file in lib/steam, do not install apt sources
 Patch0:         %{name}-makefile.patch
 # Do not try to copy steam.desktop to the user's desktop from lib/steam
@@ -165,7 +169,7 @@ rm -fr %{buildroot}%{_docdir}/%{name}/ \
     %{buildroot}%{_bindir}/%{name}deps
 
 mkdir -p %{buildroot}%{_udevrulesdir}/
-install -m 644 -p subprojects/steam-devices/*.rules %{SOURCE6} \
+install -m 644 -p %{SOURCE6} %{SOURCE8} %{SOURCE9} \
     %{buildroot}%{_udevrulesdir}/
 
 # Environment files
@@ -227,6 +231,8 @@ fi
 * Wed Jun 30 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.70-4
 - Separate udev rules in separate subpackage to be used also by Valve's Flatpak
   Steam client.
+- Use upstream's udev rules as those are newer than what is bundled in the
+  installer tarball.
 
 * Tue May 04 2021 Leigh Scott <leigh123linux@gmail.com> - 1.0.0.70-3
 - Fix appdata screenshots (rfbz#5984)
