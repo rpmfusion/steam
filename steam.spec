@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.70
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -228,6 +228,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Wed Aug 04 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.0.0.70-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
 * Wed Jun 30 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.70-4
 - Separate udev rules in separate subpackage to be used also by Valve's Flatpak
   Steam client.
