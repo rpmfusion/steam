@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 
 Name:           steam
-Version:        1.0.0.70
-Release:        5%{?dist}
+Version:        1.0.0.71
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -228,6 +228,10 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Sun Aug 15 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.71-1
+- Update to 1.0.0.71.
+- Update README.Fedora with supported controllers.
+
 * Wed Aug 04 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.0.0.70-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 

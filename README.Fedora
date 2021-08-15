@@ -82,22 +82,36 @@ Joysticks, keyboards and game pads
 
 The package contains the UDEV rules for the following devices:
 
+- Afterglow Deluxe+ Wired Controller for Nintendo Switch
 - Armor Armor 3 Pad PS4
+- Astro C40
 - DualShock 4 over bluetooth hidraw
 - DualShock 4 over USB hidraw
 - DualShock 4 Slim over bluetooth hidraw
 - DualShock 4 Slim over USB hidraw
 - DualShock 4 wireless adapter over USB hidraw
 - EMiO Elite Controller for PS4
+- Faceoff Wired Pro Controller for Nintendo Switch
 - HORIPAD 4 FPS
 - HORIPAD 4 FPS Plus
+- HORIPAD for Nintendo Switch
+- HORIPAD mini 4
 - HORI RAP4
 - Mad Catz - Street Fighter V Arcade FightPad PRO
 - Mad Catz - Street Fighter V Arcade FightStick TE S+
 - Nacon PS4 Revolution Pro Controller
 - Nintendo Switch Pro Controller over bluetooth hidraw
 - Nintendo Switch Pro Controller over USB hidraw
+- NVIDIA Shield Controller (2015 - NVIDIA_Controller_v01.03 over USB hidraw)
+- NVIDIA Shield Controller (2017 - NVIDIA_Controller_v01.04 over bluetooth hidraw)
+- NVIDIA Shield Portable (2013 - NVIDIA_Controller_v01.01 - In-Home Streaming only)
+- PDP Wired Fight Pad Pro for Nintendo Switch
+- PowerA Wired Controller for Nintendo Switch
+- PowerA Wireless Controller for Nintendo Switch
+- PS5 DualSense controller over bluetooth hidraw
+- PS5 DualSense controller over USB hidraw
 - Razer Panthera Arcade Stick
+- Razer Raiju 2 Tournament Edition
 - Razer Raiju PS4 Controller
 - Steam Controller udev write access
 - STRIKEPAD PS4 Grip Add-on
@@ -105,13 +119,6 @@ The package contains the UDEV rules for the following devices:
 - Valve HID devices over USB hidraw
 - Valve USB devices
 - ZeroPlus P4 (hitbox)
-
-Additional support for Nvidia devices (including mouse workaround for early
-devices):
-
-- Nvidia Shield Portable (2013) for Steam Remote Play only
-- Nvidia Shield Controller (2015) over USB hidraw
-- Nvidia Shield Controller (2017) over bluetooth hidraw
 
 Workaround to have it properly detected as a game pad and not a mouse:
 
