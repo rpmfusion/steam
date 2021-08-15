@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.71
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -146,6 +146,9 @@ This package contains the installer for the Steam software distribution service.
 
 %package        devices
 Summary:        Permissions required by Steam for gaming devices
+BuildArch:      noarch
+Provides:       steam-devices = %{?epoch:%{epoch}:}%{version}-%{release}
+Obsoletes:      steam-devices < %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description    devices
 Steam is a software distribution service with an online store, automated
@@ -236,6 +239,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Sun Aug 15 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.71-2
+- Steam UDEV subpackage should be noarch.
+
 * Sun Aug 15 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.71-1
 - Update to 1.0.0.71.
 - Update README.Fedora with supported controllers.
