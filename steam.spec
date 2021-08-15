@@ -1,6 +1,8 @@
 # Binary package, no debuginfo should be generated
 %global debug_package %{nil}
 
+%global appstream_id com.valvesoftware.Steam
+
 Name:           steam
 Version:        1.0.0.71
 Release:        1%{?dist}
@@ -13,7 +15,6 @@ ExclusiveArch:  i686
 Source0:        http://repo.steampowered.com/%{name}/pool/%{name}/s/%{name}/%{name}_%{version}.tar.gz
 Source1:        %{name}.sh
 Source2:        %{name}.csh
-Source4:        %{name}.appdata.xml
 Source5:        README.Fedora
 
 # Ghost touches in Big Picture mode:
@@ -38,6 +39,10 @@ Patch1:         %{name}-no-icon-on-desktop.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  systemd
+
+%if 0%{?fedora} || 0%{?rhel} >= 8
+BuildRequires:  libappstream-glib
+%endif
 
 # Required to run the initial setup
 Requires:       tar
@@ -155,7 +160,7 @@ This package contains the necessary permissions for gaming devices.
 cp %{SOURCE5} .
 
 # Remove too new desktop menu spec (Gnome >= 3.37.2)
-%if 0%{?fedora} == 32 || 0%{?rhel} == 8 || 0%{?rhel} == 7
+%if 0%{?rhel} == 8 || 0%{?rhel} == 7
 sed -i -e '/PrefersNonDefaultGPU/d' steam.desktop
 %endif
 
@@ -176,10 +181,6 @@ install -m 644 -p %{SOURCE6} %{SOURCE8} %{SOURCE9} \
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -pm 644 %{SOURCE1} %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d
 
-# Install AppData
-mkdir -p %{buildroot}%{_metainfodir}
-install -p -m 0644 %{SOURCE4} %{buildroot}%{_metainfodir}/
-
 # Raise file descriptor limit
 mkdir -p %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 mkdir -p %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
@@ -188,6 +189,11 @@ install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
+%if 0%{?fedora} || 0%{?rhel} >= 8
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id}.metainfo.xml
+%else
+rm -fr %{buildroot}%{_datadir}/metainfo
+%endif
 
 %post
 %if 0%{?rhel} == 7
@@ -217,7 +223,9 @@ fi
 %{_datadir}/pixmaps/%{name}_tray_mono.png
 %{_libdir}/%{name}/
 %{_mandir}/man6/%{name}.*
-%{_metainfodir}/%{name}.appdata.xml
+%if 0%{?fedora} || 0%{?rhel} >= 8
+%{_metainfodir}/%{appstream_id}.metainfo.xml
+%endif
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 %dir %{_prefix}/lib/systemd/system.conf.d/
 %{_prefix}/lib/systemd/system.conf.d/01-steam.conf
@@ -231,6 +239,7 @@ fi
 * Sun Aug 15 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.71-1
 - Update to 1.0.0.71.
 - Update README.Fedora with supported controllers.
+- Use bundled AppData.
 
 * Wed Aug 04 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.0.0.70-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
