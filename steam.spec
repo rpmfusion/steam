@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.71
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -241,6 +241,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Wed Aug 25 2021 Nicolas Chauvet <kwizart@gmail.com> - 1.0.0.71-3
+- Keep the stream-devices sub-package arched
+
 * Sun Aug 15 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.71-2
 - Steam UDEV subpackage should be noarch.
 
