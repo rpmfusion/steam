@@ -24,16 +24,19 @@ backends, depending on the hardware you are running. These are detected at
 runtime, and are all 32 bit libraries also on 64 bit systems, as the client is
 32 bit only.
 
-+------------------+------------------+-------------------------+
-|   Video Driver   |   Hardware API   |        Library          |
-+------------------+------------------+-------------------------+
-| Intel (intel)    | Decoding: VA-API | libva.so.1 / libva.so.2 |
-| Nvidia (nvidia)  | Decoding: VDPAU  | libvdpau.so.1           |
-| AMD (radeon)     | Decoding: VDPAU  | libvdpau.so.1           |
-| Nvidia (nouveau) | Decoding: VDPAU  | libvdpau.so.1           |
-| Nvidia (nvidia)  | Encoding: NVENC  | libnvidia-encode.so.1   |
-| Intel (intel)    | Encoding: VA-API | libva.so.1 / libva.so.2 |
-+------------------+------------------+-------------------------+
++--------+---------+-------------+--------------+
+| Vendor | Driver  | Encoding    | Decoding     |
++--------+---------+-------------+--------------+
+| Intel  | intel   | VA-API      | VA-API       |
++--------+---------+-------------+--------------+
+| Nvidia | nvidia  | NVENC/NVFBC | NVDEC/VDPAU  |
++--------+---------+-------------+--------------+
+| AMD    | radeon  | VA-API      | VA-API/VDPAU |
++--------+---------+-------------+--------------+
+| Nvidia | nouveau | -           | VA-API/VDPAU |
++--------+---------+-------------+--------------+
+| AMD    | amdgpu  | VA-API      | VA-API/VDPAU |
++--------+---------+-------------+--------------+
 
 Steam Remote Play configuration
 ===============================
@@ -80,85 +83,10 @@ additional inbound ports.
 Joysticks, keyboards and game pads
 ==================================
 
-The package contains the UDEV rules for the following devices:
-
-- Afterglow Deluxe+ Wired Controller for Nintendo Switch
-- Armor Armor 3 Pad PS4
-- Astro C40
-- DualShock 4 over bluetooth hidraw
-- DualShock 4 over USB hidraw
-- DualShock 4 Slim over bluetooth hidraw
-- DualShock 4 Slim over USB hidraw
-- DualShock 4 wireless adapter over USB hidraw
-- EMiO Elite Controller for PS4
-- Faceoff Wired Pro Controller for Nintendo Switch
-- HORIPAD 4 FPS
-- HORIPAD 4 FPS Plus
-- HORIPAD for Nintendo Switch
-- HORIPAD mini 4
-- HORI RAP4
-- Mad Catz - Street Fighter V Arcade FightPad PRO
-- Mad Catz - Street Fighter V Arcade FightStick TE S+
-- Nacon PS4 Revolution Pro Controller
-- Nintendo Switch Pro Controller over bluetooth hidraw
-- Nintendo Switch Pro Controller over USB hidraw
-- NVIDIA Shield Controller (2015 - NVIDIA_Controller_v01.03 over USB hidraw)
-- NVIDIA Shield Controller (2017 - NVIDIA_Controller_v01.04 over bluetooth hidraw)
-- NVIDIA Shield Portable (2013 - NVIDIA_Controller_v01.01 - In-Home Streaming only)
-- PDP Wired Fight Pad Pro for Nintendo Switch
-- PowerA Wired Controller for Nintendo Switch
-- PowerA Wireless Controller for Nintendo Switch
-- PS5 DualSense controller over bluetooth hidraw
-- PS5 DualSense controller over USB hidraw
-- Razer Panthera Arcade Stick
-- Razer Raiju 2 Tournament Edition
-- Razer Raiju PS4 Controller
-- Steam Controller udev write access
-- STRIKEPAD PS4 Grip Add-on
-- Valve HID devices over bluetooth hidraw
-- Valve HID devices over USB hidraw
-- Valve USB devices
-- ZeroPlus P4 (hitbox)
-
-Workaround to have it properly detected as a game pad and not a mouse:
-
-- Wacom ET-0405 Graphire
-- Wacom ET-0405A Graphire2 (4x5)
-- Wacom ET-0507A Graphire2 (5x7)
-- Wacom CTE-430 Graphire3 (4x5)
-- Wacom CTE-630 Graphire3 (6x8)
-- Wacom CTE-440 Graphire4 (4x5)
-- Wacom CTE-640 Graphire4 (6x8)
-- Wacom CTE-450 Bamboo Fun (4x5)
-- Wacom CTE-640 Graphire 4 6x8
-- Wacom CTE-450 Bamboo Fun 4x5
-- Wacom CTE-650 Bamboo Fun 6x8
-- Wacom CTE-631 Bamboo One
-- Wacom Bamboo Pen and Touch CTH-460
-- Wacom Intuos Pen (S) CTL-480
-- A4 Tech Co., G7 750 mouse
-- A4 Tech Co., Ltd Bloody R8A Gaming Mouse
-- A4 Tech Co., Ltd Bloody TL80 Terminator Laser Gaming Mouse
-- A4 Tech Co., Ltd Bloody RT7 Terminator Wireless
-- A4 Tech Co., Ltd Bloody V8 mouse
-- Modecom MC-5006 Keyboard
-- A4 Tech Co., Ltd Terminator TL9 Laser Gaming Mouse
-- A4 Tech Co., Ltd Bloody V5
-- A4 Tech Co., Ltd Bloody R3 mouse
-- A4 Tech Co., Ltd X-718BK Oscar Optical Gaming Mouse
-- A4 Tech Co., Sharkoon Fireglider Optical
-- A4 Tech Co., Ltd XL-730K / XL-750BK / XL-755BK Laser Mouse
-- A4 Tech Co., Ltd X7 G800V keyboard
-- A4 Tech Co., Ltd Bloody V7 mouse
-- A4 Tech Co., Ltd Bloody AL9 mouse
-- A4 Tech Co., Ltd Bloody B540 keyboard
-- A4 Tech Co., Ltd Bloody V2 mouse
-- A4 Tech Co., Ltd Bloody B120 Keyboard
-- [T3] 2.4GHz and IR Air Mouse Remote Control
-- Roccat Tyon Mouse
-- Winkeyless.kr Keyboards
-- Cooler Master Storm Mizar Mouse
-- Cooler Master Storm Alcor Mouse
+The package contains the UDEV rules for lots of gamepads as presented in the
+Steam devices repository (https://github.com/ValveSoftware/steam-devices).
+Also it contains additional UDEV rules to make sure some multimedia keyboards
+and tablet devices are properly detected as game pads and not mouses.
 
 Steam Controller
 ================

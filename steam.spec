@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.71
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -94,15 +94,8 @@ Requires:       systemd-libs%{?_isa}
 Requires:       firewalld-filesystem
 Requires(post): firewalld-filesystem
 
-# Required for hardware decoding during In-Home Streaming (intel)
-# Since libva-intel-driver on f28+ there is hw detection with appstream
-%if 0%{?rhel} == 7
-Requires:       libva-intel-driver%{?_isa}
-%else
+# Required for hardware encoding/decoding during Remote Play (intel/radeon/amdgpu/nouveau)
 Requires:       libva%{?_isa}
-%endif
-
-# Required for hardware decoding during In-Home Streaming (radeon/nouveau)
 Requires:       libvdpau%{?_isa}
 
 # Required for having a functioning menu on the tray icon
@@ -134,8 +127,6 @@ Recommends:     (xdg-desktop-portal-kde if kwin)
 %endif
 
 Requires:       steam-devices = %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:       steam-noruntime = %{?epoch:%{epoch}:}%{version}-%{release}
-Obsoletes:      steam-noruntime < %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description
 Steam is a software distribution service with an online store, automated
@@ -241,6 +232,13 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Fri Aug 27 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.71-4
+- Remove old noruntime provide/obsolete.
+- Remove VA-API driver dependencies for RHEL/CentOS 7 and update relevant
+  information.
+- Remove not really relevant information about controllers from the readme.
+- Update steam-devices.
+
 * Wed Aug 25 2021 Nicolas Chauvet <kwizart@gmail.com> - 1.0.0.71-3
 - Keep the stream-devices sub-package arched
 
