@@ -4,8 +4,8 @@
 %global appstream_id com.valvesoftware.Steam
 
 Name:           steam
-Version:        1.0.0.71
-Release:        4%{?dist}
+Version:        1.0.0.72
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -232,6 +232,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Sat Oct 09 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.72-1
+- Update to 1.0.0.72.
+
 * Fri Aug 27 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.71-4
 - Remove old noruntime provide/obsolete.
 - Remove VA-API driver dependencies for RHEL/CentOS 7 and update relevant
