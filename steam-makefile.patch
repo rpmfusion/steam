@@ -1,6 +1,6 @@
 diff -Naur steam-launcher.old/Makefile steam-launcher/Makefile
---- steam-launcher.old/Makefile	2021-08-15 10:06:43.590277519 +0200
-+++ steam-launcher/Makefile	2021-08-15 10:09:33.544337930 +0200
+--- steam-launcher.old/Makefile	2021-11-20 09:53:46.869376047 +0100
++++ steam-launcher/Makefile	2021-11-20 09:54:01.568630510 +0100
 @@ -3,7 +3,7 @@
  all:
  	@echo 'Run steam with "./steam" or install it with "sudo make install"'
@@ -10,7 +10,7 @@ diff -Naur steam-launcher.old/Makefile steam-launcher/Makefile
  
  install-bin:
  	install -d -m 755 $(DESTDIR)$(PREFIX)/bin/
-@@ -41,12 +41,7 @@
+@@ -43,12 +43,7 @@
  install-desktop:
  	install -d -m 755 $(DESTDIR)$(PREFIX)/share/applications/
  	install -d -m 755 $(DESTDIR)$(pkglibdir)/
