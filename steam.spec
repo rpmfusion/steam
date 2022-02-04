@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.74
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -69,6 +69,7 @@ Requires:       vulkan-loader
 # Minimum requirements for starting the steam client for the first time
 Requires:       alsa-lib%{?_isa}
 Requires:       gtk2%{?_isa}
+Requires:       libICE%{?_isa}
 %if 0%{?fedora} || 0%{?rhel} > 8
 Requires:       libnsl%{?_isa}
 Requires:       libxcrypt-compat%{?_isa}
@@ -117,6 +118,7 @@ Requires:       alsa-plugins-pulseaudio%{?_isa}
 Recommends:     gamemode
 Recommends:     gamemode%{?_isa}
 Recommends:     (gnome-shell-extension-gamemode if gnome-shell)
+Recommends:     (gnome-shell-extension-appindicator if gnome-shell)
 %endif
 
 # Proton uses xdg-desktop-portal to open URLs from inside a container
@@ -232,6 +234,11 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Fri Feb 04 2022 Simone Caronni <negativo17@gmail.com> - 1.0.0.74-2
+- Add gnome-shell-extension-appindicator if running on Gnome (#6194).
+- Require libICE to avoid spamming the console. It's installed by default on a
+  Gnome installation but not explicitly required (#6195).
+
 * Fri Dec 10 2021 Simone Caronni <negativo17@gmail.com> - 1.0.0.74-1
 - Update to 1.0.0.74.
 
