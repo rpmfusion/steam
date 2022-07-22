@@ -4,8 +4,8 @@
 %global appstream_id com.valvesoftware.Steam
 
 Name:           steam
-Version:        1.0.0.74
-Release:        2%{?dist}
+Version:        1.0.0.75
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -38,6 +38,7 @@ Patch0:         %{name}-makefile.patch
 Patch1:         %{name}-no-icon-on-desktop.patch
 
 BuildRequires:  desktop-file-utils
+BuildRequires:  make
 BuildRequires:  systemd
 
 %if 0%{?fedora} || 0%{?rhel} >= 8
@@ -66,8 +67,9 @@ Requires:       vulkan-loader%{?_isa}
 Requires:       vulkan-loader
 %endif
 
-# Minimum requirements for starting the steam client for the first time
+# Minimum requirements for starting the steam client using system libraries
 Requires:       alsa-lib%{?_isa}
+Requires:       fontconfig%{?_isa}
 Requires:       gtk2%{?_isa}
 Requires:       libICE%{?_isa}
 %if 0%{?fedora} || 0%{?rhel} > 8
@@ -80,6 +82,7 @@ Requires:       libXinerama%{?_isa}
 Requires:       libXtst%{?_isa}
 Requires:       libXScrnSaver%{?_isa}
 Requires:       mesa-libGL%{?_isa}
+Requires:       NetworkManager-libnm%{?_isa}
 Requires:       nss%{?_isa}
 Requires:       pulseaudio-libs%{?_isa}
 
@@ -234,6 +237,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Fri Jul 22 2022 Simone Caronni <negativo17@gmail.com> - 1.0.0.75-1
+- Update to 1.0.0.75.
+
 * Fri Feb 04 2022 Simone Caronni <negativo17@gmail.com> - 1.0.0.74-2
 - Add gnome-shell-extension-appindicator if running on Gnome (#6194).
 - Require libICE to avoid spamming the console. It's installed by default on a
