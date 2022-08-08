@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.75
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -237,6 +237,10 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Mon Aug 08 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 1.0.0.75-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild and ffmpeg
+  5.1
+
 * Fri Jul 22 2022 Simone Caronni <negativo17@gmail.com> - 1.0.0.75-1
 - Update to 1.0.0.75.
 
