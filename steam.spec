@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.76
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -122,7 +122,9 @@ This package contains the installer for the Steam software distribution service.
 
 %package        devices
 Summary:        Permissions required by Steam for gaming devices
-BuildArch:      noarch
+# Until the infra can deal with noarch sub-packages from excludearch/exclusivearch
+# keep the sub-package arched
+#BuildArch:      noarch
 Provides:       steam-devices = %{?epoch:%{epoch}:}%{version}-%{release}
 Obsoletes:      steam-devices < %{?epoch:%{epoch}:}%{version}-%{release}
 
@@ -189,6 +191,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_udevrulesdir}/*
 
 %changelog
+* Sun Apr 16 2023 Simone Caronni <negativo17@gmail.com> - 1.0.0.76-2
+- Apply again workaround for steam-devices removed by mistake.
+
 * Tue Mar 07 2023 Simone Caronni <negativo17@gmail.com> - 1.0.0.76-1
 - Update to 1.0.0.76.
 - Separate SPEC file per distribution.
