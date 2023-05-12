@@ -4,8 +4,8 @@
 %global appstream_id com.valvesoftware.Steam
 
 Name:           steam
-Version:        1.0.0.76
-Release:        2%{?dist}
+Version:        1.0.0.78
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -194,6 +194,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Fri May 12 2023 Simone Caronni <negativo17@gmail.com> - 1.0.0.78-1
+- Update to 1.0.0.78.
+
 * Sun Apr 16 2023 Simone Caronni <negativo17@gmail.com> - 1.0.0.76-2
 - Apply again workaround for steam-devices removed by mistake.
 
