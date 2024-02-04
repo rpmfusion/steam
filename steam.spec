@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.78
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -191,6 +191,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_udevrulesdir}/*
 
 %changelog
+* Sun Feb 04 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 1.0.0.78-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+
 * Thu Aug 03 2023 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 1.0.0.78-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
 
