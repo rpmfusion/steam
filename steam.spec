@@ -4,7 +4,7 @@
 %global appstream_id com.valvesoftware.Steam
 
 Name:           steam
-Version:        1.0.0.78
+Version:        1.0.0.79
 Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
@@ -194,6 +194,10 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Sun Feb 18 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0.79-1
+- Update to 1.0.0.79.
+- Update udev rules.
+
 * Fri May 12 2023 Simone Caronni <negativo17@gmail.com> - 1.0.0.78-1
 - Update to 1.0.0.78.
 
