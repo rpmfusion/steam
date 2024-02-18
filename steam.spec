@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.79
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -106,6 +106,7 @@ Requires:       (pipewire-alsa%{?_isa} if pipewire)
 # Game performance is increased with gamemode (for games that support it)
 Recommends:     gamemode
 Recommends:     gamemode%{?_isa}
+Recommends:     (gnome-shell-extension-appindicator if gnome-shell)
 
 # Proton uses xdg-desktop-portal to open URLs from inside a container
 Requires:       xdg-desktop-portal
@@ -189,6 +190,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_udevrulesdir}/*
 
 %changelog
+* Sun Feb 18 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0.79-2
+- Re-add gnome-shell-extension-appindicator recommendation.
+
 * Sun Feb 18 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0.79-1
 - Update to 1.0.0.79.
 - Drop gnome-shell-extension-gamemode recommendation (#6853).
