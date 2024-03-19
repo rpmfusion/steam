@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.79
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -63,7 +63,8 @@ Requires:       alsa-lib%{?_isa}
 Requires:       fontconfig%{?_isa}
 Requires:       gtk2%{?_isa}
 Requires:       libICE%{?_isa}
-Requires:       libpng12%{?_isa}
+Requires:       libnsl%{?_isa}
+Requires:       libpng%{?_isa}
 Requires:       libXext%{?_isa}
 Requires:       libXinerama%{?_isa}
 Requires:       libXtst%{?_isa}
@@ -89,9 +90,6 @@ Requires(post): firewalld-filesystem
 # Required for hardware encoding/decoding during Remote Play (intel/radeon/amdgpu/nouveau)
 Requires:       libva%{?_isa}
 Requires:       libvdpau%{?_isa}
-
-# Required for having a functioning menu on the tray icon
-Requires:       libdbusmenu-gtk3%{?_isa} >= 16.04.0
 
 # Required by Feral interactive games
 Requires:       libatomic%{?_isa}
@@ -194,6 +192,9 @@ fi
 %{_udevrulesdir}/*
 
 %changelog
+* Tue Mar 19 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0.79-3
+- Adjust dependencies.
+
 * Sun Feb 18 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0.79-1
 - Update to 1.0.0.79.
 - Update udev rules.
