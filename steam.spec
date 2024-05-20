@@ -109,6 +109,11 @@ Requires:       xdg-desktop-portal
 Recommends:     (xdg-desktop-portal-gtk if gnome-shell)
 Recommends:     (xdg-desktop-portal-kde if kwin)
 
+# Prevent log spam: steam-runtime-launcher-service[...]: E: Can't find session bus: Error spawning command line `dbus-launch ...': Failed to execute child process "dbus-launch" (No such file or directory)
+Recommends:     dbus-x11
+# Prevent log spam: sh: 1: xdg-user-dir: not found
+Recommends:     xdg-user-dirs
+
 Requires:       steam-devices = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description
