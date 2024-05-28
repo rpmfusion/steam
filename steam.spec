@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.79
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -108,6 +108,13 @@ Requires:       xdg-desktop-portal
 Recommends:     (xdg-desktop-portal-gtk if gnome-shell)
 Recommends:     (xdg-desktop-portal-kde if kwin)
 
+# Prevent log spam when thse are not pulled in as dependencies of full desktops
+Recommends:     dbus-x11
+Recommends:     xdg-user-dirs
+
+# Allow using Steam Runtime Launch Options
+Recommends:     gobject-introspection
+
 Requires:       steam-devices = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description
@@ -188,6 +195,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_udevrulesdir}/*
 
 %changelog
+* Tue May 28 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0.79-4
+- Add dependencies when full desktop is not installed.
+- Add dependencies for using steam-runtime-launch-options.
+
 * Tue Mar 19 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0.79-3
 - Adjust dependencies.
 
