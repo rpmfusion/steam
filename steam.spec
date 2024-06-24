@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.79
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -21,9 +21,10 @@ Source5:        README.Fedora
 # https://github.com/ValveSoftware/steam-for-linux/issues/3384
 # https://bugzilla.kernel.org/show_bug.cgi?id=28912
 # https://github.com/denilsonsa/udev-joystick-blacklist
+# https://github.com/systemd/systemd/issues/32773
 
 # Input devices seen as joysticks:
-Source6:        https://raw.githubusercontent.com/denilsonsa/udev-joystick-blacklist/master/after_kernel_4_9/51-these-are-not-joysticks-rm.rules
+Source6:        61-these-are-not-joystick.hwdb
 
 # Configure limits in systemd
 Source7:        01-steam.conf
@@ -156,9 +157,11 @@ sed -i -e '/PrefersNonDefaultGPU/d' steam.desktop
 rm -fr %{buildroot}%{_docdir}/%{name}/ \
     %{buildroot}%{_bindir}/%{name}deps
 
+mkdir -p %{buildroot}%{_udevhwdbdir}/
+install -m 644 -p %{SOURCE6} %{buildroot}%{_udevhwdbdir}/
+
 mkdir -p %{buildroot}%{_udevrulesdir}/
-install -m 644 -p %{SOURCE6} %{SOURCE8} %{SOURCE9} \
-    %{buildroot}%{_udevrulesdir}/
+install -m 644 -p %{SOURCE8} %{SOURCE9} %{buildroot}%{_udevrulesdir}/
 
 # Environment files
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
@@ -192,9 +195,15 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %files devices
+%{_udevhwdbdir}/*
 %{_udevrulesdir}/*
 
 %changelog
+* Mon Jun 24 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0.79-5
+- Update udev rules.
+- Convert udev rule for blocking wrong joystick devices to a systemd hwdb file:
+  https://github.com/denilsonsa/udev-joystick-blacklist/issues/58
+
 * Tue May 28 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0.79-4
 - Add dependencies when full desktop is not installed.
 - Add dependencies for using steam-runtime-launch-options.
