@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.79
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -98,6 +98,13 @@ Requires:       libatomic%{?_isa}
 
 # Required by Shank
 Requires:       (alsa-plugins-pulseaudio%{?_isa} if pulseaudio)
+
+# Patched for Wayland
+# https://github.com/ValveSoftware/steam-for-linux/issues/8853
+# https://github.com/negativo17/steam/issues/9
+%if 0%{?fedora} >= 40
+Requires:       SDL2%{?_isa}
+%endif
 
 # Game performance is increased with gamemode (for games that support it)
 Recommends:     gamemode
@@ -199,6 +206,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_udevrulesdir}/*
 
 %changelog
+* Mon Aug 05 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0.79-6
+- Fix for Wayland on Fedora 40.
+
 * Mon Jun 24 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0.79-5
 - Update udev rules.
 - Convert udev rule for blocking wrong joystick devices to a systemd hwdb file:
