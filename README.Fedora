@@ -24,19 +24,19 @@ backends, depending on the hardware you are running. These are detected at
 runtime, and are all 32 bit libraries also on 64 bit systems, as the client is
 32 bit only.
 
-+--------+---------+-------------+--------------+
-| Vendor | Driver  | Encoding    | Decoding     |
-+--------+---------+-------------+--------------+
-| Intel  | intel   | VA-API      | VA-API       |
-+--------+---------+-------------+--------------+
-| Nvidia | nvidia  | NVENC/NVFBC | NVDEC/VDPAU  |
-+--------+---------+-------------+--------------+
-| AMD    | radeon  | VA-API      | VA-API/VDPAU |
-+--------+---------+-------------+--------------+
-| Nvidia | nouveau | -           | VA-API/VDPAU |
-+--------+---------+-------------+--------------+
-| AMD    | amdgpu  | VA-API      | VA-API/VDPAU |
-+--------+---------+-------------+--------------+
++--------+---------+-------------+----------+
+| Vendor | Driver  | Encoding    | Decoding |
++--------+---------+-------------+----------+
+| AMD    | radeon  | VA-API      | VA-API   |
++--------+---------+-------------+----------+
+| AMD    | amdgpu  | VA-API      | VA-API   |
++--------+---------+-------------+----------+
+| Intel  | intel   | VA-API      | VA-API   |
++--------+---------+-------------+----------+
+| Nvidia | nvidia  | NVENC/NVFBC | NVDEC    |
++--------+---------+-------------+----------+
+| Nvidia | nouveau | -           | VA-API   |
++--------+---------+-------------+----------+
 
 Steam Remote Play configuration
 ===============================
@@ -85,7 +85,7 @@ Joysticks, keyboards and game pads
 
 The package contains the UDEV rules for lots of gamepads as presented in the
 Steam devices repository (https://github.com/ValveSoftware/steam-devices).
-Also it contains additional UDEV rules to make sure some multimedia keyboards
+Also it contains an additional hwdb file to make sure some multimedia keyboards
 and tablet devices are properly detected as game pads and not mouses.
 
 Steam Controller
@@ -106,3 +106,10 @@ identifier of 'CRP DISABLED'. Steam will then wait for that device to become
 mounted somewhere so that it can copy the firmware file into the controller.
 If you don't auto-mount mass storage devices by default, you need to mount it
 manually when the Steam client is waiting for the volume to get mounted.
+
+Index
+=====
+
+The Lighthouse base stations V2 do not require any extra software or special
+configuration to work. Power on and power off are managed automatically by the
+SteamVR software.
