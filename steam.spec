@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.82
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -23,15 +23,8 @@ Source5:        README.Fedora
 # https://github.com/denilsonsa/udev-joystick-blacklist
 # https://github.com/systemd/systemd/issues/32773
 
-# Input devices seen as joysticks:
-Source6:        61-these-are-not-joystick.hwdb
-
 # Configure limits in systemd
 Source7:        01-steam.conf
-
-# Newer udev rules than what is bundled in the tarball
-Source8:        https://raw.githubusercontent.com/ValveSoftware/steam-devices/master/60-steam-input.rules
-Source9:        https://raw.githubusercontent.com/ValveSoftware/steam-devices/master/60-steam-vr.rules
 
 # Do not install desktop file in lib/steam, do not install apt sources
 Patch0:         %{name}-makefile.patch
@@ -133,16 +126,6 @@ and screenshot functionality, and many social features.
 
 This package contains the installer for the Steam software distribution service.
 
-%package        devices
-Summary:        Permissions required by Steam for gaming devices
-
-%description    devices
-Steam is a software distribution service with an online store, automated
-installation, automatic updates, achievements, SteamCloud synchronized savegame
-and screenshot functionality, and many social features.
-
-This package contains the necessary permissions for gaming devices.
-
 %prep
 %autosetup -p1 -n %{name}-launcher
 
@@ -156,12 +139,6 @@ cp %{SOURCE5} .
 
 rm -fr %{buildroot}%{_docdir}/%{name}/ \
     %{buildroot}%{_bindir}/%{name}deps
-
-mkdir -p %{buildroot}%{_udevhwdbdir}/
-install -m 644 -p %{SOURCE6} %{buildroot}%{_udevhwdbdir}/
-
-mkdir -p %{buildroot}%{_udevrulesdir}/
-install -m 644 -p %{SOURCE8} %{SOURCE9} %{buildroot}%{_udevrulesdir}/
 
 # Environment files
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
@@ -194,11 +171,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %dir %{_prefix}/lib/systemd/user.conf.d/
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
-%files devices
-%{_udevhwdbdir}/*
-%{_udevrulesdir}/*
-
 %changelog
+* Wed Apr 09 2025 Simone Caronni <negativo17@gmail.com> - 1.0.0.82-4
+- Drop steam-devices subpackage.
+
 * Wed Mar 19 2025 Simone Caronni <negativo17@gmail.com> - 1.0.0.82-3
 - Relax requirement on steam-devices.
 - Trim changelog.
