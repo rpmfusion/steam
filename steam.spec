@@ -4,8 +4,8 @@
 %global appstream_id com.valvesoftware.Steam
 
 Name:           steam
-Version:        1.0.0.82
-Release:        4%{?dist}
+Version:        1.0.0.83
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -172,6 +172,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Sun May 11 2025 Simone Caronni <negativo17@gmail.com> - 1.0.0.83-1
+- Update to 1.0.0.83.
+
 * Wed Apr 09 2025 Simone Caronni <negativo17@gmail.com> - 1.0.0.82-4
 - Drop steam-devices subpackage.
 
