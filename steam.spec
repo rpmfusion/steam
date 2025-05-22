@@ -10,7 +10,8 @@ Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
 URL:            http://www.steampowered.com/
-ExclusiveArch:  i686
+ExcludeArch:  aarch64
+ExcludeArch:  ppc64le
 
 Source0:        https://repo.steampowered.com/%{name}/archive/beta/%{name}_%{version}.tar.gz
 Source1:        %{name}.sh
