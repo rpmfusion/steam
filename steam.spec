@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.83
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -15,7 +15,9 @@ ExclusiveArch:  i686
 Source0:        https://repo.steampowered.com/%{name}/archive/beta/%{name}_%{version}.tar.gz
 Source1:        %{name}.sh
 Source2:        %{name}.csh
-Source5:        README.Fedora
+Source3:        README.Fedora
+# Load ntsync at boot. Might be reverted depending on https://fedoraproject.org/wiki/Changes/NTSYNC
+Source4:        ntsync.conf
 
 # Ghost touches in Big Picture mode:
 # https://github.com/ValveSoftware/steam-for-linux/issues/3384
@@ -96,7 +98,7 @@ Requires:       (pipewire-alsa%{?_isa} if pipewire)
 # Patched for Wayland
 # https://github.com/ValveSoftware/steam-for-linux/issues/8853
 # https://github.com/negativo17/steam/issues/9
-%if 0%{?fedora} >= 40
+%if 0%{?fedora}
 Requires:       SDL2%{?_isa}
 %endif
 
@@ -129,7 +131,7 @@ This package contains the installer for the Steam software distribution service.
 %prep
 %autosetup -p1 -n %{name}-launcher
 
-cp %{SOURCE5} .
+cp %{SOURCE3} .
 
 %build
 # Nothing to build
@@ -149,6 +151,11 @@ mkdir -p %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 mkdir -p %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
+
+%if 0%{?fedora}
+mkdir -p %{buildroot}%{_modulesloaddir}
+install -m 644 -p %{SOURCE4} %{buildroot}%{_modulesloaddir}/
+%endif
 
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
@@ -170,8 +177,14 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_prefix}/lib/systemd/system.conf.d/01-steam.conf
 %dir %{_prefix}/lib/systemd/user.conf.d/
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
+%if 0%{?fedora}
+%{_modulesloaddir}/ntsync.conf
+%endif
 
 %changelog
+* Sat Sep 06 2025 Simone Caronni <negativo17@gmail.com> - 1.0.0.83-3
+- Load ntsync module.
+
 * Mon Jul 28 2025 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 1.0.0.83-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
 
