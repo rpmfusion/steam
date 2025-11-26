@@ -153,11 +153,6 @@ mkdir -p %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 
-%if 0%{?fedora}
-mkdir -p %{buildroot}%{_modulesloaddir}
-install -m 644 -p %{SOURCE4} %{buildroot}%{_modulesloaddir}/
-%endif
-
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id}.metainfo.xml
