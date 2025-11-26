@@ -173,9 +173,6 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_prefix}/lib/systemd/system.conf.d/01-steam.conf
 %dir %{_prefix}/lib/systemd/user.conf.d/
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
-%if 0%{?fedora}
-%{_modulesloaddir}/ntsync.conf
-%endif
 
 %changelog
 * Wed Nov 26 2025 Simone Caronni <negativo17@gmail.com> - 1.0.0.85-2
