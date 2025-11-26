@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.85
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -16,8 +16,6 @@ Source0:        https://repo.steampowered.com/%{name}/archive/beta/%{name}_%{ver
 Source1:        %{name}.sh
 Source2:        %{name}.csh
 Source3:        README.Fedora
-# Load ntsync at boot. Might be reverted depending on https://fedoraproject.org/wiki/Changes/NTSYNC
-Source4:        ntsync.conf
 
 # Ghost touches in Big Picture mode:
 # https://github.com/ValveSoftware/steam-for-linux/issues/3384
@@ -119,6 +117,9 @@ Recommends:     xdg-user-dirs
 # Allow using Steam Runtime Launch Options
 Recommends:     gobject-introspection
 
+# Automatic loading of the ntsync module
+Recommends:     ntsync-autoload
+
 Requires:       steam-devices
 
 %description
@@ -182,6 +183,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %endif
 
 %changelog
+* Wed Nov 26 2025 Simone Caronni <negativo17@gmail.com> - 1.0.0.85-2
+- Do not provide ntsync loading mechanism, require the ntsync-autoload package
+  (ntsync is not yet enabled in official Proton versions).
+
 * Fri Oct 17 2025 Simone Caronni <negativo17@gmail.com> - 1.0.0.85-1
 - Update to 1.0.0.85.
 
