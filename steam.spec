@@ -39,6 +39,7 @@ BuildRequires:  systemd
 # Required to run the initial setup
 Requires:       tar
 Requires:       zenity
+Requires:       xz
 
 # Most games use OpenGL, some games already use Vulkan. Vulkan is also required
 # for Steam Play to run Windows games through emulation. i686 version of these
