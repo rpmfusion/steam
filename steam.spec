@@ -5,7 +5,7 @@
 
 Name:           steam
 Version:        1.0.0.85
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -158,6 +158,12 @@ install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id}.metainfo.xml
 
+%if 0%{?fedora} >= 44
+%post
+# Workaround for https://fedoraproject.org/wiki/Changes/droppingOfCertPemFile#Temporary_fix
+update-ca-trust extract --rhbz2387674
+%endif
+
 %files
 %license COPYING steam_subscriber_agreement.txt
 %doc debian/changelog README.Fedora
@@ -176,6 +182,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Thu Feb 19 2026 Simone Caronni <negativo17@gmail.com> - 1.0.0.85-4
+- Apply workaround for
+  https://fedoraproject.org/wiki/Changes/droppingOfCertPemFile.
+
 * Mon Feb 02 2026 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 1.0.0.85-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
 
