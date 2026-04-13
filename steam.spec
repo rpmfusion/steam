@@ -4,7 +4,7 @@
 
 Name:           steam
 Version:        1.0.0.85
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file. udev rules are MIT.
 License:        Steam License Agreement and MIT
@@ -151,14 +151,6 @@ install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id}.metainfo.xml
 
-%if 0%{?fedora} >= 44
-%triggerin -- ca-certificates
-# Workaround for https://fedoraproject.org/wiki/Changes/droppingOfCertPemFile#Temporary_fix
-# https://github.com/ValveSoftware/steam-for-linux/issues/12318
-# https://github.com/ValveSoftware/steam-for-linux/issues/12292
-update-ca-trust extract --rhbz2387674
-%endif
-
 %files
 %license COPYING steam_subscriber_agreement.txt
 %doc debian/changelog README.Fedora
@@ -177,6 +169,10 @@ update-ca-trust extract --rhbz2387674
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Mon Apr 13 2026 Simone Caronni <negativo17@gmail.com> - 1.0.0.85-6
+- Drop certificate workaround:
+  https://bodhi.fedoraproject.org/updates/FEDORA-2026-285c6d38f7
+
 * Mon Mar 23 2026 Simone Caronni <negativo17@gmail.com> - 1.0.0.85-5
 - Convert certificates workaround to trigger.
 
