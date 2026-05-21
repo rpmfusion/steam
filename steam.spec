@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.85
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -86,8 +86,10 @@ Requires:       pipewire-libs
 Requires:       pipewire-libs(x86-32)
 Requires:       pulseaudio-libs
 Requires:       pulseaudio-libs(x86-32)
+%if 0%{?fedora}
 Requires:       SDL3
 Requires:       SDL3(x86-32)
+%endif
 # The client does not override only the ones linked at:
 #   ~/.local/share/Steam/ubuntu12_32/steam-runtime/pinned_libs_32
 #   ~/.local/share/Steam/ubuntu12_32/steam-runtime/pinned_libs_64
@@ -184,6 +186,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Thu May 21 2026 Simone Caronni <negativo17@gmail.com> - 1.0.0.85-8
+- RHEL does not have SDL3 packages, and the client is all SDL3 based.
+
 * Wed May 20 2026 Simone Caronni <negativo17@gmail.com> - 1.0.0.85-7
 - Package is now x86_64 as the client itself is all 64 bit based.
 - Most of the client libraries are also installed in 32 bit format, as all the
