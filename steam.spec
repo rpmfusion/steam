@@ -3,12 +3,12 @@
 
 Name:           steam
 Version:        1.0.0.85
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
 URL:            http://www.steampowered.com/
-BuildArch:      noarch
+ExclusiveArch:  x86_64
 
 Source0:        https://repo.steampowered.com/%{name}/archive/beta/%{name}_%{version}.tar.gz
 Source1:        %{name}.sh
@@ -139,6 +139,24 @@ and screenshot functionality, and many social features.
 
 This package contains the installer for the Steam software distribution service.
 
+%package arch-transition
+Summary: Transition package for migrating Steam from i686 to x86_64
+Requires: %{name} = %{version}-%{release}
+Provides: steam = 1.0.0.85-8
+Obsoletes: steam < 1.0.0.85-8
+BuildArch: noarch
+
+%description arch-transition
+This package is used to migrate Steam installations from the
+i686 package to the x86_64 package.
+
+It exists only to handle package replacement and dependency
+changes during upgrades, and can be safely removed once the
+transition is complete.
+
+%files arch-transition
+#empty
+
 %prep
 %autosetup -p1 -n %{name}-launcher
 
@@ -186,6 +204,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_prefix}/lib/systemd/user.conf.d/01-steam.conf
 
 %changelog
+* Tue May 26 2026 Sérgio Basto <sergio@serjux.com> - 1.0.0.85-9
+- Add steam-arch-transition package for i686 to x86_64 migration
+
 * Thu May 21 2026 Simone Caronni <negativo17@gmail.com> - 1.0.0.85-8
 - RHEL does not have SDL3 packages, and the client is all SDL3 based.
 
