@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.85
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -47,7 +47,6 @@ Requires:       vulkan-loader
 Requires:       vulkan-loader(x86-32)
 
 # Hardware stuff (permissions on devices, hardware updater, etc.):
-Recommends:     hidapi
 Requires:       steam-devices
 
 # These libraries are also part of the Ubuntu runtime at:
@@ -203,6 +202,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %files arch-transition
 
 %changelog
+* Sun May 31 2026 Simone Caronni <negativo17@gmail.com> - 1.0.0.85-10
+- Latest client statically links libhidapi where required.
+
 * Tue May 26 2026 Sérgio Basto <sergio@serjux.com> - 1.0.0.85-9
 - Add steam-arch-transition package for i686 to x86_64 migration
 
