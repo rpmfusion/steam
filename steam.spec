@@ -85,7 +85,7 @@ Requires:       pipewire-libs
 Requires:       pipewire-libs(x86-32)
 Requires:       pulseaudio-libs
 Requires:       pulseaudio-libs(x86-32)
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 10
 Requires:       SDL3
 Requires:       SDL3(x86-32)
 %endif
