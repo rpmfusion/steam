@@ -2,8 +2,8 @@
 %global appstream_id com.valvesoftware.Steam
 
 Name:           steam
-Version:        1.0.0.85
-Release:        10%{?dist}
+Version:        1.0.0.86
+Release:        1%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -202,6 +202,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %files arch-transition
 
 %changelog
+* Fri Jun 19 2026 Simone Caronni <negativo17@gmail.com> - 1.0.0.86-1
+- Update to 1.0.0.86.
+
 * Sun May 31 2026 Simone Caronni <negativo17@gmail.com> - 1.0.0.85-10
 - Latest client statically links libhidapi where required.
 
