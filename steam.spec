@@ -131,6 +131,9 @@ Recommends:     gobject-introspection
 # Automatic loading of the ntsync module
 Recommends:     ntsync-autoload
 
+# Fix error "sh: line 1: lsb_release: command not found"
+Recommends:     /usr/bin/lsb_release
+
 %description
 Steam is a software distribution service with an online store, automated
 installation, automatic updates, achievements, SteamCloud synchronized savegame
