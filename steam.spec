@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.87
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -31,6 +31,11 @@ BuildRequires:  systemd
 Requires:       glibc(x86-32)
 Requires:       libdrm(x86-32)
 Requires:       libglvnd-glx(x86-32)
+# The 32-bit Steam bootstrap updater dlopens the unversioned libGLX.so.
+# Fedora ships this linker name in libglvnd-devel.i686.
+%if 0%{?fedora}
+Requires:       libglvnd-devel(x86-32)
+%endif
 Requires:       libnsl(x86-32)
 
 # Required to run the initial setup
@@ -202,6 +207,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %files arch-transition
 
 %changelog
+* Fri Aug 21 2026 Vertigo.Red <senior.joker2009@yandex.ru> - 1.0.0.87-3
+- Require libglvnd-devel(x86-32) on Fedora because the 32-bit bootstrap
+  updater dlopens the unversioned libGLX.so.
+
 * Sun Aug 02 2026 RPM Fusion Release Engineering <leigh123linux@rpmfusion.org> - 1.0.0.87-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
 
