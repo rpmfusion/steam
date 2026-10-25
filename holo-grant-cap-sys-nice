@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -eu
+
+if [[ $EUID -ne 0 ]];
+then
+    exec pkexec --disable-internal-agent "$0" "$@"
+fi
+
+# This script grants cap_sys_nice via file capabilities to vrcompositor-launcher.
+ALLOWED_BASENAMES=(
+    vrcompositor-launcher
+)
+
+target="$(realpath -e -- "${1}")"
+
+if [[ " ${ALLOWED_BASENAMES[*]} " !=  *" $(basename "${target}") "* ]]; then
+    echo "This script only grants privileges for certain predetermined executables" >&2
+    exit 1
+fi
+
+# Only accept files owned by the calling user, so system binaries or files of
+# other users can't be targeted. setcap refuses symlinks, so whatever could be
+# swapped in at the resolved path after this check is also owned by the user.
+if [[ ! -f "${target}" || -L "${target}" || "$(stat -c %u -- "${target}")" != "${PKEXEC_UID:-0}" ]]; then
+    echo "${target} is not a regular file owned by the calling user" >&2
+    exit 1
+fi
+
+setcap CAP_SYS_NICE=eip "${target}"

@@ -3,7 +3,7 @@
 
 Name:           steam
 Version:        1.0.0.87
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for the Steam software distribution service
 # Redistribution and repackaging for Linux is allowed, see license file
 License:        Steam License Agreement
@@ -16,6 +16,10 @@ Source2:        %{name}.csh
 Source3:        README.Fedora
 # Configure limits in systemd
 Source7:        01-steam.conf
+# Called by SteamVR's bin/vrsetup.sh, which checks specifically for
+# /usr/bin/holo-polkit-helpers/holo-grant-cap-sys-nice
+Source8:        holo-grant-cap-sys-nice
+Source9:        org.valve.holo-grant-cap-sys-nice.policy
 
 # Do not install desktop file in lib/steam, do not install apt sources
 Patch0:         %{name}-makefile.patch
@@ -48,6 +52,9 @@ Requires:       vulkan-loader(x86-32)
 
 # Hardware stuff (permissions on devices, hardware updater, etc.):
 Requires:       steam-devices
+
+# The client, Steam Overlay etc. are all X based
+Requires:       xorg-x11-server-Xwayland
 
 # These libraries are also part of the Ubuntu runtime at:
 #   ~/.local/share/Steam/ubuntu12_32
@@ -123,6 +130,10 @@ Requires:       xdg-desktop-portal
 Recommends:     (xdg-desktop-portal-gtk if gnome-shell)
 Recommends:     (xdg-desktop-portal-kde if kwin)
 
+# Grant CAP_SYS_NICE to the SteamVR compositor without a password prompt
+Requires:       libcap
+Requires:       polkit
+
 # Prevent log spam when thse are not pulled in as dependencies of full desktops
 Recommends:     dbus-x11
 Recommends:     xdg-user-dirs
@@ -132,6 +143,10 @@ Recommends:     gobject-introspection
 
 # Automatic loading of the ntsync module
 Recommends:     ntsync-autoload
+
+# Performance overlay with gamescope
+Recommends:     gamescope
+Recommends:     mangohud
 
 %description
 Steam is a software distribution service with an online store, automated
@@ -180,6 +195,10 @@ mkdir -p %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/system.conf.d/
 install -m 644 -p %{SOURCE7} %{buildroot}%{_prefix}/lib/systemd/user.conf.d/
 
+# SteamVR compositor helper
+install -p -m 0755 -D %{SOURCE8} %{buildroot}%{_bindir}/holo-polkit-helpers/holo-grant-cap-sys-nice
+install -p -m 0644 -D %{SOURCE9} %{buildroot}%{_datadir}/polkit-1/actions/org.valve.holo-grant-cap-sys-nice.policy
+
 %check
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id}.metainfo.xml
@@ -188,6 +207,8 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %license COPYING steam_subscriber_agreement.txt
 %doc debian/changelog README.Fedora
 %{_bindir}/%{name}
+%dir %{_bindir}/holo-polkit-helpers
+%{_bindir}/holo-polkit-helpers/holo-grant-cap-sys-nice
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 %{_datadir}/pixmaps/%{name}.png
@@ -195,6 +216,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %{_prefix}/lib/%{name}/
 %{_mandir}/man6/%{name}.*
 %{_metainfodir}/%{appstream_id}.metainfo.xml
+%{_datadir}/polkit-1/actions/org.valve.holo-grant-cap-sys-nice.policy
 %config(noreplace) %{_sysconfdir}/profile.d/%{name}.*sh
 %dir %{_prefix}/lib/systemd/system.conf.d/
 %{_prefix}/lib/systemd/system.conf.d/01-steam.conf
@@ -204,6 +226,10 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{appstream_id
 %files arch-transition
 
 %changelog
+* Sun Oct 25 2026 Simone Caronni <negativo17@gmail.com> - 1.0.0.87-4
+- Add gamescope and mangohud recommendations.
+- Add SteamOS helper to grant CAP_SYS_NICE to the SteamVR compositor.
+
 * Sun Sep 20 2026 Simone Caronni <negativo17@gmail.com> - 1.0.0.87-3
 - Add back mesa-libEGL.i686 dependency (#7547).
 
